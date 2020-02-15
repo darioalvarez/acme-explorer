@@ -3,6 +3,7 @@ var express = require('express'),
   port = process.env.PORT || 8080,
   mongoose = require('mongoose'),
   Actor = require('./api/models/actorModel'),
+  Application = require('./api/models/applicationModel'),
   bodyParser = require('body-parser');
 
 // MongoDB URI building
@@ -18,16 +19,19 @@ mongoose.connect(mongoDBURI, {
     connectTimeoutMS: 10000, // Give up initial connection after 10 seconds
     socketTimeoutMS: 45000, // Close sockets after 45 seconds of inactivity
     family: 4, // skip trying IPv6
-    useNewUrlParser: true
+    useNewUrlParser: true,
+    useFindAndModify: false
 });
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 var routesActors = require('./api/routes/actorRoutes');
+var routesApplications = require('./api/routes/applicationRoutes');
 
 
 routesActors(app);
+routesApplications(app);
 
 
 console.log("Connecting DB to: " + mongoDBURI);
