@@ -1,6 +1,6 @@
 'use strict'
 const mongoose = require('mongoose'),
-      Trip = mongoose.model('Trip');
+      Trip = mongoose.model('Trips');
 
 exports.list_all_trips =  function (req, res) {
     //if auth user is ['MANAGER', 'ADMINISTRATOR'], list all trips

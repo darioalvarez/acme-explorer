@@ -3,6 +3,38 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var bcrypt = require('bcrypt');
 
+var CachedTripSchema = new Schema({
+  title: {
+    type: String,
+    required: 'Kindly enter the trip title'
+  },
+  price: {
+    type: Number,
+    min: 0
+  },
+  startDate: {
+    type: Date,
+    required: true,
+    validate: [
+      startDateValidator,
+      'Start date must be greater than Today date'
+    ]
+  },
+  endDate: {
+    type: Date,
+    required: true,
+    validate: [
+      endDateValidator,
+      'End date must be greater than Start date'
+    ]
+  },
+  status: {
+    type: String,
+    enum: ['CREATED', 'PUBLISHED', 'STARTED', 'ENDED', 'CANCELLED'],
+    default: 'CREATED'
+  }
+}, { strict: false });
+
 var FinderSchema = new Schema({
   keyword: {
     type: String,
@@ -30,8 +62,8 @@ var FinderSchema = new Schema({
     type: Date,
     required: true,
     default: null
-  }
-  //añadir array de Trips results
+  },
+  results: [CachedTripSchema]
 }, { strict: false });
 
 var ActorSchema = new Schema({
@@ -108,5 +140,17 @@ ActorSchema.methods.verifyPassword = function(password, cb) {
     cb(null, isMatch);
   });
 };
+
+function endDateValidator(endDate){
+  var startDate = this.date_start;
+  if(!startDate) //making an update
+      startDate = new Date(this.getUpdate().date_start);
+  return startDate <= endDate;
+}
+
+function startDateValidator(startDate){
+  let now = moment();
+  return now <= startDate;
+}
 
 module.exports = mongoose.model('Actors', ActorSchema);

@@ -99,4 +99,4 @@ function startDateValidator(startDate){
     return now <= startDate;
 }
 
-module.exports = mongoose.model('Trip', TripSchema);
+module.exports = mongoose.model('Trips', TripSchema);
