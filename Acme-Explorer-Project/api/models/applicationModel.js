@@ -21,11 +21,11 @@ var ApplicationSchema = new Schema({
   explorer: {
     type: Schema.Types.ObjectId,
     required: 'Explorer id required'
-  }
-  /*trip: {
+  },
+  trip: {
     type: Schema.Types.ObjectId,
     required: 'Trip id required'
-  }*/
+  }
 }, { strict: false });
 
 
