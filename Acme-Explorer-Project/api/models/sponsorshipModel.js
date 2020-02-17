@@ -10,7 +10,7 @@ var SponsorshipSchema = new Schema({
   banner: {
     data: Buffer, contentType: String
   },
-  played: {
+  paid: {
     type: Boolean,
     default: false
   },

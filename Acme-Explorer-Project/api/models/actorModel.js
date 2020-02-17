@@ -31,6 +31,7 @@ var FinderSchema = new Schema({
     required: true,
     default: null
   }
+  //añadir array de Trips results
 }, { strict: false });
 
 var ActorSchema = new Schema({
