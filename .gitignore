@@ -105,3 +105,6 @@ dist
 
 #OSX Hiden files
 .DS_Store
+
+#Asta Files
+*.asta.lock

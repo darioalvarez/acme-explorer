@@ -41,7 +41,11 @@ var ActorSchema = new Schema({
     type: String,
     required: 'Kindly enter the user role(s)',
     enum: ['SPONSOR', 'MANAGER', 'EXPLORER', 'ADMINISTRATOR']
-  }]
+  }],
+  activated:{
+    type: Boolean,
+    default: true
+  }
   /*created: {
     type: Date,
     default: Date.now
