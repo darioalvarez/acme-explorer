@@ -3,6 +3,7 @@ var express = require('express'),
   port = process.env.PORT || 8080,
   mongoose = require('mongoose'),
   Actor = require('./api/models/actorModel'),
+  Trip = require('./api/models/tripModel'),
   bodyParser = require('body-parser');
 
 // MongoDB URI building
@@ -10,6 +11,7 @@ var mongoDBHostname = process.env.mongoDBHostname || "localhost";
 var mongoDBPort = process.env.mongoDBPort || "27017";
 var mongoDBName = process.env.mongoDBName || "ACME-Explorer";
 var mongoDBURI = "mongodb://" + mongoDBHostname + ":" + mongoDBPort + "/" + mongoDBName;
+var mongoDBURI = "mongodb+srv://adoption:adoption@adoptionplatform-ly3vq.mongodb.net/test?authSource=admin&replicaSet=AdoptionPlatform-shard-0&readPreference=primary&appname=MongoDB%20Compass%20Community&ssl=true";
 
 mongoose.connect(mongoDBURI, {
     reconnectTries: 10,
@@ -25,9 +27,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 var routesActors = require('./api/routes/actorRoutes');
-
+var routesTrips = require('./api/routes/tripRoutes');
 
 routesActors(app);
+routesTrips(app);
 
 
 console.log("Connecting DB to: " + mongoDBURI);
