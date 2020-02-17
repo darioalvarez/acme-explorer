@@ -14,7 +14,14 @@ var SponsorshipSchema = new Schema({
     type: Boolean,
     default: false
   },
-  
+  sponsor: {
+    type: Schema.Types.ObjectId,
+    required: 'Sponsor id required'
+  },
+  trip: {
+    type: Schema.Types.ObjectId,
+    required: 'Trip id required'
+  }
 },  { strict: false });
 
 module.exports = mongoose.model('Sponsorships', SponsorshipSchema);
