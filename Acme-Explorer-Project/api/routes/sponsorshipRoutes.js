@@ -17,18 +17,6 @@ module.exports = function(app) {
 		.get(sponsorships.list_all_sponsorships)
     .post(sponsorships.create_an_sponsorship);
 
-  /**
-   * get results from a search of sponsorships groupBy category
-   *    RequiredRoles: None
-   * 
-   * @section sponsorships
-	 * @type get
-	 * @url /v1/sponsorships/search
-   * @param {string} sortedBy (category)
-   * @param {string} keyword //in sku, name, or description
-   */
-  app.route('/v1/sponsorships/search')
-  .get(sponsorships.search_sponsorships)
 
   /**
    * Put comments on an sponsorship or update it
@@ -46,6 +34,5 @@ module.exports = function(app) {
     .get(sponsorships.read_an_sponsorship)
 	  .put(sponsorships.update_an_sponsorship)
     .delete(sponsorships.delete_an_sponsorship);
-  
-  
+
 };
