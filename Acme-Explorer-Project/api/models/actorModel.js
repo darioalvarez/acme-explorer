@@ -3,6 +3,35 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var bcrypt = require('bcrypt');
 
+var FinderSchema = new Schema({
+  keyword: {
+    type: String,
+    required: true,
+    default: null
+  },
+  minPrice: {
+    type: Number,
+    min: 0,
+    required: true,
+    default: null
+  },
+  maxPrice: {
+    type: Number,
+    min: 0,
+    required: true,
+    default: null
+  },
+  minDate: {
+    type: Date,
+    required: true,
+    default: null
+  },
+  maxDate: {
+    type: Date,
+    required: true,
+    default: null
+  }
+}, { strict: false });
 
 var ActorSchema = new Schema({
   name: {
@@ -45,7 +74,8 @@ var ActorSchema = new Schema({
   activated:{
     type: Boolean,
     default: true
-  }
+  },
+  finder: FinderSchema
   /*created: {
     type: Date,
     default: Date.now

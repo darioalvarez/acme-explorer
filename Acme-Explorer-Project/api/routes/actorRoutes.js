@@ -56,4 +56,17 @@ module.exports = function(app) {
 	*/
   app.route('/v1/actors/:actorId/unban')
   .put(actors.unban_an_actor)
+
+  /**
+	 * Modify search criteria of finder
+   *    RequiredRole: to be the finder's explorer owner
+	 *
+	 * @section actors
+	 * @type put
+	 * @url /v1/actors/:actorId/myfinder
+	 * @param {string} actorId
+	*/
+  app.route('/v1/actors/:actorId/myfinder')
+  .put(actors.update_an_actor)
+  //update_actor_finder ??
 };
