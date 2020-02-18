@@ -24,7 +24,8 @@ var ApplicationSchema = new Schema({
   },
   trip: {
     type: Schema.Types.ObjectId,
-    required: 'Trip id required'
+    required: 'Trip id required',
+    ref: 'Trip'
   }
 }, { strict: false });
 
