@@ -2,6 +2,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var bcrypt = require('bcrypt');
+const ISO6391 = require('iso-639-1')
 
 var CachedTripSchema = new Schema({
   title: {
@@ -14,24 +15,14 @@ var CachedTripSchema = new Schema({
   },
   startDate: {
     type: Date,
-    required: true,
-    validate: [
-      startDateValidator,
-      'Start date must be greater than Today date'
-    ]
+    required: true
   },
   endDate: {
     type: Date,
-    required: true,
-    validate: [
-      endDateValidator,
-      'End date must be greater than Start date'
-    ]
+    required: true
   },
-  status: {
-    type: String,
-    enum: ['CREATED', 'PUBLISHED', 'STARTED', 'ENDED', 'CANCELLED'],
-    default: 'CREATED'
+  cancelled: {
+    type: Boolean
   }
 }, { strict: false });
 
@@ -61,7 +52,11 @@ var FinderSchema = new Schema({
   maxDate: {
     type: Date,
     required: true,
-    default: null
+    default: null,
+    validate: [
+      maxDateValidator,
+      'Max date must be greater than Min date'
+    ]
   },
   results: [CachedTripSchema]
 }, { strict: false });
@@ -88,10 +83,15 @@ var ActorSchema = new Schema({
   },
   preferredLanguage:{
     type : String,
-    default : "en"
+    default : "en",
+    validate: [
+      iso6391Validator,
+      'Preferred Language must match ISO-639-1 codes'
+    ]
   },
   phone: {
-    type: String
+    type: String,
+    match: [/^\s*(?:\+?(\d{1,3}))?([-. (]*(\d{3})[-. )]*)?((\d{3})[-. ]*(\d{2,4})(?:[-.x ]*(\d+))?)\s*$/, 'Please fill a valid phone number']
   },
   address:{
     type: String
@@ -141,16 +141,15 @@ ActorSchema.methods.verifyPassword = function(password, cb) {
   });
 };
 
-function endDateValidator(endDate){
-  var startDate = this.date_start;
-  if(!startDate) //making an update
-      startDate = new Date(this.getUpdate().date_start);
-  return startDate <= endDate;
+function maxDateValidator(endDate){
+  var minDate = this.minDate;
+  if(!minDate) //making an update
+      minDate = new Date('2000');
+  return minDate <= endDate;
 }
 
-function startDateValidator(startDate){
-  let now = moment();
-  return now <= startDate;
+function iso6391Validator(prefLang){
+  return ISO6391.validate(prefLang);
 }
 
 module.exports = mongoose.model('Actors', ActorSchema);
