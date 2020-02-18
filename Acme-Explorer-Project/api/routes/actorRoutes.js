@@ -1,6 +1,7 @@
 'use strict';
 module.exports = function(app) {
   var actors = require('../controllers/actorController');
+  var applications = require('../controllers/applicationController')
 
   /**
    * Get all actors
@@ -30,8 +31,20 @@ module.exports = function(app) {
   */ 
   app.route('/v1/actors/:actorId')
     .get(actors.read_an_actor)
-	  .put(actors.update_an_actor)
+	  .put(actors.update_an_actor);
     //.delete(actors.delete_an_actor);
+  
+  /**
+   * Get applications made by an explorer
+   *    RequiredRoles: to be the proper Explorer
+	 *
+	 * @section actors
+	 * @type get
+	 * @url /v1/actors/:actorId/applications
+   * @param {string} actorId
+  */ 
+  app.route('/v1/actors/:actorId/applications')
+    .get(applications.list_all_applications_by_explorer);
   
   /**
 	 * Set activated to FALSE to an actor

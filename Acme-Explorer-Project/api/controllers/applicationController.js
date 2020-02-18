@@ -15,11 +15,22 @@ exports.list_all_applications = function(req, res) {
   });
 };
 
+exports.list_all_applications_by_explorer = function(req, res) {
+  Application.find({explorer:req.params.actorId}, function(err, application) {
+    if (err){
+      res.status(500).send(err);
+    }
+    else{
+      res.json(application);
+    }
+  });
+}
+
 
 exports.create_an_application = function(req, res) {
   //Check that user is an Explorer and if not: res.status(403); "an access token is valid, but requires more privileges"
   var new_application = new Application(req.body);
-
+  //Comprobar que el Trip está publicado Y no ha empezado Y no está cancelado
   new_application.save(function(err, application) {
     if (err){
       if(err.name=='ValidationError') {
