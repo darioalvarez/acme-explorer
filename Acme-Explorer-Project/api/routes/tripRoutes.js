@@ -4,7 +4,7 @@ const express = require('express');
 module.exports = function(app) {
   var trips = require('../controllers/tripController');
 
-  app.route('/trips')
+  app.route('/v1/trips')
     /**
      * Get all trips:
      *    RequiredRoles: any
@@ -24,7 +24,7 @@ module.exports = function(app) {
     */
     .post(trips.create_a_trip);
 
-  app.route('/trips/:tripId')
+  app.route('/v1/trips/:tripId')
     /**
      * Get trip by id:
      *    RequiredRoles: any
@@ -53,7 +53,7 @@ module.exports = function(app) {
     */
     .delete(trips.delete_a_trip);
 
-    app.route('/trips/:tripId/status')
+    app.route('/v1/trips/:tripId/status')
     /**
      * Change trip status:
      *    RequiredRoles: Manager
