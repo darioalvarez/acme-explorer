@@ -20,11 +20,13 @@ var ApplicationSchema = new Schema({
   comments: [String],
   explorer: {
     type: Schema.Types.ObjectId,
-    required: 'Explorer id required'
+    required: 'Explorer id required',
+    ref: 'Actors'
   },
   trip: {
     type: Schema.Types.ObjectId,
-    required: 'Trip id required'
+    required: 'Trip id required',
+    ref: 'Trips'
   }
 }, { strict: false });
 
