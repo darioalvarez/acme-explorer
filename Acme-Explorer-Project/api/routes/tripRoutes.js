@@ -24,6 +24,26 @@ module.exports = function(app) {
     */
     .post(trips.create_a_trip);
 
+
+  /**
+   * get results from a search engine
+   *    RequiredRoles: None;
+   * 
+   * @section trips
+	 * @type get
+	 * @url /v1/trips/search
+   * @param {string} keyword //in ticker, title, or description
+   * @param {string} minPrice
+   * @param {string} maxPrice
+   * @param {string} minDate
+   * @param {string} maxDate
+   * @param {string} pageSize
+   * @param {string} sortedBy
+   */
+  app.route('/v1/trips/search')
+  .get(trips.search_items)
+
+
   app.route('/v1/trips/:tripId')
     /**
      * Get trip by id:

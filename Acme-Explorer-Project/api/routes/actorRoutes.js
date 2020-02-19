@@ -56,7 +56,7 @@ module.exports = function(app) {
 	 * @param {string} actorId
 	*/
   app.route('/v1/actors/:actorId/ban')
-  .put(actors.ban_an_actor)
+      .put(actors.ban_an_actor);
 
   /**
 	 * Set activated to TRUE to an actor
@@ -68,7 +68,7 @@ module.exports = function(app) {
 	 * @param {string} actorId
 	*/
   app.route('/v1/actors/:actorId/unban')
-  .put(actors.unban_an_actor)
+      .put(actors.unban_an_actor);
 
   /**
 	 * Modify search criteria of finder
@@ -80,6 +80,6 @@ module.exports = function(app) {
 	 * @param {string} actorId
 	*/
   app.route('/v1/actors/:actorId/myfinder')
-  .put(actors.update_an_actor)
-  //update_actor_finder ??
+      .put(actors.update_an_actor);
+      //update_actor_finder ??
 };
