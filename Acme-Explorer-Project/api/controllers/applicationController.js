@@ -103,6 +103,48 @@ exports.reject_an_application = function(req, res) {
 };
 
 
+exports.process_an_application = function(req, res) {
+  //Check that the user is a Manager and if not: res.status(403); "an access token is valid, but requires more privileges"
+  //Check status is PENDING ??
+  Application.findOneAndUpdate({_id: req.params.applicationId},  { $set: {"status": "DUE", "paid":false}}, {new: true}, function(err, application) {
+    if (err){
+      res.status(500).send(err);
+    }
+    else{
+      res.json(application);
+    }
+  });
+};
+
+
+exports.pay_an_application = function(req, res) {
+  //Check that the user is the application's explorer owner or an Admin and if not: res.status(403); "an access token is valid, but requires more privileges"
+  //Check is not paid and status is DUE ??
+  Application.findOneAndUpdate({_id: req.params.applicationId},  { $set: {"status": "ACCEPTED", "paid":true}}, {new: true}, function(err, application) {
+    if (err){
+      res.status(500).send(err);
+    }
+    else{
+      res.json(application);
+    }
+  });
+};
+
+
+exports.cancel_an_application = function(req, res) {
+  //Check that the user is the application's explorer owner and if not: res.status(403); "an access token is valid, but requires more privileges"
+  //Check status is ACCEPTED ??
+  Application.findOneAndUpdate({_id: req.params.applicationId},  { $set: {"status": "CANCELLED"}}, {new: true}, function(err, application) {
+    if (err){
+      res.status(500).send(err);
+    }
+    else{
+      res.json(application);
+    }
+  });
+};
+
+
 exports.delete_an_application = function(req, res) {
   //Check status
   //Check user ... and if not: res.status(403); "an access token is valid, but requires more privileges"

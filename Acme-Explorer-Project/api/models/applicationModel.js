@@ -40,6 +40,7 @@ var ApplicationSchema = new Schema({
 ApplicationSchema.pre('save', function(callback) {
   var new_application = this;
   new_application.status = 'PENDING';
+  new_application.paid = false;
   callback();
 });
 

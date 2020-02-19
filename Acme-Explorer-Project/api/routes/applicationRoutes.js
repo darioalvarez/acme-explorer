@@ -42,5 +42,40 @@ module.exports = function(app) {
    * @url /v1/applications/:applicationId/reject
   */
   app.route('/v1/applications/:applicationId/reject')
-    .put(applications.reject_an_application);
+      .put(applications.reject_an_application);
+  
+  
+  /**
+   * Process an application. Set its status to DUE
+   *    RequiredRoles: Manager
+   * 
+   * @section applications
+   * @type put
+   * @url /v1/applications/:applicationId/process
+  */
+  app.route('/v1/applications/:applicationId/process')
+      .put(applications.process_an_application);
+  
+  
+  /**
+   * Pay an application.
+   *    RequiredRoles: be the application's explorer owner
+   * 
+   * @section applications
+   * @type put
+   * @url /v1/applications/:applicationId/pay
+  */
+  app.route('/v1/applications/:applicationId/pay')
+      .put(applications.pay_an_application);
+
+  /**
+   * Cancel an application which is accepted.
+   *    RequiredRoles: be the application's explorer owner
+   * 
+   * @section applications
+   * @type put
+   * @url /v1/applications/:applicationId/cancel
+  */
+  app.route('/v1/applications/:applicationId/cancel')
+      .put(applications.cancel_an_application);
 };
