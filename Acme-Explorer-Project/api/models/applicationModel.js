@@ -34,6 +34,8 @@ var ApplicationSchema = new Schema({
   }
 }, { strict: false });
 
+ApplicationSchema.index({ trip: 1, status: 1 });
+ApplicationSchema.index({ explorer: 1, status: 1 });
 
 // Execute before each item.save() call
 // No me coge el default en el modelo.
