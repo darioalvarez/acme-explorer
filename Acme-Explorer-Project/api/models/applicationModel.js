@@ -18,6 +18,10 @@ var ApplicationSchema = new Schema({
     type: String
   },
   comments: [String],
+  paid: {
+    type: Boolean,
+    default: false
+  },
   explorer: {
     type: Schema.Types.ObjectId,
     required: 'Explorer id required',

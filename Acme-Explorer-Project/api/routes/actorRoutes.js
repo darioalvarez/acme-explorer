@@ -6,7 +6,7 @@ module.exports = function(app) {
   /**
    * Get all actors
    *    RequiredRoles: None
-   * Post an actor 
+   * Post an actor: register to the system
    *    RequiredRoles: None
 	 *
 	 * @section actors

@@ -30,6 +30,17 @@ module.exports = function(app) {
   */
   app.route('/v1/applications/:applicationId')
     .get(applications.read_an_application)
-	  .put(applications.update_an_application)
+	  .put(applications.update_an_application);
     //.delete(applications.delete_an_application);
+  
+  /**
+   * Reject an application.
+   *    RequiredRoles: Manager
+   * 
+   * @section applications
+   * @type put
+   * @url /v1/applications/:applicationId/reject
+  */
+  app.route('/v1/applications/:applicationId/reject')
+    .put(applications.reject_an_application);
 };

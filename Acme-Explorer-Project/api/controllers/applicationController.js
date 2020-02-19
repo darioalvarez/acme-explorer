@@ -84,6 +84,24 @@ exports.update_an_application = function(req, res) {
   });
 };
 
+exports.reject_an_application = function(req, res) {
+  //Check that the user is a Manager and if not: res.status(403); "an access token is valid, but requires more privileges"
+  //Check is not paid and status is PENDING ??
+  console.log("Rejecting application with id: "+req.params.applicationId)
+  if (!req.body.rejectedReason) {
+    res.status(400).send({message: 'rejectedReason required!'});
+  } else {
+    Application.findOneAndUpdate({_id: req.params.applicationId},  { $set: {"status": "REJECTED", "rejectedReason":req.body.rejectedReason}}, {new: true}, function(err, application) {
+      if (err){
+        res.status(500).send(err);
+      }
+      else{
+        res.json(application);
+      }
+    });
+  }
+};
+
 
 exports.delete_an_application = function(req, res) {
   //Check status
