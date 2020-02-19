@@ -109,3 +109,11 @@ exports.change_status = function (req, res) {
         }
     });
 };
+
+//Hay que implementar esta función bien. De momento, list all
+exports.search_items = function(req, res) {
+    Trip.find({}, function (err, trips) {
+        if (err) res.send(err);
+        else res.json(trips)
+    });
+}
