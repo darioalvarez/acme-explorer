@@ -24,34 +24,36 @@ module.exports = function(app) {
     */
     .post(trips.create_a_trip);
 
-
   /**
-   * get results from a search engine
+   * Get results from a search engine
    *    RequiredRoles: None;
    * 
    * @section trips
 	 * @type get
 	 * @url /v1/trips/search
-   * @param {string} keyword //in ticker, title, or description
+   * @param {string} keyword (in ticker, title, or description)
    * @param {string} minPrice
    * @param {string} maxPrice
    * @param {string} minDate
    * @param {string} maxDate
-   * @param {string} pageSize
-   * @param {string} sortedBy
+   * @param {string} pageSize (limit)
+   * @param {string} startFrom (offset)
+   * @param {string} sortedBy (ticker, title, description)
+   * @param {string} deleted (true|false)
+   * @param {string} reverse (true|false) 
    */
   app.route('/v1/trips/search')
-  .get(trips.search_items)
+  .get(trips.search_trips)
 
 
-  app.route('/v1/trips/:tripId')
+  app.route('/v1/trips/:tripTicker')
     /**
      * Get trip by id:
      *    RequiredRoles: any
      *
      * @section trips
      * @type get 
-     * @url /v1/trips/:tripId
+     * @url /v1/trips/:tripTicker
     */
     .get(trips.read_a_trip)
     /**
@@ -72,16 +74,4 @@ module.exports = function(app) {
      * @url /v1/trips/:tripId
     */
     .delete(trips.delete_a_trip);
-
-    app.route('/v1/trips/:tripId/status')
-    /**
-     * Change trip status:
-     *    RequiredRoles: Manager
-     *
-     * @section trips
-     * @type put 
-     * @url /v1/trips
-     * @param {string} val // one of this values ['PUBLISHED', 'STARTED', 'ENDED', 'CANCELLED']
-    */
-    .put(trips.change_status);
 };
