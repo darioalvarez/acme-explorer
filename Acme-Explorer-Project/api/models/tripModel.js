@@ -1,9 +1,8 @@
 'use strict';
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-
-const moment = require('moment');
 const generate = require('nanoid/generate');
+const moment = require('moment');
 
 const StageSchema = new Schema({
   title: {
@@ -26,7 +25,7 @@ var TripSchema = new Schema({
   ticker: {
     type: String,
     unique: true,
-    required: 'Kindly enter the trip ticker'
+    // required: 'Kindly enter the trip ticker'
   },
   title: {
     type: String,
@@ -43,6 +42,7 @@ var TripSchema = new Schema({
   requirements: [String],
   startDate: {
     type: Date,
+    default: Date.now,
     required: true,
     validate: [
       startDateValidator,
@@ -57,23 +57,24 @@ var TripSchema = new Schema({
       'End date must be greater than Start date'
     ]
   },
-  status: {
-    type: String,
-    enum: ['CREATED', 'PUBLISHED', 'STARTED', 'ENDED', 'CANCELLED'],
-    default: 'CREATED'
-  },
+  pictures: [{
+    data: Buffer, contentType: String
+  }],
   stages: [StageSchema],
   cancelled: {
     type: Boolean,
     default: false
   },
   cancellationReason: {
-    type: String,
-    required: 'Kindly enter the trip description'
+    type: String
   },
   published: {
     type: Boolean,
     default: false
+  },
+  manager: {
+    type: Schema.Types.ObjectId,
+    ref: 'Actor'
   },
 }, { strict: false });
 
@@ -87,16 +88,25 @@ TripSchema.pre('save', function(next){
     next();
 });
 
-function endDateValidator(endDate){
-    var startDate = this.date_start;
-    if(!startDate) //making an update
-        startDate = new Date(this.getUpdate().date_start);
-    return startDate <= endDate;
-}
+TripSchema.index({ ticker: 1 }, { unique: true });
+TripSchema.index({ ticker: 'text', title: 'text', description: 'text' }, 
+                 { weights: { ticker: 10, title: 5, description: 1 } });
 
 function startDateValidator(startDate){
+  let now = moment();
+  return now <= startDate;
+}
+
+function endDateValidator(endDate){
+    // var startDate = this.date_start;
+    // if(!startDate) //making an update
+    //     startDate = new Date(this.getUpdate().date_start);
+    // return startDate <= endDate;
+
     let now = moment();
-    return now <= startDate;
+    // return now <= endDate &&  this.ticker != "" ? (endDate > this.getUpdate().startDate) : (endDate > this.startDate);
+
+    return now <= endDate;
 }
 
 module.exports = mongoose.model('Trips', TripSchema);
