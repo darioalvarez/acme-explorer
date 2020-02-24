@@ -33,9 +33,9 @@ var SponsorshipSchema = new Schema({
 },  { strict: false });
 
 //Indexes
-SponsorshipSchema.createIndex( { 'url': 1 }, {unique:true} )
-SponsorshipSchema.createIndex( { url: 'text'} )
-SponsorshipSchema.createIndex( { 'cost': 1 }, { sparse: true} )
+SponsorshipSchema.index( { 'url': 1 }, {unique:true} )
+SponsorshipSchema.index( { url: 'text'} )
+SponsorshipSchema.index( { 'cost': 1 }, { sparse: true} )
 
 
 
