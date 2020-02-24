@@ -35,12 +35,14 @@ exports.create_an_sponsorship = function(req, res) {
   });
 };
 
-exports.search_sponsorships = function(req, res) {
-  //Check if category param exists (category: req.query.category)
-  //Check if keyword param exists (keyword: req.query.keyword)
-  //Search depending on params but only if deleted = false
+
+exports.change_flat_rate = function(req, res) {
+  res.send('Not implemented yet');
+};
+
+exports.consult_cube = function(req, res) {
   console.log('Searching an sponsorship depending on params');
-  res.send('Item returned from the sponsorship search');
+  res.send('Not implemented yet');
 };
 
 
