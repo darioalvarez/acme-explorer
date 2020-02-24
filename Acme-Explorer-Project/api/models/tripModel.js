@@ -74,7 +74,8 @@ var TripSchema = new Schema({
   },
   manager: {
     type: Schema.Types.ObjectId,
-    ref: 'Actor'
+    required: 'Manager id required',
+    ref: 'Actors'
   },
 }, { strict: false });
 
