@@ -5,7 +5,8 @@ var express = require('express'),
   Actor = require('./api/models/actorModel'),
   Application = require('./api/models/applicationModel'),
   Trip = require('./api/models/tripModel'),
-  Sponsorship = require('./api/models/sponsorshipModel')
+  Sponsorship = require('./api/models/sponsorshipModel'),
+  DataWareHouse = require('./api/models/dataWareHouseModel'),
   bodyParser = require('body-parser');
 
 // MongoDB URI building
@@ -23,8 +24,10 @@ mongoose.connect(mongoDBURI, {
     socketTimeoutMS: 45000, // Close sockets after 45 seconds of inactivity
     family: 4, // skip trying IPv6
     useNewUrlParser: true,
-    useFindAndModify: false
+    useFindAndModify: false,
+    useUnifiedTopology: true 
 });
+mongoose.set('useCreateIndex', true);
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
