@@ -1,0 +1,425 @@
+{
+	"info": {
+		"_postman_id": "3b4ac041-3376-41f9-8ad9-8062f46d434d",
+		"name": "ACME-EXPLORER",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "POST ACTOR-EXPLORER",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"ExplorerName\",\n\t\"surname\": \"ExplorerSurname\",\n\t\"address\": \"C/Sol, Sevilla\",\n\t\"email\": \"explorer@fakemail.com\",\n\t\"password\": \"mypass\",\n\t\"phone\": \"+34612345678\",\n\t\"role\": \"EXPLORER\"\n}"
+				},
+				"url": {
+					"raw": "localhost:8080/v1/actors",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"actors"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST ACTOR-MANAGER",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"ManagerName\",\n\t\"surname\": \"ManagerSurname\",\n\t\"address\": \"C/Sol, Sevilla\",\n\t\"email\": \"manager@fakemail.com\",\n\t\"password\": \"mypass\",\n\t\"phone\": \"+34612345678\",\n\t\"role\": \"MANAGER\"\n}"
+				},
+				"url": {
+					"raw": "localhost:8080/v1/actors",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"actors"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST ACTOR-SPONSOR",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"Sponsor2Name\",\n\t\"surname\": \"Sponsor2Surname\",\n\t\"address\": \"Sponsor2Address\",\n\t\"email\": \"sponsor2@fakemail.com\",\n\t\"password\": \"mypass\",\n\t\"phone\": \"+34612345678\",\n\t\"role\": \"SPONSOR\"\n}"
+				},
+				"url": {
+					"raw": "localhost:8080/v1/actors",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"actors"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST ACTOR-SPONSOR2",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"_id\": \"5c531bd26c769b42ead5e774\",\n\t\"name\": \"SponsorName\",\n\t\"surname\": \"SponsorSurname\",\n\t\"address\": \"C/Sol, Sevilla\",\n\t\"email\": \"sponsor@fakemail.com\",\n\t\"password\": \"mypass\",\n\t\"phone\": \"+34612345678\",\n\t\"role\": \"SPONSOR\"\n}"
+				},
+				"url": {
+					"raw": "localhost:8080/v1/actors",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"actors"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST ACTOR-ADMIN",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"AdminName\",\n\t\"surname\": \"AdminSurname\",\n\t\"email\": \"admin@fakemail.com\",\n\t\"address\": \"AdminAddress\",\n\t\"password\": \"mypass\",\n\t\"phone\": \"+34612345670\",\n\t\"role\": \"ADMINISTRATOR\"\n}"
+				},
+				"url": {
+					"raw": "localhost:8080/v1/actors",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"actors"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT ACTOR-SPONSOR2",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"SponsorEDITEDName\",\n\t\"surname\": \"SponsorSurname\",\n\t\"address\": \"Sponsor2Address\",\n\t\"email\": \"sponsor2@fakemail.com\",\n\t\"password\": \"mypass\",\n\t\"phone\": \"+34612345678\",\n\t\"role\": \"SPONSOR\"\n}"
+				},
+				"url": {
+					"raw": "localhost:8080/v1/actors/5c531bd26c769b42ead5e774",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"actors",
+						"5c531bd26c769b42ead5e774"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET ALL ACTORS",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/v1/actors/",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"actors",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE ACTOR-CUSTOMER2",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:8080/v1/actors/5c531bd26c769b42ead5e774",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"actors",
+						"5c531bd26c769b42ead5e774"
+					]
+				},
+				"description": "Include previously generated id"
+			},
+			"response": []
+		},
+		{
+			"name": "POST APPLICATION",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"explorer\": \"5e4824346e86460fd2827deb\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/v1/applications",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"applications"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET ALL APPLICATIONS",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/v1/applications",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"applications"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE APPLICATION",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:8080/v1/applications/5e48291652b62d1061849edf",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"applications",
+						"5e48291652b62d1061849edf"
+					]
+				},
+				"description": "Include previously generated id"
+			},
+			"response": []
+		},
+		{
+			"name": "PUT APPLICATION",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"status\": \"gfdhdfhhfh\"\n}"
+				},
+				"url": {
+					"raw": "localhost:8080/v1/applications/5e4829a1f4b45c106a88d991",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"applications",
+						"5e4829a1f4b45c106a88d991"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST SPONSORSHIP",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"banner\": \"\",\n\t\"url\": \"www.google.es\",\n\t\"paid\": \"true\",\n\t\"trip\": \"5e4829a1f43ea2106a88d991\",\n\t\"sponsor\": \"5e4adfffa9228c1eef721a95\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/v1/sponsorships",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"sponsorships"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "REJECT APPLICATION",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/v1/applications/5e482824eacf3e10470d937b/reject",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"applications",
+						"5e482824eacf3e10470d937b",
+						"reject"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET APPLICATIONS BY EXPLORER-ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/v1/actors/5e4824346e86460fd2827deb/applications",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"actors",
+						"5e4824346e86460fd2827deb",
+						"applications"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
