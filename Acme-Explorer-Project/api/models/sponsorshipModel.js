@@ -7,7 +7,7 @@ var SponsorshipSchema = new Schema({
     type: String,
     required: 'Kindly enter the url',
     lowercase: true,
-    validate: [validateURL,"Must be a valid URL"]
+    match: [/(http|https):\/\/(\w+:{0,1}\w*)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%!\-\/]))?/],
   },
   banner: {
     data: Buffer, 
@@ -24,27 +24,20 @@ var SponsorshipSchema = new Schema({
   },
   sponsor: {
     type: Schema.Types.ObjectId,
-    required: 'Sponsor id required'
+    required: 'Sponsor id required',
+    ref: 'Actors'
   },
   trip: {
     type: Schema.Types.ObjectId,
-    required: 'Trip id required'
+    required: 'Trip id required',
+    ref: 'Trips'
   }
 },  { strict: false });
 
 //Indexes
-SponsorshipSchema.index( { 'url': 1 }, {unique:true} )
-SponsorshipSchema.index( { url: 'text'} )
-SponsorshipSchema.index( { 'cost': 1 }, { sparse: true} )
+//SponsorshipSchema.index( { 'url': 1 }, {unique:true} )
+//SponsorshipSchema.index( { url: 'text'} )
+//SponsorshipSchema.index( { 'cost': 1 }, { sparse: true} )
 
 
-
-function validateURL(str) {
-  var regex = /(http|https):\/\/(\w+:{0,1}\w*)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%!\-\/]))?/;
-  if(!regex .test(str)) {
-    return false;
-  } else {
-    return true;
-  }
-}
 module.exports = mongoose.model('Sponsorships', SponsorshipSchema);

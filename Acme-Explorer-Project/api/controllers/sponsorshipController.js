@@ -2,11 +2,11 @@
 
 /*---------------Sponsorship----------------------*/
 var mongoose = require('mongoose'),
-  Item = mongoose.model('Sponsorships');
+  Sponsorship = mongoose.model('Sponsorships');
 
 exports.list_all_sponsorships = function(req, res) {
   //Check if the user is an administrator and if not: res.status(403); "an access token is valid, but requires more privileges"
-  Item.find(function(err, sponsorships) {
+  Sponsorship.find(function(err, sponsorships) {
     if (err){
       res.status(500).send(err);
     }
@@ -19,7 +19,7 @@ exports.list_all_sponsorships = function(req, res) {
 
 exports.create_an_sponsorship = function(req, res) {
   //Check if the user is an administrator and if not: res.status(403); "an access token is valid, but requires more privileges"
-  var new_sponsorship = new Item(req.body);
+  var new_sponsorship = new Sponsorship(req.body);
   new_sponsorship.save(function(err, sponsorship) {
     if (err){
       if(err.name=='ValidationError') {
@@ -47,7 +47,7 @@ exports.consult_cube = function(req, res) {
 
 
 exports.read_an_sponsorship = function(req, res) {
-    Item.findById(req.params.sponsorshipId, function(err, sponsorship) {
+    Sponsorship.findById(req.params.sponsorshipId, function(err, sponsorship) {
       if (err){
         res.status(500).send(err);
       }
@@ -60,7 +60,7 @@ exports.read_an_sponsorship = function(req, res) {
 
 exports.update_an_sponsorship = function(req, res) {
   //Check that the user is administrator if it is updating more things than comments and if not: res.status(403); "an access token is valid, but requires more privileges"
-    Item.findOneAndUpdate({_id: req.params.sponsorshipId}, req.body, {new: true}, function(err, sponsorship) {
+    Sponsorship.findOneAndUpdate({_id: req.params.sponsorshipId}, req.body, {new: true}, function(err, sponsorship) {
       if (err){
         if(err.name=='ValidationError') {
             res.status(422).send(err);
@@ -77,12 +77,12 @@ exports.update_an_sponsorship = function(req, res) {
 
 exports.delete_an_sponsorship = function(req, res) {
   //Check if the user is an administrator and if not: res.status(403); "an access token is valid, but requires more privileges"
-    Item.deleteOne({_id: req.params.sponsorshipId}, function(err, sponsorship) {
+    Sponsorship.deleteOne({_id: req.params.sponsorshipId}, function(err, sponsorship) {
         if (err){
             res.status(500).send(err);
         }
         else{
-            res.json({ message: 'Item successfully deleted' });
+            res.json({ message: 'Sponsorship successfully deleted' });
         }
     });
 };
