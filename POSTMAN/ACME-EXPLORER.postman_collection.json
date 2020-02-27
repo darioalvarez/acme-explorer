@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "3b4ac041-3376-41f9-8ad9-8062f46d434d",
+		"_postman_id": "59d1f829-60fb-4fd6-ace7-b042696719d3",
 		"name": "ACME-EXPLORER",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -415,6 +415,178 @@
 						"actors",
 						"5e4824346e86460fd2827deb",
 						"applications"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET SPONSORSHIPS",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/v1/sponsorships",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"sponsorships"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST SPONSORSHIP",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"banner\":\"\",\n\t\"url\":\"http://sponsorship.com\",\n\t\"paid\":\"true\",\n\t\"cost\": 0,\n\t\"sponsor\": \"5e4aa74e49222e8a3b6ee01c\",\n\t\"trip\": \"5e4aa74e49222e8a3b6ee01c\"\n }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/v1/sponsorships",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"sponsorships"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET SPONSORSHIP BY ID",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/v1/sponsorships/5e4aa74e49222e8a3b6ee01c",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"sponsorships",
+						"5e4aa74e49222e8a3b6ee01c"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UPDATE SPONSORSHIP",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"played\":\"false\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/v1/sponsorships/5e4aa74e49222e8a3b6ee01c/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"sponsorships",
+						"5e4aa74e49222e8a3b6ee01c",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE SPONSORSHIP",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"played\":\"false\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/v1/sponsorships/5e57993d858954a9ea70a7cd/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"sponsorships",
+						"5e57993d858954a9ea70a7cd",
+						""
 					]
 				}
 			},
