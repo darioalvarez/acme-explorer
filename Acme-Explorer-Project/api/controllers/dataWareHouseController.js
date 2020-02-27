@@ -154,26 +154,29 @@ function avgApplicationsPerTrip (callback) {
 };
 
 function minApplicationsPerTrip (callback) {
-  Trips.aggregate([
-   {$match: {} }
+  Applications.aggregate([
+    {$group: {_id:"$trip", num_applications:{$sum:1}}},
+    {$group: {_id:0, min_applications_per_trip:{$min:"$num_applications"}}}
   ], function(err, res){
-       callback(err, 34532)
+       callback(err, res[0].min_applications_per_trip)
    }); 
 };
 
 function maxApplicationsPerTrip (callback) {
-  Trips.aggregate([
-   {$match: {} }
+  Applications.aggregate([
+    {$group: {_id:"$trip", num_applications:{$sum:1}}},
+    {$group: {_id:0, max_applications_per_trip:{$max:"$num_applications"}}}
   ], function(err, res){
-       callback(err, 34532)
+       callback(err, res[0].max_applications_per_trip)
    }); 
 };
 
 function standarDeviationApplicationsPerTrip (callback) {
-  Trips.aggregate([
-   {$match: {} }
+  Applications.aggregate([
+    {$group: {_id:"$trip", num_applications:{$sum:1}}},
+    {$group: {_id:0, stdev_applications_per_trip:{$stdDevSamp:"$num_applications"}}}
   ], function(err, res){
-       callback(err, 34532)
+       callback(err, res[0].stdev_applications_per_trip)
    }); 
 };
 
