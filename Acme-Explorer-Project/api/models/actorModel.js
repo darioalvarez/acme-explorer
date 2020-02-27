@@ -29,29 +29,25 @@ var CachedTripSchema = new Schema({
 var FinderSchema = new Schema({
   keyword: {
     type: String,
-    required: true,
+    //required: true,
     default: null
   },
   minPrice: {
     type: Number,
     min: 0,
-    required: true,
     default: null
   },
   maxPrice: {
     type: Number,
     min: 0,
-    required: true,
     default: null
   },
   minDate: {
     type: Date,
-    required: true,
     default: null
   },
   maxDate: {
     type: Date,
-    required: true,
     default: null,
     validate: [
       maxDateValidator,
@@ -108,7 +104,10 @@ var ActorSchema = new Schema({
     type: Boolean,
     default: true
   },
-  finder: FinderSchema
+  finder: {
+    type: FinderSchema,
+    default: null
+  }
   /*created: {
     type: Date,
     default: Date.now
