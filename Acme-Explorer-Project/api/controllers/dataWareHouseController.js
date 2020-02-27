@@ -2,6 +2,7 @@ var async = require("async");
 var mongoose = require('mongoose'),
   DataWareHouse = mongoose.model('DataWareHouse'),
   Trips = mongoose.model('Trips');
+  Applications = mongoose.model('Applications');
 
 exports.list_all_indicators = function(req, res) {
   console.log('Requesting indicators');
@@ -36,7 +37,7 @@ var CronTime = require('cron').CronTime;
 //'*/10 * * * * *' cada 10 segundos
 //'* * * * * *' cada segundo
 //var rebuildPeriod = '*/10 * * * * *';  //El que se usará por defecto
-var rebuildPeriod = '0 0 * * * *';  //El que se usará por defecto
+var rebuildPeriod = '*/10 * * * * *';
 var computeDataWareHouseJob;
 
 exports.rebuildPeriod = function(req, res) {
@@ -115,7 +116,7 @@ function avgTripsByManager (callback) {
   Trips.aggregate([
    {$match: {} }
   ], function(err, res){
-       callback(err, res)
+       callback(err, 34532)
    }); 
 };
 
@@ -123,7 +124,7 @@ function minTripsByManager (callback) {
   Trips.aggregate([
    {$match: {} }
   ], function(err, res){
-       callback(err, res)
+       callback(err, 34532)
    }); 
 };
 
@@ -131,7 +132,7 @@ function maxTripsByManager (callback) {
   Trips.aggregate([
    {$match: {} }
   ], function(err, res){
-       callback(err, res)
+       callback(err, 34532)
    }); 
 };
 
@@ -139,15 +140,16 @@ function standarDeviationTripsByManager (callback) {
   Trips.aggregate([
    {$match: {} }
   ], function(err, res){
-       callback(err, res)
+       callback(err, 34532)
    }); 
 };
 
 function avgApplicationsPerTrip (callback) {
-  Trips.aggregate([
-   {$match: {} }
+  Applications.aggregate([
+    {$group: {_id:"$trip", num_applications:{$sum:1}}},
+    {$group: {_id:0, avg_applications_per_trip:{$avg:"$num_applications"}}}
   ], function(err, res){
-       callback(err, res)
+       callback(err, res[0].avg_applications_per_trip)
    }); 
 };
 
@@ -155,7 +157,7 @@ function minApplicationsPerTrip (callback) {
   Trips.aggregate([
    {$match: {} }
   ], function(err, res){
-       callback(err, res)
+       callback(err, 34532)
    }); 
 };
 
@@ -163,7 +165,7 @@ function maxApplicationsPerTrip (callback) {
   Trips.aggregate([
    {$match: {} }
   ], function(err, res){
-       callback(err, res)
+       callback(err, 34532)
    }); 
 };
 
@@ -171,7 +173,7 @@ function standarDeviationApplicationsPerTrip (callback) {
   Trips.aggregate([
    {$match: {} }
   ], function(err, res){
-       callback(err, res)
+       callback(err, 34532)
    }); 
 };
 
@@ -179,7 +181,7 @@ function avgPriceTrips (callback) {
   Trips.aggregate([
    {$match: {} }
   ], function(err, res){
-       callback(err, res)
+       callback(err, 34532)
    }); 
 };
 
@@ -187,7 +189,7 @@ function minPriceTrips (callback) {
   Trips.aggregate([
    {$match: {} }
   ], function(err, res){
-       callback(err, res)
+       callback(err, 34532)
    }); 
 };
 
@@ -195,7 +197,7 @@ function maxPriceTrips (callback) {
   Trips.aggregate([
    {$match: {} }
   ], function(err, res){
-       callback(err, res)
+       callback(err, 34532)
    }); 
 };
 
@@ -203,7 +205,7 @@ function standarDeviationPriceTrips (callback) {
   Trips.aggregate([
    {$match: {} }
   ], function(err, res){
-       callback(err, res)
+       callback(err, 34532)
    }); 
 };
 
@@ -212,7 +214,7 @@ function ratioApplicationsByStatus (callback) {
   Trips.aggregate([
    {$match: {} }
   ], function(err, res){
-       callback(err, res)
+       callback(err, 0.5)
    }); 
 };
 
@@ -220,7 +222,7 @@ function avgPriceFinders (callback) {
   Trips.aggregate([
    {$match: {} }
   ], function(err, res){
-       callback(err, res)
+       callback(err, 34532)
    }); 
 };
 
@@ -228,6 +230,6 @@ function topKeywordsFinder (callback) {
   Trips.aggregate([
    {$match: {} }
   ], function(err, res){
-       callback(err, res)
+       callback(err, ['keyword1', 'keyword2'])
    }); 
 };
