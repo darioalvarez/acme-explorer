@@ -215,15 +215,17 @@ function computeCube(callback) {
           period = period + i;
       }
       var minDateRange = new Date();
+      
       minDateRange.setMonth(minDateRange.getMonth() - i);
+      console.log(minDateRange);
       Applications.aggregate([
           {
-              $match: {
-                  status: "ACCEPTED",
-                  updateMoment: {
-                      $gte: minDateRange,
-                  }
-              }
+            $match: {
+                status: "ACCEPTED",
+                date: {
+                    $gte: minDateRange,
+                }
+            }
           },
           {
               $group: {
@@ -243,6 +245,7 @@ function computeCube(callback) {
               var tripsIdArray = explorer_trips[j].trips;
               var explorerId = explorer_trips[j]._id;
               var periodCube = explorer_trips[j].period;
+
               Trips.aggregate([
                   {
                       $match: {
@@ -261,6 +264,8 @@ function computeCube(callback) {
                       }
                   }
               ], function (err2, docs) {
+                //Get result if exists trips on those dates
+                if(docs[0] !== undefined){
                   var new_cube = new Cubes();
                   new_cube.explorer = docs[0].explorer;
                   new_cube.money = docs[0].money;
@@ -273,6 +278,7 @@ function computeCube(callback) {
                           console.log("New Cube succesfully saved. Date: " + new Date());
                       }
                   });
+                }
               });
           }
       });
