@@ -7,6 +7,7 @@ var express = require('express'),
   Trip = require('./api/models/tripModel'),
   Sponsorship = require('./api/models/sponsorshipModel'),
   DataWareHouse = require('./api/models/dataWareHouseModel'),
+  GeneralConfiguration = require('./api/models/generalConfigurationModel'),
   DataWareHouseTools = require('./api/controllers/dataWareHouseController')
   bodyParser = require('body-parser');
 
@@ -36,12 +37,14 @@ var routesApplications = require('./api/routes/applicationRoutes');
 var routesTrips = require('./api/routes/tripRoutes');
 var routesSponsorship = require('./api/routes/sponsorshipRoutes');
 var routesDataWareHouse = require('./api/routes/dataWareHouseRoutes');
+var routesGeneralConfiguration = require('./api/routes/generalConfigurationRoutes');
 
 routesActors(app);
 routesApplications(app);
 routesTrips(app);
 routesSponsorship(app);
 routesDataWareHouse(app);
+routesGeneralConfiguration(app);
 
 console.log("Connecting DB to: " + mongoDBURI);
 mongoose.connection.on("open", function (err, conn) {
