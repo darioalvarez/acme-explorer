@@ -115,34 +115,38 @@ module.exports.createDataWareHouseJob = createDataWareHouseJob;
 
 function avgTripsByManager (callback) {
   Trips.aggregate([
-   {$match: {} }
+   {$group: {_id:"$manager", num_trips: {$sum:1}}},
+   {$group: {_id:0, avg_trips_per_manager:{$avg:"$num_trips"}}}
   ], function(err, res){
-       callback(err, 34532)
-   }); 
+       callback(err, res[0].avg_trips_per_manager)
+   });
 };
 
 function minTripsByManager (callback) {
-  Trips.aggregate([
-   {$match: {} }
+   Trips.aggregate([
+    {$group: {_id:"$manager", num_trips:{$sum:1}}},
+    {$group: {_id:0, min_trips_per_manager:{$min:"$num_trips"}}}
   ], function(err, res){
-       callback(err, 34532)
-   }); 
+       callback(err, res[0].min_trips_per_manager)
+   });
 };
 
 function maxTripsByManager (callback) {
   Trips.aggregate([
-   {$match: {} }
+    {$group: {_id:"$manager", num_trips:{$sum:1}}},
+    {$group: {_id:0, max_trips_per_manager:{$max:"$num_trips"}}}
   ], function(err, res){
-       callback(err, 34532)
-   }); 
+       callback(err, res[0].max_trips_per_manager)
+   });
 };
 
 function standarDeviationTripsByManager (callback) {
-  Trips.aggregate([
-   {$match: {} }
+   Trips.aggregate([
+    {$group: {_id:"$manager", num_trips:{$sum:1}}},
+    {$group: {_id:0, std_dev_trips_per_manager:{$stdDevSamp:"$num_trips"}}}
   ], function(err, res){
-       callback(err, 34532)
-   }); 
+       callback(err, res[0].std_dev_trips_per_manager)
+   });
 };
 
 function avgApplicationsPerTrip (callback) {
@@ -183,34 +187,34 @@ function standarDeviationApplicationsPerTrip (callback) {
 
 function avgPriceTrips (callback) {
   Trips.aggregate([
-   {$match: {} }
-  ], function(err, res){
-       callback(err, 34532)
-   }); 
+    {$group: {_id:0, avg_price_per_trip:{$avg:"$price"}}}
+   ], function(err, res){
+        callback(err, res[0].avg_price_per_trip)
+    });
 };
 
 function minPriceTrips (callback) {
   Trips.aggregate([
-   {$match: {} }
-  ], function(err, res){
-       callback(err, 34532)
-   }); 
+    {$group: {_id:0, min_price_per_trip:{$min:"$price"}}}
+   ], function(err, res){
+        callback(err, res[0].min_price_per_trip)
+    });
 };
 
 function maxPriceTrips (callback) {
   Trips.aggregate([
-   {$match: {} }
-  ], function(err, res){
-       callback(err, 34532)
-   }); 
+    {$group: {_id:0, max_price_per_trip:{$max:"$price"}}}
+   ], function(err, res){
+        callback(err, res[0].max_price_per_trip)
+    });
 };
 
 function standarDeviationPriceTrips (callback) {
   Trips.aggregate([
-   {$match: {} }
-  ], function(err, res){
-       callback(err, 34532)
-   }); 
+    {$group: {_id:0, std_dev_price_per_trip:{$stdDevSamp:"$price"}}}
+   ], function(err, res){
+        callback(err, res[0].std_dev_price_per_trip)
+    }); 
 };
 
 

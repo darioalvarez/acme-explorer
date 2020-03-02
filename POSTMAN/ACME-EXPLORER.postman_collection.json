@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "59d1f829-60fb-4fd6-ace7-b042696719d3",
+		"_postman_id": "86783f44-2248-4e53-a04e-2009bcfdb59f",
 		"name": "ACME-EXPLORER",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -216,6 +216,141 @@
 					]
 				},
 				"description": "Include previously generated id"
+			},
+			"response": []
+		},
+		{
+			"name": "GET ALL TRIPS",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/v1/trips",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"trips"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST A TRIP",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"title\": \"My first trip\",\n    \"description\": \"Trip to Seville\",\n    \"requirements\": [\n    \t\"Requirement 1\",\n    \t\"Requirement 2\"\n    \t] ,\n    \"startDate\": \"2020-03-01\",\n    \"endDate\": \"2020-03-02\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/v1/trips",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"trips"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET A SINGLE TRIP",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/v1/trips/200224-VJRF",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"trips",
+						"200224-VJRF"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT A TRIP",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"title\": \"My first trip modified\",\n    \"description\": \"Trip to Seville modified\",\n    \"requirements\": [\n    \t\"Requirement 1 modified\",\n    \t\"Requirement 2 modified\"\n    \t] ,\n    \"startDate\": \"2020-04-01\",\n    \"endDate\": \"2020-04-02\",\n    \"ticker\": \"200224-OILD\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/v1/trips/200224-VJRF",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"trips",
+						"200224-VJRF"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE A TRIP",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/v1/trips/200224-VJRF",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"trips",
+						"200224-VJRF"
+					]
+				}
 			},
 			"response": []
 		},
