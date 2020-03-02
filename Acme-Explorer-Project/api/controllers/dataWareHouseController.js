@@ -4,6 +4,7 @@ var mongoose = require('mongoose'),
   Cubes = mongoose.model('Cube'),
   Trips = mongoose.model('Trips');
   Applications = mongoose.model('Applications');
+  Actors = mongoose.model('Actors');
 
 exports.list_all_indicators = function(req, res) {
   console.log('Requesting indicators');
@@ -116,34 +117,38 @@ module.exports.createDataWareHouseJob = createDataWareHouseJob;
 
 function avgTripsByManager (callback) {
   Trips.aggregate([
-   {$match: {} }
+   {$group: {_id:"$manager", num_trips: {$sum:1}}},
+   {$group: {_id:0, avg_trips_per_manager:{$avg:"$num_trips"}}}
   ], function(err, res){
-       callback(err, 34532)
-   }); 
+       callback(err, res[0].avg_trips_per_manager)
+   });
 };
 
 function minTripsByManager (callback) {
-  Trips.aggregate([
-   {$match: {} }
+   Trips.aggregate([
+    {$group: {_id:"$manager", num_trips:{$sum:1}}},
+    {$group: {_id:0, min_trips_per_manager:{$min:"$num_trips"}}}
   ], function(err, res){
-       callback(err, 34532)
-   }); 
+       callback(err, res[0].min_trips_per_manager)
+   });
 };
 
 function maxTripsByManager (callback) {
   Trips.aggregate([
-   {$match: {} }
+    {$group: {_id:"$manager", num_trips:{$sum:1}}},
+    {$group: {_id:0, max_trips_per_manager:{$max:"$num_trips"}}}
   ], function(err, res){
-       callback(err, 34532)
-   }); 
+       callback(err, res[0].max_trips_per_manager)
+   });
 };
 
 function standarDeviationTripsByManager (callback) {
-  Trips.aggregate([
-   {$match: {} }
+   Trips.aggregate([
+    {$group: {_id:"$manager", num_trips:{$sum:1}}},
+    {$group: {_id:0, std_dev_trips_per_manager:{$stdDevSamp:"$num_trips"}}}
   ], function(err, res){
-       callback(err, 34532)
-   }); 
+       callback(err, res[0].std_dev_trips_per_manager)
+   });
 };
 
 function avgApplicationsPerTrip (callback) {
@@ -184,34 +189,34 @@ function standarDeviationApplicationsPerTrip (callback) {
 
 function avgPriceTrips (callback) {
   Trips.aggregate([
-   {$match: {} }
-  ], function(err, res){
-       callback(err, 34532)
-   }); 
+    {$group: {_id:0, avg_price_per_trip:{$avg:"$price"}}}
+   ], function(err, res){
+        callback(err, res[0].avg_price_per_trip)
+    });
 };
 
 function minPriceTrips (callback) {
   Trips.aggregate([
-   {$match: {} }
-  ], function(err, res){
-       callback(err, 34532)
-   }); 
+    {$group: {_id:0, min_price_per_trip:{$min:"$price"}}}
+   ], function(err, res){
+        callback(err, res[0].min_price_per_trip)
+    });
 };
 
 function maxPriceTrips (callback) {
   Trips.aggregate([
-   {$match: {} }
-  ], function(err, res){
-       callback(err, 34532)
-   }); 
+    {$group: {_id:0, max_price_per_trip:{$max:"$price"}}}
+   ], function(err, res){
+        callback(err, res[0].max_price_per_trip)
+    });
 };
 
 function standarDeviationPriceTrips (callback) {
   Trips.aggregate([
-   {$match: {} }
-  ], function(err, res){
-       callback(err, 34532)
-   }); 
+    {$group: {_id:0, std_dev_price_per_trip:{$stdDevSamp:"$price"}}}
+   ], function(err, res){
+        callback(err, res[0].std_dev_price_per_trip)
+    }); 
 };
 
 
@@ -231,18 +236,25 @@ function ratioApplicationsByStatus (callback) {
 };
 
 function avgPriceFinders (callback) {
-  Trips.aggregate([
-   {$match: {} }
-  ], function(err, res){
-       callback(err, 34532)
+  Actors.aggregate([
+    {$match:{role:"EXPLORER", "finder.minPrice":{$exists:true,$ne:null}}},
+    {$project: {sumaprecios:{$add:["$finder.minPrice","$finder.maxPrice"]}}},
+    {$group: {_id:0,totalPrecios:{$sum:"$sumaprecios"}, numeroFinders:{$sum:1}}},
+    {$project: {_id:null,avgPrecios:{$divide:["$totalPrecios","$numeroFinders"]}}}
+], function(err, res){
+       callback(err, res[0].avgPrecios)
    }); 
 };
 
 function topKeywordsFinder (callback) {
-  Trips.aggregate([
-   {$match: {} }
-  ], function(err, res){
-       callback(err, ['keyword1', 'keyword2'])
+  Actors.aggregate([
+    {$match:{role:"EXPLORER", "finder.keyword":{$exists:true,$ne:null}}},
+    {$project: {_id:0, keywords:{$toLower:"$finder.keyword"}}},
+    {$group: {_id:"$keywords", cont:{$sum:1}}},
+    {$sort: {cont:-1}},
+    {$limit: 10}
+], function(err, res){
+       callback(err, res)
    }); 
 };
 
