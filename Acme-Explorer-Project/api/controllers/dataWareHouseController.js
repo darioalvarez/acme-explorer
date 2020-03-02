@@ -1,6 +1,7 @@
 var async = require("async");
 var mongoose = require('mongoose'),
   DataWareHouse = mongoose.model('DataWareHouse'),
+  Cubes = mongoose.model('Cube'),
   Trips = mongoose.model('Trips');
   Applications = mongoose.model('Applications');
   Actors = mongoose.model('Actors');
@@ -70,7 +71,8 @@ function createDataWareHouseJob(){
         standarDeviationPriceTrips, //Darío
         ratioApplicationsByStatus, //Jorge
         avgPriceFinders, //Jorge
-        topKeywordsFinder //Jorge
+        topKeywordsFinder, //Jorge
+        computeCube //Carlos
       ], function (err, results) {
         if (err){
           console.log("Error computing datawarehouse: "+err);
@@ -254,4 +256,187 @@ function topKeywordsFinder (callback) {
 ], function(err, res){
        callback(err, res)
    }); 
+};
+
+
+function computeCube(callback) {
+  for (var i = 1; i < 37; i++) {
+      var period = "M";
+      if (i < 10) {
+          period = period + "0" + i;
+      } else {
+          period = period + i;
+      }
+      var minDateRange = new Date();
+      minDateRange.setMonth(minDateRange.getMonth() - i);
+      Applications.aggregate([
+          {
+              $match: {
+                  status: "ACCEPTED",
+                  updateMoment: {
+                      $gte: minDateRange,
+                  }
+              }
+          },
+          {
+              $group: {
+                  _id: "$explorer",
+                  trips: { $push: "$trip" },
+              }
+          },
+          {
+              $project: {
+                  _id: "$_id",
+                  trips: "$trips",
+                  period: period
+              }
+          }
+      ], function (err, explorer_trips) {
+          for (var j = 0; j < explorer_trips.length; j++) {
+              var tripsIdArray = explorer_trips[j].trips;
+              var explorerId = explorer_trips[j]._id;
+              var periodCube = explorer_trips[j].period;
+              Trips.aggregate([
+                  {
+                      $match: {
+                          _id: { $in: tripsIdArray }
+                      }
+                  }, {
+                      $group: {
+                          _id: null,
+                          money: { $sum: "$price" }
+                      }
+                  }, {
+                      $project: {
+                          money: "$money",
+                          explorer: explorerId,
+                          periodCube: periodCube
+                      }
+                  }
+              ], function (err2, docs) {
+                  var new_cube = new Cubes();
+                  new_cube.explorer = docs[0].explorer;
+                  new_cube.money = docs[0].money;
+                  new_cube.period = docs[0].periodCube;
+
+                  new_cube.save(function (err, cubeSaved) {
+                      if (err) {
+                          console.log("Error saving cube:  " + err);
+                      } else {
+                          console.log("New Cube succesfully saved. Date: " + new Date());
+                      }
+                  });
+              });
+          }
+      });
+  }
+  callback(null, 1);
+}
+
+// Returns the amount of money that explorer e has spent on trips during period p, which can be M01-M36 to 
+// denote any of the last 1-36 months or Y01-Y03 to denote any of the last three years
+exports.cube = function (req, res) {
+  var explorerId = req.params.explorer;
+  var periodRange = req.params.period;
+  var period = periodRange;
+  explorerId = mongoose.Types.ObjectId(explorerId);
+  if (periodRange.startsWith("Y")) {
+      switch (periodRange) {
+          case "Y01":
+              period = "M12";
+              break;
+          case "Y02":
+              period = "M24";
+              break;
+          case "Y03":
+              period = "M36";
+              break;
+          default:
+              period = "Y01";
+      }
+  }
+  Cubes.aggregate([
+      {
+          $match: {
+              explorer: explorerId,
+              period: period
+          }
+      }, {
+          $project: {
+              explorer: "$explorer",
+              money: "$money",
+              period: period
+          }
+      }
+  ], function (err, cubeReturned) {
+      if (err) {
+          res.status(404);
+      } else {
+          res.send(cubeReturned);
+      }
+  });
+};
+
+function getMongoOperator(coString) {
+  var co;
+  switch (coString) {
+      case "==":
+          co = "$eq";
+          break;
+      case '!=':
+          co = "$ne";
+          break;
+      case '>':
+          co = "$gt";
+          break;
+      case '>=':
+          co = "$gte";
+          break;
+      case '<':
+          co = "$lt";
+          break;
+      case '<=':
+          co = "$lte";
+          break;
+      default:
+          co = null
+          break;
+  }
+  return co;
+}
+
+// Given the period 'p', an amount of money 'm and a comparison operator 'co', 
+// returns the explorers that have spent 'co' than 'm' during 'p'.
+exports.cube_explorers = function (req, res) {
+  var supportedCO = ['==', '!=', '>', '>=', '<', '<='];
+  var queryCO = req.query.co;
+  var period = req.query.period;
+  var money = req.query.money;
+  if (co.in(supportedCO)) {
+      var jsonCO = {};
+      var co = getMongoOperator(queryCO);
+      jsonCO[co] = money; // if 'co' is >=, and money = 20, this will give {$gte: 20}
+      Cubes.aggregate([
+          {
+              $match: {
+                  period: period,
+                  money: jsonCO
+              }
+          }, { $group: { _id: "$explorer", explorers: { $push: "$explorer" } } },
+          {
+              $project: {
+                  _id: 0,
+                  explorers: "$explorers"
+              }
+          }
+      ], function(err, explorersReturned){
+          if (err) {
+              res.status(404);
+          } else {
+              res.send(explorersReturned);
+          }
+      });
+  } else {
+      res.status(400).send("Comparison operator not supported");
+  }
 };
