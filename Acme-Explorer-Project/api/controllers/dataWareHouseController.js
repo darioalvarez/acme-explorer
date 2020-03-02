@@ -3,6 +3,7 @@ var mongoose = require('mongoose'),
   DataWareHouse = mongoose.model('DataWareHouse'),
   Trips = mongoose.model('Trips');
   Applications = mongoose.model('Applications');
+  Actors = mongoose.model('Actors');
 
 exports.list_all_indicators = function(req, res) {
   console.log('Requesting indicators');
@@ -229,17 +230,24 @@ function ratioApplicationsByStatus (callback) {
 };
 
 function avgPriceFinders (callback) {
-  Trips.aggregate([
-   {$match: {} }
-  ], function(err, res){
-       callback(err, 34532)
+  Actors.aggregate([
+    {$match:{role:"EXPLORER", "finder.minPrice":{$exists:true,$ne:null}}},
+    {$project: {sumaprecios:{$add:["$finder.minPrice","$finder.maxPrice"]}}},
+    {$group: {_id:0,totalPrecios:{$sum:"$sumaprecios"}, numeroFinders:{$sum:1}}},
+    {$project: {_id:null,avgPrecios:{$divide:["$totalPrecios","$numeroFinders"]}}}
+], function(err, res){
+       callback(err, res[0].avgPrecios)
    }); 
 };
 
 function topKeywordsFinder (callback) {
-  Trips.aggregate([
-   {$match: {} }
-  ], function(err, res){
-       callback(err, ['keyword1', 'keyword2'])
+  Actors.aggregate([
+    {$match:{role:"EXPLORER", "finder.keyword":{$exists:true,$ne:null}}},
+    {$project: {_id:0, keywords:{$toLower:"$finder.keyword"}}},
+    {$group: {_id:"$keywords", cont:{$sum:1}}},
+    {$sort: {cont:-1}},
+    {$limit: 10}
+], function(err, res){
+       callback(err, res)
    }); 
 };

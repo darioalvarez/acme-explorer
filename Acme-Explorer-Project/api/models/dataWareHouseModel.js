@@ -64,7 +64,7 @@ var DataWareHouseSchema = new mongoose.Schema({
     min: 0
   },
   topKeywordsFinder: [{
-      type: String
+      type: Object
   }],
   computationMoment: {
     type: Date,
