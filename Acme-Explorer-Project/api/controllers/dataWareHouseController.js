@@ -37,7 +37,7 @@ var CronTime = require('cron').CronTime;
 //'*/10 * * * * *' cada 10 segundos
 //'* * * * * *' cada segundo
 //var rebuildPeriod = '*/10 * * * * *';  //El que se usará por defecto
-var rebuildPeriod = '*/10 * * * * *';
+var rebuildPeriod = '*/90 * * * * *';
 var computeDataWareHouseJob;
 
 exports.rebuildPeriod = function(req, res) {
@@ -154,26 +154,29 @@ function avgApplicationsPerTrip (callback) {
 };
 
 function minApplicationsPerTrip (callback) {
-  Trips.aggregate([
-   {$match: {} }
+  Applications.aggregate([
+    {$group: {_id:"$trip", num_applications:{$sum:1}}},
+    {$group: {_id:0, min_applications_per_trip:{$min:"$num_applications"}}}
   ], function(err, res){
-       callback(err, 34532)
+       callback(err, res[0].min_applications_per_trip)
    }); 
 };
 
 function maxApplicationsPerTrip (callback) {
-  Trips.aggregate([
-   {$match: {} }
+  Applications.aggregate([
+    {$group: {_id:"$trip", num_applications:{$sum:1}}},
+    {$group: {_id:0, max_applications_per_trip:{$max:"$num_applications"}}}
   ], function(err, res){
-       callback(err, 34532)
+       callback(err, res[0].max_applications_per_trip)
    }); 
 };
 
 function standarDeviationApplicationsPerTrip (callback) {
-  Trips.aggregate([
-   {$match: {} }
+  Applications.aggregate([
+    {$group: {_id:"$trip", num_applications:{$sum:1}}},
+    {$group: {_id:0, stdev_applications_per_trip:{$stdDevSamp:"$num_applications"}}}
   ], function(err, res){
-       callback(err, 34532)
+       callback(err, res[0].stdev_applications_per_trip)
    }); 
 };
 
@@ -211,10 +214,17 @@ function standarDeviationPriceTrips (callback) {
 
 
 function ratioApplicationsByStatus (callback) {
-  Trips.aggregate([
-   {$match: {} }
-  ], function(err, res){
-       callback(err, 0.5)
+  Applications.aggregate([
+    {$facet: {
+        "numTotalApplications": [{ $group: {_id:null, numTotal:{$sum:1}} }],
+        "groupedByStatus": [{ $group: {_id:"$status", num_applications: {$sum:1}} }]
+    }},
+    {$project:{_id:0,grouped:"$groupedByStatus", totalApplications:"$numTotalApplications.numTotal"}},
+    {$unwind:"$totalApplications"},
+    {$unwind:"$grouped"},
+    {$project: {_id:0, status:"$grouped._id", ratio:{$divide:["$grouped.num_applications","$totalApplications"]}} }
+], function(err, res){
+       callback(err, res)
    }); 
 };
 

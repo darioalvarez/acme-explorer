@@ -56,9 +56,7 @@ var DataWareHouseSchema = new mongoose.Schema({
   },
   //Ratio of applications grouped by status ------------------------------------
   ratioApplicationsByStatus:{
-    type: Number,
-    max: 1,
-    min: 0
+    type: Object
   },
   //Finder ------------------------------------
   avgPriceFinders: {
