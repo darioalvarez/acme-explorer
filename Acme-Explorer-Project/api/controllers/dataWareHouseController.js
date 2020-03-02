@@ -214,10 +214,17 @@ function standarDeviationPriceTrips (callback) {
 
 
 function ratioApplicationsByStatus (callback) {
-  Trips.aggregate([
-   {$match: {} }
-  ], function(err, res){
-       callback(err, 0.5)
+  Applications.aggregate([
+    {$facet: {
+        "numTotalApplications": [{ $group: {_id:null, numTotal:{$sum:1}} }],
+        "groupedByStatus": [{ $group: {_id:"$status", num_applications: {$sum:1}} }]
+    }},
+    {$project:{_id:0,grouped:"$groupedByStatus", totalApplications:"$numTotalApplications.numTotal"}},
+    {$unwind:"$totalApplications"},
+    {$unwind:"$grouped"},
+    {$project: {_id:0, status:"$grouped._id", ratio:{$divide:["$grouped.num_applications","$totalApplications"]}} }
+], function(err, res){
+       callback(err, res)
    }); 
 };
 

@@ -29,13 +29,12 @@ var CachedTripSchema = new Schema({
 var FinderSchema = new Schema({
   keyword: {
     type: String,
-    //required: true,
     default: null
   },
   minPrice: {
     type: Number,
     min: 0,
-    default: null
+    default: 0
   },
   maxPrice: {
     type: Number,
