@@ -1,6 +1,6 @@
 var express = require('express'),
   app = express(),
-  port = process.env.PORT || 8080,
+  port = process.env.PORT || 8880,
   mongoose = require('mongoose'),
   Actor = require('./api/models/actorModel'),
   Application = require('./api/models/applicationModel'),
@@ -10,6 +10,15 @@ var express = require('express'),
   GeneralConfiguration = require('./api/models/generalConfigurationModel'),
   DataWareHouseTools = require('./api/controllers/dataWareHouseController')
   bodyParser = require('body-parser');
+  var https = require('https')
+  var fs = require('fs')
+
+  // HTTPS SSL certificate
+  https.createServer({
+    key: fs.readFileSync('server.key'), cert: fs.readFileSync('server.cert')
+    }, app)
+    .listen(8080, function () {
+    console.log('Example app listening on port 8080! Go to https://localhost:8080/') })
 
 // MongoDB URI building
 var mongoDBHostname = process.env.mongoDBHostname || "localhost";

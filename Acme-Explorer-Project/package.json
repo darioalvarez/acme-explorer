@@ -24,6 +24,7 @@
     "cron": "^1.8.2",
     "dateformat": "^3.0.3",
     "express": "^4.17.1",
+    "firebase-admin": "^8.9.2",
     "iso-639-1": "^2.1.0",
     "moment": "^2.24.0",
     "mongoose": "^5.8.11",
