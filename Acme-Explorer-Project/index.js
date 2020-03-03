@@ -66,3 +66,5 @@ mongoose.connection.on("error", function (err, conn) {
     console.error("DB init error " + err);
 });
 DataWareHouseTools.createDataWareHouseJob();
+
+module.exports = app;
