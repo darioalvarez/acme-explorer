@@ -1,21 +1,21 @@
 var express = require('express'),
-  app = express(),
-  port = process.env.PORT || 8080,
-  mongoose = require('mongoose'),
-  Actor = require('./api/models/actorModel'),
-  Application = require('./api/models/applicationModel'),
-  Trip = require('./api/models/tripModel'),
-  Sponsorship = require('./api/models/sponsorshipModel'),
-  DataWareHouse = require('./api/models/dataWareHouseModel'),
-  DataWareHouseTools = require('./api/controllers/dataWareHouseController')
-  bodyParser = require('body-parser');
+    app = express(),
+    port = process.env.PORT || 8080,
+    mongoose = require('mongoose'),
+    bodyParser = require('body-parser'),
+    massiveLoad = require('./massive-load'),
+    Actor = require('./api/models/actorModel'),
+    Application = require('./api/models/applicationModel'),
+    Trip = require('./api/models/tripModel'),
+    Sponsorship = require('./api/models/sponsorshipModel'),
+    DataWareHouse = require('./api/models/dataWareHouseModel'),
+    DataWareHouseTools = require('./api/controllers/dataWareHouseController');
 
 // MongoDB URI building
 var mongoDBHostname = process.env.mongoDBHostname || "localhost";
 var mongoDBPort = process.env.mongoDBPort || "27017";
 var mongoDBName = process.env.mongoDBName || "ACME-Explorer";
 var mongoDBURI = "mongodb://" + mongoDBHostname + ":" + mongoDBPort + "/" + mongoDBName;
-//var mongoDBURI = "mongodb+srv://adoption:adoption@adoptionplatform-ly3vq.mongodb.net/test?authSource=admin&replicaSet=AdoptionPlatform-shard-0&readPreference=primary&appname=MongoDB%20Compass%20Community&ssl=true";
 
 mongoose.connect(mongoDBURI, {
     poolSize: 10, // Up to 10 sockets
@@ -24,11 +24,13 @@ mongoose.connect(mongoDBURI, {
     family: 4, // skip trying IPv6
     useNewUrlParser: true,
     useFindAndModify: false,
-    useUnifiedTopology: true 
+    useUnifiedTopology: true
 });
 mongoose.set('useCreateIndex', true);
 
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
 app.use(bodyParser.json());
 
 var routesActors = require('./api/routes/actorRoutes');
@@ -50,7 +52,17 @@ mongoose.connection.on("open", function (err, conn) {
     });
 });
 
+// Massive load section
+console.log("== Starting massive loading ==");
+massiveLoad.loadActorsFromApi(mongoose, mongoDBURI, false, 'https://my.api.mockaroo.com/actors.json?key=c4e6e8c0', function () {
+    massiveLoad.loadTripsFromApi(mongoose, mongoDBURI, false, 'https://my.api.mockaroo.com/trips.json?key=c4e6e8c0', function () {
+        massiveLoad.loadApplicationsFromApi(mongoose, mongoDBURI, false, 'https://my.api.mockaroo.com/applications.json?key=c4e6e8c0', function () {
+            console.log("== Finished massive loading ==");
+        });
+    });
+});
+
 mongoose.connection.on("error", function (err, conn) {
     console.error("DB init error " + err);
 });
-DataWareHouseTools.createDataWareHouseJob();
+// DataWareHouseTools.createDataWareHouseJob();
