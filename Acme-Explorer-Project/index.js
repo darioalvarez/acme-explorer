@@ -9,7 +9,20 @@ var express = require('express'),
     Trip = require('./api/models/tripModel'),
     Sponsorship = require('./api/models/sponsorshipModel'),
     DataWareHouse = require('./api/models/dataWareHouseModel'),
-    DataWareHouseTools = require('./api/controllers/dataWareHouseController');
+    GeneralConfiguration = require('./api/models/generalConfigurationModel'),
+    DataWareHouseTools = require('./api/controllers/dataWareHouseController'),
+    bodyParser = require('body-parser');
+var https = require('https')
+var fs = require('fs')
+
+// HTTPS SSL certificate
+https.createServer({
+        key: fs.readFileSync('server.key'),
+        cert: fs.readFileSync('server.cert')
+    }, app)
+    .listen(8080, function () {
+        console.log('Example app listening on port 8080! Go to https://localhost:8080/')
+    })
 
 // MongoDB URI building
 var mongoDBHostname = process.env.mongoDBHostname || "localhost";
@@ -38,12 +51,14 @@ var routesApplications = require('./api/routes/applicationRoutes');
 var routesTrips = require('./api/routes/tripRoutes');
 var routesSponsorship = require('./api/routes/sponsorshipRoutes');
 var routesDataWareHouse = require('./api/routes/dataWareHouseRoutes');
+var routesGeneralConfiguration = require('./api/routes/generalConfigurationRoutes');
 
 routesActors(app);
 routesApplications(app);
 routesTrips(app);
 routesSponsorship(app);
 routesDataWareHouse(app);
+routesGeneralConfiguration(app);
 
 console.log("Connecting DB to: " + mongoDBURI);
 mongoose.connection.on("open", function (err, conn) {
@@ -65,4 +80,5 @@ massiveLoad.loadActorsFromApi(mongoose, mongoDBURI, false, 'https://my.api.mocka
 mongoose.connection.on("error", function (err, conn) {
     console.error("DB init error " + err);
 });
-// DataWareHouseTools.createDataWareHouseJob();
+DataWareHouseTools.createDataWareHouseJob();
+module.exports = app;

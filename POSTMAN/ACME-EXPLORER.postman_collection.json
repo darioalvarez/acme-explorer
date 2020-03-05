@@ -20,9 +20,9 @@
 					"raw": "{\n\t\"name\": \"ExplorerName\",\n\t\"surname\": \"ExplorerSurname\",\n\t\"address\": \"C/Sol, Sevilla\",\n\t\"email\": \"explorer@fakemail.com\",\n\t\"password\": \"mypass\",\n\t\"phone\": \"+34612345678\",\n\t\"role\": \"EXPLORER\"\n}"
 				},
 				"url": {
-					"raw": "localhost:8080/v1/actors",
+					"raw": "https://localhost:8080/v1/actors",
 					"host": [
-						"localhost"
+						"https://localhost"
 					],
 					"port": "8080",
 					"path": [
@@ -48,9 +48,9 @@
 					"raw": "{\n\t\"name\": \"ManagerName\",\n\t\"surname\": \"ManagerSurname\",\n\t\"address\": \"C/Sol, Sevilla\",\n\t\"email\": \"manager@fakemail.com\",\n\t\"password\": \"mypass\",\n\t\"phone\": \"+34612345678\",\n\t\"role\": \"MANAGER\"\n}"
 				},
 				"url": {
-					"raw": "localhost:8080/v1/actors",
+					"raw": "https://localhost:8080/v1/actors",
 					"host": [
-						"localhost"
+						"https://localhost"
 					],
 					"port": "8080",
 					"path": [
@@ -76,9 +76,9 @@
 					"raw": "{\n\t\"name\": \"Sponsor2Name\",\n\t\"surname\": \"Sponsor2Surname\",\n\t\"address\": \"Sponsor2Address\",\n\t\"email\": \"sponsor2@fakemail.com\",\n\t\"password\": \"mypass\",\n\t\"phone\": \"+34612345678\",\n\t\"role\": \"SPONSOR\"\n}"
 				},
 				"url": {
-					"raw": "localhost:8080/v1/actors",
+					"raw": "https://localhost:8080/v1/actors",
 					"host": [
-						"localhost"
+						"https://localhost"
 					],
 					"port": "8080",
 					"path": [
@@ -104,9 +104,9 @@
 					"raw": "{\n\t\"_id\": \"5c531bd26c769b42ead5e774\",\n\t\"name\": \"SponsorName\",\n\t\"surname\": \"SponsorSurname\",\n\t\"address\": \"C/Sol, Sevilla\",\n\t\"email\": \"sponsor@fakemail.com\",\n\t\"password\": \"mypass\",\n\t\"phone\": \"+34612345678\",\n\t\"role\": \"SPONSOR\"\n}"
 				},
 				"url": {
-					"raw": "localhost:8080/v1/actors",
+					"raw": "https://localhost:8080/v1/actors",
 					"host": [
-						"localhost"
+						"https://localhost"
 					],
 					"port": "8080",
 					"path": [
@@ -132,9 +132,9 @@
 					"raw": "{\n\t\"name\": \"AdminName\",\n\t\"surname\": \"AdminSurname\",\n\t\"email\": \"admin@fakemail.com\",\n\t\"address\": \"AdminAddress\",\n\t\"password\": \"mypass\",\n\t\"phone\": \"+34612345670\",\n\t\"role\": \"ADMINISTRATOR\"\n}"
 				},
 				"url": {
-					"raw": "localhost:8080/v1/actors",
+					"raw": "https://localhost:8080/v1/actors",
 					"host": [
-						"localhost"
+						"https://localhost"
 					],
 					"port": "8080",
 					"path": [
@@ -160,9 +160,9 @@
 					"raw": "{\n\t\"name\": \"SponsorEDITEDName\",\n\t\"surname\": \"SponsorSurname\",\n\t\"address\": \"Sponsor2Address\",\n\t\"email\": \"sponsor2@fakemail.com\",\n\t\"password\": \"mypass\",\n\t\"phone\": \"+34612345678\",\n\t\"role\": \"SPONSOR\"\n}"
 				},
 				"url": {
-					"raw": "localhost:8080/v1/actors/5c531bd26c769b42ead5e774",
+					"raw": "https://localhost:8080/v1/actors/5c531bd26c769b42ead5e774",
 					"host": [
-						"localhost"
+						"https://localhost"
 					],
 					"port": "8080",
 					"path": [
@@ -180,9 +180,9 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:8080/v1/actors/",
+					"raw": "https://localhost:8080/v1/actors/",
 					"host": [
-						"localhost"
+						"https://localhost"
 					],
 					"port": "8080",
 					"path": [
@@ -204,9 +204,9 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "localhost:8080/v1/actors/5c531bd26c769b42ead5e774",
+					"raw": "https://localhost:8080/v1/actors/5c531bd26c769b42ead5e774",
 					"host": [
-						"localhost"
+						"https://localhost"
 					],
 					"port": "8080",
 					"path": [
@@ -225,10 +225,10 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/v1/trips",
+					"raw": "http://https://localhost:8080/v1/trips",
 					"protocol": "http",
 					"host": [
-						"localhost"
+						"https://localhost"
 					],
 					"port": "8080",
 					"path": [
@@ -261,10 +261,10 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/v1/trips",
+					"raw": "http://https://localhost:8080/v1/trips",
 					"protocol": "http",
 					"host": [
-						"localhost"
+						"https://localhost"
 					],
 					"port": "8080",
 					"path": [
@@ -281,10 +281,10 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/v1/trips/200224-VJRF",
+					"raw": "http://https://localhost:8080/v1/trips/200224-VJRF",
 					"protocol": "http",
 					"host": [
-						"localhost"
+						"https://localhost"
 					],
 					"port": "8080",
 					"path": [
@@ -318,10 +318,10 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/v1/trips/200224-VJRF",
+					"raw": "http://https://localhost:8080/v1/trips/200224-VJRF",
 					"protocol": "http",
 					"host": [
-						"localhost"
+						"https://localhost"
 					],
 					"port": "8080",
 					"path": [
@@ -339,10 +339,10 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/v1/trips/200224-VJRF",
+					"raw": "http://https://localhost:8080/v1/trips/200224-VJRF",
 					"protocol": "http",
 					"host": [
-						"localhost"
+						"https://localhost"
 					],
 					"port": "8080",
 					"path": [
@@ -376,9 +376,9 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8080/v1/applications",
+					"raw": "https://localhost:8080/v1/applications",
 					"host": [
-						"localhost"
+						"https://localhost"
 					],
 					"port": "8080",
 					"path": [
@@ -395,9 +395,9 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:8080/v1/applications",
+					"raw": "https://localhost:8080/v1/applications",
 					"host": [
-						"localhost"
+						"https://localhost"
 					],
 					"port": "8080",
 					"path": [
@@ -418,9 +418,9 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "localhost:8080/v1/applications/5e48291652b62d1061849edf",
+					"raw": "https://localhost:8080/v1/applications/5e48291652b62d1061849edf",
 					"host": [
-						"localhost"
+						"https://localhost"
 					],
 					"port": "8080",
 					"path": [
@@ -448,9 +448,9 @@
 					"raw": "{\n\t\"status\": \"gfdhdfhhfh\"\n}"
 				},
 				"url": {
-					"raw": "localhost:8080/v1/applications/5e4829a1f4b45c106a88d991",
+					"raw": "https://localhost:8080/v1/applications/5e4829a1f4b45c106a88d991",
 					"host": [
-						"localhost"
+						"https://localhost"
 					],
 					"port": "8080",
 					"path": [
@@ -484,9 +484,9 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8080/v1/sponsorships",
+					"raw": "https://localhost:8080/v1/sponsorships",
 					"host": [
-						"localhost"
+						"https://localhost"
 					],
 					"port": "8080",
 					"path": [
@@ -519,9 +519,9 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8080/v1/applications/5e482824eacf3e10470d937b/reject",
+					"raw": "https://localhost:8080/v1/applications/5e482824eacf3e10470d937b/reject",
 					"host": [
-						"localhost"
+						"https://localhost"
 					],
 					"port": "8080",
 					"path": [
@@ -540,9 +540,9 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:8080/v1/actors/5e4824346e86460fd2827deb/applications",
+					"raw": "https://localhost:8080/v1/actors/5e4824346e86460fd2827deb/applications",
 					"host": [
-						"localhost"
+						"https://localhost"
 					],
 					"port": "8080",
 					"path": [
@@ -561,10 +561,10 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/v1/sponsorships",
+					"raw": "http://https://localhost:8080/v1/sponsorships",
 					"protocol": "http",
 					"host": [
-						"localhost"
+						"https://localhost"
 					],
 					"port": "8080",
 					"path": [
@@ -597,10 +597,10 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/v1/sponsorships",
+					"raw": "http://https://localhost:8080/v1/sponsorships",
 					"protocol": "http",
 					"host": [
-						"localhost"
+						"https://localhost"
 					],
 					"port": "8080",
 					"path": [
@@ -636,10 +636,10 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/v1/sponsorships/5e4aa74e49222e8a3b6ee01c",
+					"raw": "http://https://localhost:8080/v1/sponsorships/5e4aa74e49222e8a3b6ee01c",
 					"protocol": "http",
 					"host": [
-						"localhost"
+						"https://localhost"
 					],
 					"port": "8080",
 					"path": [
@@ -673,10 +673,10 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/v1/sponsorships/5e4aa74e49222e8a3b6ee01c/",
+					"raw": "http://https://localhost:8080/v1/sponsorships/5e4aa74e49222e8a3b6ee01c/",
 					"protocol": "http",
 					"host": [
-						"localhost"
+						"https://localhost"
 					],
 					"port": "8080",
 					"path": [
@@ -711,10 +711,10 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/v1/sponsorships/5e57993d858954a9ea70a7cd/",
+					"raw": "http://https://localhost:8080/v1/sponsorships/5e57993d858954a9ea70a7cd/",
 					"protocol": "http",
 					"host": [
-						"localhost"
+						"https://localhost"
 					],
 					"port": "8080",
 					"path": [
