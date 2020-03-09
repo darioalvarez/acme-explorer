@@ -82,10 +82,34 @@ var TripSchema = new Schema({
 TripSchema.pre('save', function(next){
     let trip = this;
     const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-
-    let randomletters = generate(alphabet,4);
     let now = moment().format("YYMMDD");
-    trip.ticker = `${now}-${randomletters}`;
+
+    var tickerCandidate = "";
+    var tickerValid = false;
+
+    while(!tickerValid){
+      console.log("Ticker not valid: " + tickerCandidate);
+      let randomletters = generate(alphabet,4);
+      tickerCandidate = `${now}-${randomletters}`;
+      console.log("New ticker created: " + tickerCandidate);
+
+      console.log("a");
+      // Trip = mongoose.model('Trips');
+
+      // console.log(Trip);
+
+      // Trip.count({ticker: tickerCandidate}, function (err, count){ 
+      //   if(count==0){
+          tickerValid = true;
+      //     console.log("Ticker unique generated!");
+      //   }
+      //   else{
+      //     console.log("c");
+      //   }
+      // });
+    }
+    console.log("b");
+    trip.ticker = tickerCandidate;
     next();
 });
 
