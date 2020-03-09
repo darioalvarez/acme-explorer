@@ -1,6 +1,7 @@
 var express = require('express'),
     app = express(),
     port = process.env.PORT || 8080,
+    httpsPort = process.env.HTTPS_PORT || 8443,
     mongoose = require('mongoose'),
     bodyParser = require('body-parser'),
     massiveLoad = require('./massive-load'),
@@ -20,8 +21,8 @@ https.createServer({
         key: fs.readFileSync('server.key'),
         cert: fs.readFileSync('server.cert')
     }, app)
-    .listen(8080, function () {
-        console.log('Example app listening on port 8080! Go to https://localhost:8080/')
+    .listen(httpsPort, function () {
+        console.log('Example app listening on port ' + httpsPort + '! Go to https://localhost:' + httpsPort + '/');
     })
 
 // MongoDB URI building
@@ -80,5 +81,5 @@ massiveLoad.loadActorsFromApi(mongoose, mongoDBURI, false, 'https://my.api.mocka
 mongoose.connection.on("error", function (err, conn) {
     console.error("DB init error " + err);
 });
-DataWareHouseTools.createDataWareHouseJob();
+// DataWareHouseTools.createDataWareHouseJob();
 module.exports = app;
