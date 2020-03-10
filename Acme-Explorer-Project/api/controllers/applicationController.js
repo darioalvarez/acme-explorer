@@ -128,12 +128,13 @@ exports.reject_an_application = function(req, res) {
 
 exports.process_an_application = function(req, res) {
   //Check that the user is a Manager and if not: res.status(403); "an access token is valid, but requires more privileges"
-  //Check status is PENDING ??
-  Application.findOneAndUpdate({_id: req.params.applicationId},  { $set: {"status": "DUE", "paid":false}}, {new: true}, function(err, application) {
+  Application.findOneAndUpdate({_id: req.params.applicationId, status:"PENDING"},  { $set: {"status": "DUE", "paid":false}}, {new: true}, function(err, application) {
     if (err){
       res.status(500).send(err);
     }
-    else{
+    else if (application === null || application.length == 0){
+      res.status(422).send(err="La Application requerida no existe o su estado no es PENDING");
+    } else {
       res.json(application);
     }
   });
@@ -142,12 +143,13 @@ exports.process_an_application = function(req, res) {
 
 exports.pay_an_application = function(req, res) {
   //Check that the user is the application's explorer owner or an Admin and if not: res.status(403); "an access token is valid, but requires more privileges"
-  //Check is not paid and status is DUE ??
-  Application.findOneAndUpdate({_id: req.params.applicationId},  { $set: {"status": "ACCEPTED", "paid":true}}, {new: true}, function(err, application) {
+  Application.findOneAndUpdate({_id: req.params.applicationId, paid:false, status:"DUE"},  { $set: {"status": "ACCEPTED", "paid":true}}, {new: true}, function(err, application) {
     if (err){
       res.status(500).send(err);
     }
-    else{
+    else if (application === null || application.length == 0){
+      res.status(422).send(err="La Application requerida ya está pagada o su estado no es DUE");
+    } else {
       res.json(application);
     }
   });
@@ -156,12 +158,13 @@ exports.pay_an_application = function(req, res) {
 
 exports.cancel_an_application = function(req, res) {
   //Check that the user is the application's explorer owner and if not: res.status(403); "an access token is valid, but requires more privileges"
-  //Check status is ACCEPTED ??
-  Application.findOneAndUpdate({_id: req.params.applicationId},  { $set: {"status": "CANCELLED"}}, {new: true}, function(err, application) {
+  Application.findOneAndUpdate({_id: req.params.applicationId, status:"ACCEPTED"},  { $set: {"status": "CANCELLED"}}, {new: true}, function(err, application) {
     if (err){
       res.status(500).send(err);
     }
-    else{
+    else if (application === null || application.length == 0){
+      res.status(422).send(err="La Application requerida no está aceptada");
+    } else {
       res.json(application);
     }
   });
