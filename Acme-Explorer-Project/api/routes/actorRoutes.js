@@ -44,7 +44,7 @@ module.exports = function(app) {
    * @param {string} actorId
   */ 
   app.route('/v1/actors/:actorId/applications')
-    .get(applications.list_all_applications_by_explorer);
+    .get(applications.list_all_applications_by_explorer_grouped_by_status);
   
   /**
 	 * Set activated to FALSE to an actor

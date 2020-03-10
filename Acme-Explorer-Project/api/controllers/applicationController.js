@@ -16,15 +16,20 @@ exports.list_all_applications = function(req, res) {
   });
 };
 
-exports.list_all_applications_by_explorer = function(req, res) {
-  Application.find({explorer:req.params.actorId}, function(err, application) {
-    if (err){
-      res.status(500).send(err);
-    }
-    else{
-      res.json(application);
-    }
-  });
+
+exports.list_all_applications_by_explorer_grouped_by_status = async function(req, res) {
+  let results;
+  try {
+    results = await Application.aggregate([
+      {$match:{explorer: mongoose.Types.ObjectId(req.params.actorId)}},
+      {$group:{_id:"$status", applications: { $push: "$$ROOT" }}}
+    ]);
+
+    res.json(results);
+
+  } catch (err) {
+    res.status(500).send(err);
+  }
 }
 
 
