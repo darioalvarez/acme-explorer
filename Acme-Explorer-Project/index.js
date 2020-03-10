@@ -12,9 +12,13 @@ var express = require('express'),
     DataWareHouse = require('./api/models/dataWareHouseModel'),
     GeneralConfiguration = require('./api/models/generalConfigurationModel'),
     DataWareHouseTools = require('./api/controllers/dataWareHouseController'),
-    bodyParser = require('body-parser');
-var https = require('https')
-var fs = require('fs')
+    bodyParser = require('body-parser'),
+    admin = require('firebase-admin'),
+    serviceAccount = require('./acme-explorerjdc-firebase-adminsdk-5g4wl-daf3b8e615');
+var https = require('https');
+var fs = require('fs');
+
+
 
 // HTTPS SSL certificate
 https.createServer({
@@ -46,6 +50,12 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 app.use(bodyParser.json());
+
+
+admin.initializeApp({
+    credential : admin.credential.cert(serviceAccount),
+    databaseURL: 'https://acme-explorerjdc.firebaseio.com'
+});
 
 var routesActors = require('./api/routes/actorRoutes');
 var routesApplications = require('./api/routes/applicationRoutes');
