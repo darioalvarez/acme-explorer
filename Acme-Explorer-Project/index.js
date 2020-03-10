@@ -70,9 +70,9 @@ mongoose.connection.on("open", function (err, conn) {
 
 // Massive load section
 console.log("== Starting massive loading ==");
-massiveLoad.loadActorsFromApi(mongoose, mongoDBURI, false, 'https://my.api.mockaroo.com/actors.json?key=c4e6e8c0', function () {
-    massiveLoad.loadTripsFromApi(mongoose, mongoDBURI, false, 'https://my.api.mockaroo.com/trips.json?key=c4e6e8c0', function () {
-        massiveLoad.loadApplicationsFromApi(mongoose, mongoDBURI, false, 'https://my.api.mockaroo.com/applications.json?key=c4e6e8c0', function () {
+massiveLoad.loadActorsFromApi(mongoose, mongoDBURI, true, 'https://my.api.mockaroo.com/actors.json?key=c4e6e8c0', function () {
+    massiveLoad.loadTripsFromApi(mongoose, mongoDBURI, true, 'https://my.api.mockaroo.com/trips.json?key=c4e6e8c0', function () {
+        massiveLoad.loadApplicationsFromApi(mongoose, mongoDBURI, true, 'https://my.api.mockaroo.com/applications.json?key=c4e6e8c0', function () {
             console.log("== Finished massive loading ==");
         });
     });
@@ -81,5 +81,6 @@ massiveLoad.loadActorsFromApi(mongoose, mongoDBURI, false, 'https://my.api.mocka
 mongoose.connection.on("error", function (err, conn) {
     console.error("DB init error " + err);
 });
-// DataWareHouseTools.createDataWareHouseJob();
+
+DataWareHouseTools.createDataWareHouseJob();
 module.exports = app;

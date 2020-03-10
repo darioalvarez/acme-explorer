@@ -39,7 +39,7 @@ var CronTime = require('cron').CronTime;
 //'*/10 * * * * *' cada 10 segundos
 //'* * * * * *' cada segundo
 //var rebuildPeriod = '*/10 * * * * *';  //El que se usará por defecto
-var rebuildPeriod = '*/10 * * * * *';
+var rebuildPeriod = '*/90 * * * * *';
 var computeDataWareHouseJob;
 
 exports.rebuildPeriod = function(req, res) {

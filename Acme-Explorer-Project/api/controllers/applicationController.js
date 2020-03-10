@@ -2,7 +2,8 @@
 
 
 var mongoose = require('mongoose'),
-  Application = mongoose.model('Applications');
+  Application = mongoose.model('Applications'),
+  Trip = mongoose.model('Trips');
 
 exports.list_all_applications = function(req, res) {
   Application.find({}, function(err, application) {
@@ -27,24 +28,45 @@ exports.list_all_applications_by_explorer = function(req, res) {
 }
 
 
+
+
 exports.create_an_application = function(req, res) {
   //Check that user is an Explorer and if not: res.status(403); "an access token is valid, but requires more privileges"
   var new_application = new Application(req.body);
+
   //Comprobar que el Trip está publicado Y no ha empezado Y no está cancelado
-  new_application.save(function(err, application) {
-    if (err){
-      if(err.name=='ValidationError') {
-          res.status(422).send(err);
-      }
-      else{
+  Trip.find({_id:new_application.trip, published:true,
+    cancelled:false, startDate: {$gt:Date.now()}}, function (err, trip) {
+    
+      if (err) {
         res.status(500).send(err);
-      }
-    }
-    else{
-      res.json(application);
+      } else {
+
+        if (trip.length > 0) {
+          //En este caso, el trip asociado sería correcto y procederíamos con el save
+          new_application.save(function(err, application) {
+            if (err){
+              if(err.name=='ValidationError') {
+                  res.status(422).send(err);
+              }
+              else{
+                res.status(500).send(err);
+              }
+            }
+            else{
+              res.json(application);
+            }
+          });
+        } else {
+          //No existe trip que cumpla los requisitos
+          res.status((new_application.trip == undefined) ? 400 : 422).send(err="El trip asociado no cumple los requisitos");
+        }
+
     }
   });
+
 };
+
 
 
 exports.read_an_application = function(req, res) {
