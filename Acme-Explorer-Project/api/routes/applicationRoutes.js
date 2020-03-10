@@ -14,7 +14,14 @@ module.exports = function(app) {
   */
   app.route('/v1/applications')
 	  .get(applications.list_all_applications)
-	  .post(applications.create_an_application);
+      .post(applications.create_an_application);
+   
+    
+  /*
+  app.route('/v2/applications')
+      .post(applications.create_an_application_for_a_trip);
+      */
+
 
   /**
    * Put an application.

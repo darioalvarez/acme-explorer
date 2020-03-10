@@ -2,7 +2,8 @@
 
 
 var mongoose = require('mongoose'),
-  Application = mongoose.model('Applications');
+  Application = mongoose.model('Applications'),
+  Trip = mongoose.model('Trips');
 
 exports.list_all_applications = function(req, res) {
   Application.find({}, function(err, application) {
@@ -27,24 +28,45 @@ exports.list_all_applications_by_explorer = function(req, res) {
 }
 
 
+
+
 exports.create_an_application = function(req, res) {
   //Check that user is an Explorer and if not: res.status(403); "an access token is valid, but requires more privileges"
   var new_application = new Application(req.body);
+
   //Comprobar que el Trip está publicado Y no ha empezado Y no está cancelado
-  new_application.save(function(err, application) {
-    if (err){
-      if(err.name=='ValidationError') {
-          res.status(422).send(err);
-      }
-      else{
+  Trip.find({_id:new_application.trip, published:true,
+    cancelled:false, startDate: {$gt:Date.now()}}, function (err, trip) {
+    
+      if (err) {
         res.status(500).send(err);
-      }
-    }
-    else{
-      res.json(application);
+      } else {
+
+        if (trip.length > 0) {
+          //En este caso, el trip asociado sería correcto y procederíamos con el save
+          new_application.save(function(err, application) {
+            if (err){
+              if(err.name=='ValidationError') {
+                  res.status(422).send(err);
+              }
+              else{
+                res.status(500).send(err);
+              }
+            }
+            else{
+              res.json(application);
+            }
+          });
+        } else {
+          //No existe trip que cumpla los requisitos
+          res.status((new_application.trip == undefined) ? 400 : 422).send(err="El trip asociado no cumple los requisitos");
+        }
+
     }
   });
+
 };
+
 
 
 exports.read_an_application = function(req, res) {
@@ -86,16 +108,17 @@ exports.update_an_application = function(req, res) {
 
 exports.reject_an_application = function(req, res) {
   //Check that the user is a Manager and if not: res.status(403); "an access token is valid, but requires more privileges"
-  //Check is not paid and status is PENDING ??
   console.log("Rejecting application with id: "+req.params.applicationId)
   if (!req.body.rejectedReason) {
     res.status(400).send({message: 'rejectedReason required!'});
   } else {
-    Application.findOneAndUpdate({_id: req.params.applicationId},  { $set: {"status": "REJECTED", "rejectedReason":req.body.rejectedReason}}, {new: true}, function(err, application) {
+    Application.findOneAndUpdate({_id: req.params.applicationId, status:"PENDING"},  { $set: {"status": "REJECTED", "rejectedReason":req.body.rejectedReason}}, {new: true}, function(err, application) {
       if (err){
         res.status(500).send(err);
       }
-      else{
+      else if (application === null || application.length == 0){
+        res.status(422).send(err="La Application requerida no existe o su estado no es PENDING");
+      } else {
         res.json(application);
       }
     });
@@ -105,12 +128,13 @@ exports.reject_an_application = function(req, res) {
 
 exports.process_an_application = function(req, res) {
   //Check that the user is a Manager and if not: res.status(403); "an access token is valid, but requires more privileges"
-  //Check status is PENDING ??
-  Application.findOneAndUpdate({_id: req.params.applicationId},  { $set: {"status": "DUE", "paid":false}}, {new: true}, function(err, application) {
+  Application.findOneAndUpdate({_id: req.params.applicationId, status:"PENDING"},  { $set: {"status": "DUE", "paid":false}}, {new: true}, function(err, application) {
     if (err){
       res.status(500).send(err);
     }
-    else{
+    else if (application === null || application.length == 0){
+      res.status(422).send(err="La Application requerida no existe o su estado no es PENDING");
+    } else {
       res.json(application);
     }
   });
@@ -119,12 +143,13 @@ exports.process_an_application = function(req, res) {
 
 exports.pay_an_application = function(req, res) {
   //Check that the user is the application's explorer owner or an Admin and if not: res.status(403); "an access token is valid, but requires more privileges"
-  //Check is not paid and status is DUE ??
-  Application.findOneAndUpdate({_id: req.params.applicationId},  { $set: {"status": "ACCEPTED", "paid":true}}, {new: true}, function(err, application) {
+  Application.findOneAndUpdate({_id: req.params.applicationId, paid:false, status:"DUE"},  { $set: {"status": "ACCEPTED", "paid":true}}, {new: true}, function(err, application) {
     if (err){
       res.status(500).send(err);
     }
-    else{
+    else if (application === null || application.length == 0){
+      res.status(422).send(err="La Application requerida ya está pagada o su estado no es DUE");
+    } else {
       res.json(application);
     }
   });
@@ -133,12 +158,13 @@ exports.pay_an_application = function(req, res) {
 
 exports.cancel_an_application = function(req, res) {
   //Check that the user is the application's explorer owner and if not: res.status(403); "an access token is valid, but requires more privileges"
-  //Check status is ACCEPTED ??
-  Application.findOneAndUpdate({_id: req.params.applicationId},  { $set: {"status": "CANCELLED"}}, {new: true}, function(err, application) {
+  Application.findOneAndUpdate({_id: req.params.applicationId, status:"ACCEPTED"},  { $set: {"status": "CANCELLED"}}, {new: true}, function(err, application) {
     if (err){
       res.status(500).send(err);
     }
-    else{
+    else if (application === null || application.length == 0){
+      res.status(422).send(err="La Application requerida no está aceptada");
+    } else {
       res.json(application);
     }
   });
