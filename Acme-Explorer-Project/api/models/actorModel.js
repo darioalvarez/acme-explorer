@@ -23,6 +23,9 @@ var CachedTripSchema = new Schema({
   },
   cancelled: {
     type: Boolean
+  },
+  customToken: { 
+    type: String
   }
 }, { strict: false });
 

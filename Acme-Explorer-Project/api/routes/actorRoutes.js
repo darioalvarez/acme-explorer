@@ -2,6 +2,7 @@
 module.exports = function(app) {
   var actors = require('../controllers/actorController');
   var applications = require('../controllers/applicationController')
+  var authController = require('../controllers/authController');
 
   /**
    * Get all actors
@@ -34,6 +35,24 @@ module.exports = function(app) {
 	  .put(actors.update_an_actor);
     //.delete(actors.delete_an_actor);
   
+
+  /**
+   * Put an actor
+   *    RequiredRoles: to be the proper actor
+   * Get an actor
+   *    RequiredRoles: any
+	 *
+	 * @section actors
+	 * @type get put
+	 * @url /v1/actors/:actorId
+  */  
+  app.route('/v2/actors/:actorId')
+  .get(actors.read_an_actor)
+  .put(authController.verifyUser(["ADMINISTRATOR",
+                                  "CLERK",
+                                  "CUSTOMER"]),actors.update_a_verified_actor) //Consumer y clerk no puede modificar la info de otro consumer/clerk
+     
+
   /**
    * Get applications made by an explorer
    *    RequiredRoles: to be the proper Explorer
