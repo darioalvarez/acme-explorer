@@ -14,7 +14,8 @@ var express = require('express'),
     DataWareHouseTools = require('./api/controllers/dataWareHouseController'),
     bodyParser = require('body-parser'),
     admin = require('firebase-admin'),
-    serviceAccount = require('./acme-explorerjdc-firebase-adminsdk-5g4wl-daf3b8e615');
+    //serviceAccount = require('./acme-explorerjdc-firebase-adminsdk-5g4wl-daf3b8e615');
+    serviceAccount = require('./acmeexplorer-c9013-firebase-adminsdk-i1xsf-9f0357a163.json');
 var https = require('https');
 var fs = require('fs');
 
@@ -51,6 +52,16 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json());
 
+app.use(function (req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header(
+        "Access-Control-Allow-Headers",
+        "Origin, X-Requested-With, Content-Type, Accept, idToken" //ojo, que si metemos un parametro propio por la cabecera hay que declararlo aquí para que no de el error CORS
+    );
+    //res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,PATCH,OPTIONS');
+    next();
+});
 
 admin.initializeApp({
     credential : admin.credential.cert(serviceAccount),
@@ -63,6 +74,7 @@ var routesTrips = require('./api/routes/tripRoutes');
 var routesSponsorship = require('./api/routes/sponsorshipRoutes');
 var routesDataWareHouse = require('./api/routes/dataWareHouseRoutes');
 var routesGeneralConfiguration = require('./api/routes/generalConfigurationRoutes');
+var routesLogin = require('./api/routes/loginRoutes');
 
 routesActors(app);
 routesApplications(app);
@@ -70,6 +82,7 @@ routesTrips(app);
 routesSponsorship(app);
 routesDataWareHouse(app);
 routesGeneralConfiguration(app);
+routesLogin(app);
 
 console.log("Connecting DB to: " + mongoDBURI);
 mongoose.connection.on("open", function (err, conn) {

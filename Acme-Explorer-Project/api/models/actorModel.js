@@ -23,9 +23,6 @@ var CachedTripSchema = new Schema({
   },
   cancelled: {
     type: Boolean
-  },
-  customToken: { 
-    type: String
   }
 }, { strict: false });
 
@@ -109,6 +106,9 @@ var ActorSchema = new Schema({
   finder: {
     type: FinderSchema,
     default: null
+  },
+  customToken: { 
+    type: String
   }
   /*created: {
     type: Date,
