@@ -14,7 +14,7 @@ module.exports = function(app) {
    * @url /v1/applications
   */
   app.route('/v1/applications')
-	  .get(applications.list_all_applications)
+	  .get(applications.list_all_applications) //endpoint para facilitar desarrollo y pruebas
       .post(applications.create_an_application);
    
     
@@ -83,7 +83,7 @@ module.exports = function(app) {
       .put(applications.pay_an_application);
 
   app.route('/v2/applications/:applicationId/pay')
-      .put(authController.verifyUser(['EXPLORER']), applications.pay_an_application);
+      .put(authController.verifyUser(['EXPLORER']), applications.pay_an_application_by_owner);
 
   /**
    * Cancel an application which is accepted.

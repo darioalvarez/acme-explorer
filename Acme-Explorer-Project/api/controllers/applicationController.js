@@ -160,6 +160,28 @@ exports.pay_an_application = function(req, res) {
   });
 };
 
+exports.pay_an_application_by_owner = async function(req, res) {
+
+  var idToken = req.headers['idtoken'];
+  var authenticatedUserId = await authController.getUserId(idToken);
+  
+  Application.findOneAndUpdate({_id: req.params.applicationId, paid:false, status:"DUE"},  { $set: {"status": "ACCEPTED", "paid":true}}, {new: true}, function(err, application) {
+    if (err){
+      res.status(500).send(err);
+    }
+    else if (application === null || application.length == 0){
+      res.status(422).send(err="La Application requerida ya está pagada o su estado no es DUE");
+    } else {
+      if (application.actorId == authenticatedUserId) {
+        res.json(application);
+      } else {
+        res.status(403); //Auth error
+        res.send('The Actor is trying to pay an Application created by another actor!');
+      }
+    }
+  });
+};
+
 
 exports.cancel_an_application = function(req, res) {
   //Check that the user is the application's explorer owner and if not: res.status(403); "an access token is valid, but requires more privileges"
@@ -175,7 +197,7 @@ exports.cancel_an_application = function(req, res) {
   });
 };
 
-exports.cancel_an_application_by_owner = function(req, res) {
+exports.cancel_an_application_by_owner = async function(req, res) {
   var idToken = req.headers['idtoken'];
   var authenticatedUserId = await authController.getUserId(idToken);
 
@@ -212,3 +234,15 @@ exports.delete_an_application = function(req, res) {
     }
   });
 };
+
+
+exports.list_applications_by_trip = function(req, res) {
+  Application.find({trip:req.params.tripId}, function(err, applications) {
+    if (err){
+      res.status(500).send(err);
+    }
+    else{
+      res.json(applications);
+    }
+  });
+}

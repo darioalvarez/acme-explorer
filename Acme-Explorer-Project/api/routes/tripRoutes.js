@@ -3,6 +3,8 @@ const express = require('express');
 
 module.exports = function(app) {
   var trips = require('../controllers/tripController');
+  var applications = require('../controllers/applicationController');
+  var authController = require('../controllers/authController');
 
   app.route('/v1/trips')
     /**
@@ -74,4 +76,12 @@ module.exports = function(app) {
      * @url /v1/trips/:tripId
     */
     .delete(trips.delete_a_trip);
+
+
+    app.route('/v1/trips/:tripId/applications')
+      .get(applications.list_applications_by_trip);
+
+
+    app.route('/v2/trips/:tripId/applications')
+      .get(authController.verifyUser(['MANAGER']), applications.list_applications_by_trip);
 };
