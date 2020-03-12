@@ -175,6 +175,28 @@ exports.cancel_an_application = function(req, res) {
   });
 };
 
+exports.cancel_an_application_by_owner = function(req, res) {
+  var idToken = req.headers['idtoken'];
+  var authenticatedUserId = await authController.getUserId(idToken);
+
+  Application.findOneAndUpdate({_id: req.params.applicationId, status:"ACCEPTED"},  { $set: {"status": "CANCELLED"}}, {new: true}, function(err, application) {
+    if (err){
+      res.status(500).send(err);
+    }
+    else if (application === null || application.length == 0){
+      res.status(422).send(err="La Application requerida no está aceptada");
+    } else {
+      if (application.actorId == authenticatedUserId) {
+        res.json(application);
+      } else {
+        res.status(403); //Auth error
+        res.send('The Actor is trying to cancel an Application created by another actor!');
+      }
+      
+    }
+  });
+};
+
 
 exports.delete_an_application = function(req, res) {
   //Check status

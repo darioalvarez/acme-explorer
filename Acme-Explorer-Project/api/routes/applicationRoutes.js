@@ -97,5 +97,5 @@ module.exports = function(app) {
       .put(applications.cancel_an_application);
 
   app.route('/v2/applications/:applicationId/cancel')
-      .put(authController.verifyUser(['EXPLORER']), applications.cancel_an_application);
+      .put(authController.verifyUser(['EXPLORER']), applications.cancel_an_application_by_owner);
 };
