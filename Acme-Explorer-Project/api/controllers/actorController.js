@@ -30,6 +30,53 @@ exports.create_an_actor = function(req, res) {
   });
 };
 
+exports.create_an_actor_auth_verified = async function(req, res) {
+  var new_actor = new Actor(req.body);
+  if (new_actor.role.includes('MANAGER')) {
+    var idToken = req.headers['idtoken'];
+    if (idToken === null || idToken.length == 0) {
+      res.status(403);
+      res.send('Para crear un MANAGER hay que estar logado como ADMINISTRATOR');
+    } else {
+      var authenticatedUserId = await authController.getUserId(idToken);
+      Actor.findById(authenticatedUserId, function(err, actor) {
+        if (err){
+          res.send(err);
+        }
+        else{
+          if (actor.role.includes('ADMINISTRATOR')) {
+            new_actor.save(function(err, saved_actor) {
+              if (err){
+                res.send(err);
+              }
+              else{
+                res.json(saved_actor);
+              }
+            });
+          } else {
+            res.status(403);
+            res.send('Solo un ADMINISTRATOR puede crear un MANAGER');
+          }
+        }
+      });
+    }
+    
+  } else {
+    //if role is Explorer, create empty finder
+    new_actor.save(function(err, actor) {
+      if (err){
+        res.send(err);
+      }
+      else{
+        res.json(actor);
+      }
+    });
+  }
+  
+};
+
+
+
 exports.read_an_actor = function(req, res) {
   Actor.findById(req.params.actorId, function(err, actor) {
     if (err){

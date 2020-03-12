@@ -19,6 +19,10 @@ module.exports = function(app) {
 	  .get(actors.list_all_actors)
 	  .post(actors.create_an_actor);
 
+
+  app.route('/v2/actors')
+	  .post(actors.create_an_actor_auth_verified);
+    
   /**
    * Put an actor
    *    RequiredRoles: to be the proper actor
