@@ -66,7 +66,12 @@ module.exports = function(app) {
   app.route('/v1/actors/:actorId/applications')
     .get(applications.list_all_applications_by_explorer_grouped_by_status);
   
-  /**
+
+  app.route('/v2/actors/:actorId/applications')
+    .get(authController.verifyUser(["EXPLORER"]), applications.list_all_applications_by_explorer_grouped_by_status);
+  
+  
+    /**
 	 * Set activated to FALSE to an actor
    *    RequiredRole: Administrator
 	 *
@@ -77,6 +82,9 @@ module.exports = function(app) {
 	*/
   app.route('/v1/actors/:actorId/ban')
       .put(actors.ban_an_actor);
+
+  app.route('/v2/actors/:actorId/ban')
+      .put(authController.verifyUser(["ADMINISTRATOR"]), actors.ban_an_actor);
 
   /**
 	 * Set activated to TRUE to an actor
@@ -90,6 +98,10 @@ module.exports = function(app) {
   app.route('/v1/actors/:actorId/unban')
       .put(actors.unban_an_actor);
 
+  app.route('/v2/actors/:actorId/unban')
+      .put(authController.verifyUser(["ADMINISTRATOR"]), actors.unban_an_actor);
+  
+  
   /**
 	 * Modify search criteria of finder
    *    RequiredRole: to be the finder's explorer owner
@@ -102,4 +114,7 @@ module.exports = function(app) {
   app.route('/v1/actors/:actorId/myfinder')
       .put(actors.update_an_actor);
       //update_actor_finder ??
+
+  app.route('/v2/actors/:actorId/myfinder')
+      .put(authController.verifyUser(["EXPLORER"]), actors.update_an_actor);
 };
