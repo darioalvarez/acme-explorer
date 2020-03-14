@@ -14,17 +14,16 @@ var express = require('express'),
     DataWareHouseTools = require('./api/controllers/dataWareHouseController'),
     bodyParser = require('body-parser'),
     admin = require('firebase-admin'),
-    //serviceAccount = require('./acme-explorerjdc-firebase-adminsdk-5g4wl-daf3b8e615');
-    serviceAccount = require('./acmeexplorer-c9013-firebase-adminsdk-i1xsf-9f0357a163.json');
-var https = require('https');
-var fs = require('fs');
+    https = require('https'),
+    fs = require('fs'),
+    serviceAccount = require('./keys/acmeexplorer-c9013-firebase-adminsdk-i1xsf-9f0357a163.json');
 
 
 
 // HTTPS SSL certificate
 https.createServer({
-        key: fs.readFileSync('server.key'),
-        cert: fs.readFileSync('server.cert')
+        key: fs.readFileSync('./keys/server.key'),
+        cert: fs.readFileSync('./keys/server.cert')
     }, app)
     .listen(httpsPort, function () {
         console.log('Example app listening on port ' + httpsPort + '! Go to https://localhost:' + httpsPort + '/');
