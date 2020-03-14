@@ -101,7 +101,7 @@ exports.update_an_actor = function(req, res) {
 };
 
 exports.delete_an_actor = function(req, res) {
-    Actor.remove({_id: req.params.actorId}, function(err, actor) {
+    Actor.deleteOne({_id: req.params.actorId}, function(err, actor) {
         if (err){
             res.send(err);
         }
