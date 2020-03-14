@@ -20,6 +20,7 @@ exports.list_all_actors = function(req, res) {
 exports.create_an_actor = function(req, res) {
   var new_actor = new Actor(req.body);
   //if role is Explorer, create empty finder
+  
   new_actor.save(function(err, actor) {
     if (err){
       res.send(err);

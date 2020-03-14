@@ -7,7 +7,7 @@ const ISO6391 = require('iso-639-1')
 var CachedTripSchema = new Schema({
   title: {
     type: String,
-    required: 'Kindly enter the trip title'
+    required: true
   },
   price: {
     type: Number,
@@ -55,6 +55,8 @@ var FinderSchema = new Schema({
   },
   results: [CachedTripSchema]
 }, { strict: false });
+
+var Finder = mongoose.model('Finder', FinderSchema);
 
 var ActorSchema = new Schema({
   name: {
@@ -104,8 +106,7 @@ var ActorSchema = new Schema({
     default: true
   },
   finder: {
-    type: FinderSchema,
-    default: null
+    type: FinderSchema
   },
   customToken: { 
     type: String
@@ -118,6 +119,11 @@ var ActorSchema = new Schema({
 
 ActorSchema.pre('save', function(callback) {
   var actor = this;
+
+  if (actor.role.includes('EXPLORER')) {
+    actor.finder = new Finder();
+  }
+
   // Break out if the password hasn't changed
   if (!actor.isModified('password')) return callback();
 
