@@ -19,7 +19,6 @@ exports.list_all_actors = function(req, res) {
 
 exports.create_an_actor = function(req, res) {
   var new_actor = new Actor(req.body);
-  //if role is Explorer, create empty finder
   
   new_actor.save(function(err, actor) {
     if (err){
@@ -63,7 +62,6 @@ exports.create_an_actor_auth_verified = async function(req, res) {
     }
     
   } else {
-    //if role is Explorer, create empty finder
     new_actor.save(function(err, actor) {
       if (err){
         res.send(err);
@@ -112,7 +110,6 @@ exports.delete_an_actor = function(req, res) {
 };
 
 exports.ban_an_actor = function(req, res) {
-  //Check that the user is an Administrator and if not: res.status(403); "an access token is valid, but requires more privileges"
   console.log("Banning an actor with id: "+req.params.actorId)
   Actor.findOneAndUpdate({_id: req.params.actorId}, { $set: {"activated": "false" }}, {new: true}, function(err, actor) {
       if (err){
@@ -125,7 +122,6 @@ exports.ban_an_actor = function(req, res) {
 };
 
 exports.unban_an_actor = function(req, res) {
-  //Check that the user is an Administrator and if not: res.status(403); "an access token is valid, but requires more privileges"
   console.log("Unbanning an actor with id: "+req.params.actorId)
   Actor.findOneAndUpdate({_id: req.params.actorId}, { $set: {"activated": "true" }}, {new: true}, function(err, actor) {
       if (err){
@@ -186,7 +182,6 @@ exports.login_an_actor = async function(req, res) {
 };
 
 exports.update_a_verified_actor = function(req, res) {
-  //Customer and Clerks can update theirselves, administrators can update any actor
   console.log('Starting to update the actor...');
   Actor.findById(req.params.actorId, async function(err, actor) {
     if (err){

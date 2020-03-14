@@ -120,5 +120,5 @@ module.exports = function(app) {
       //update_actor_finder ??
 
   app.route('/v2/actors/:actorId/myfinder')
-      .put(authController.verifyUser(["EXPLORER"]), actors.update_an_actor);
+      .put(authController.verifyUser(["EXPLORER"]), actors.update_a_verified_actor);
 };

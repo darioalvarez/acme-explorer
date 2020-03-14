@@ -62,6 +62,10 @@ app.use(function (req, res, next) {
     next();
 });
 
+app.get("/", (req, res) => {
+    res.json({ status: "success", message: "Welcome To Testing API" });
+  });
+
 admin.initializeApp({
     credential : admin.credential.cert(serviceAccount),
     databaseURL: 'https://acme-explorerjdc.firebaseio.com'
