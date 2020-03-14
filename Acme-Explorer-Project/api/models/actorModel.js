@@ -56,7 +56,14 @@ var FinderSchema = new Schema({
   results: [CachedTripSchema]
 }, { strict: false });
 
+FinderSchema.methods.toJSON = function() {
+  var obj = this.toObject();
+  delete obj._id;
+  return obj;
+ }
+
 var Finder = mongoose.model('Finder', FinderSchema);
+
 
 var ActorSchema = new Schema({
   name: {
