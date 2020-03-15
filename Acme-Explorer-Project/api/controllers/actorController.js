@@ -22,6 +22,11 @@ exports.create_an_actor = function(req, res) {
   
   new_actor.save(function(err, actor) {
     if (err){
+      if(err.code === 11000) {
+        res.status(409);
+      } else {
+        res.status(500);
+      }
       res.send(err);
     }
     else{
@@ -64,6 +69,11 @@ exports.create_an_actor_auth_verified = async function(req, res) {
   } else {
     new_actor.save(function(err, actor) {
       if (err){
+        if(err.code === 11000) {
+          res.status(409);
+        } else {
+          res.status(500);
+        }
         res.send(err);
       }
       else{
@@ -79,10 +89,17 @@ exports.create_an_actor_auth_verified = async function(req, res) {
 exports.read_an_actor = function(req, res) {
   Actor.findById(req.params.actorId, function(err, actor) {
     if (err){
+      res.status(500);
       res.send(err);
     }
     else{
-      res.json(actor);
+      if(actor) {
+        res.json(actor);
+      } else {
+        res.status(404);
+        res.send([])
+      }
+      
     }
   });
 };
