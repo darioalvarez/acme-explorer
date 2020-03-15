@@ -1,8 +1,7 @@
 const app = require("../index");
 const chai = require("chai");
 const chaiHttp = require("chai-http");
-var mongoose = require('mongoose'),
-Actor = mongoose.model('Actors');
+var mongoose = require('mongoose');
 var test_actor_id = mongoose.Types.ObjectId();
 
 const { expect } = chai;
@@ -43,12 +42,48 @@ describe("Actor Tests", () => {
       });
   });
 
+
+  it("UPDATE Actor recently created", done => {
+    chai
+      .request(app)
+      .put("/v1/actors/" + test_actor_id)
+      .send({
+        "name": "ExplorerTESTNameUPDATED",
+        "surname": "ExplorerTESTSurnameUPDATED"
+      })
+      .end((err, res) => {
+        expect(res).to.have.status(200);
+        expect(res.body).to.have.property('name').to.be.equal('ExplorerTESTNameUPDATED');
+        expect(res.body).to.have.property('surname').to.be.equal('ExplorerTESTSurnameUPDATED');
+
+        if (err) done(err);
+        else done();
+      });
+  });
+
+
+  it("BAN Actor recently created", done => {
+    chai
+      .request(app)
+      .put("/v1/actors/" + test_actor_id + "/ban")
+      .end((err, res) => {
+        expect(res).to.have.status(200);
+        expect(res.body).to.have.property('activated').to.be.equal(false);
+
+        if (err) done(err);
+        else done();
+      });
+  });
+
+
   it("GET Actor recently created", done => {
     chai
       .request(app)
       .get("/v1/actors/" + test_actor_id)
       .end((err, res) => {
         expect(res).to.have.status(200);
+        expect(res.body).to.have.property('activated').to.be.equal(false);
+        expect(res.body).to.have.property('name').to.be.equal('ExplorerTESTNameUPDATED');
         expect(res.body).to.have.property('email').to.be.equal("explorer@testmail.com");
 
         if (err) done(err);
