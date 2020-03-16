@@ -94,6 +94,30 @@ exports.update_a_trip = function update_a_trip(req, res) {
     });
 };
 
+exports.cancel_a_trip = function cancel_a_trip(req, res) {
+    //check auth user is ['MANAGER'], otherwise return 403
+    //update trip if it's not published
+    Trip.findOne({ ticker: req.params.tripTicker }, function (err, trip) {
+        var cancellationReason = req.body.cancellationReason;
+        trip.cancellationReason = cancellationReason;
+        trip.cancelled = true;
+        Trip.findOneAndUpdate({ ticker: req.params.tripTicker }, trip, { new: true, runValidators: true, context: 'query' }, function (err, trip) {
+            if (err) {
+                if (err.name == 'ValidationError') {
+                    res.status(422).send(err);
+                }
+                else {
+                    res.status(500).send(err);
+                }
+            }
+            else {
+                res.json(trip);
+            }
+        });
+    });
+};
+
+
 //Hay que implementar esta función bien. De momento, list all
 exports.search_trips = function (req, res) {
     Trip.find({}, function (err, trips) {
