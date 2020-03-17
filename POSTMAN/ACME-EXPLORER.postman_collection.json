@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "86783f44-2248-4e53-a04e-2009bcfdb59f",
+		"_postman_id": "bb20b872-4f12-46f2-982e-6c3eabb91d71",
 		"name": "ACME-EXPLORER",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -20,11 +20,12 @@
 					"raw": "{\n\t\"name\": \"ExplorerName\",\n\t\"surname\": \"ExplorerSurname\",\n\t\"address\": \"C/Sol, Sevilla\",\n\t\"email\": \"explorer@fakemail.com\",\n\t\"password\": \"mypass\",\n\t\"phone\": \"+34612345678\",\n\t\"role\": \"EXPLORER\"\n}"
 				},
 				"url": {
-					"raw": "https://localhost:8080/v1/actors",
+					"raw": "https://localhost:8443/v1/actors",
+					"protocol": "https",
 					"host": [
-						"https://localhost"
+						"localhost"
 					],
-					"port": "8080",
+					"port": "8443",
 					"path": [
 						"v1",
 						"actors"
@@ -48,11 +49,12 @@
 					"raw": "{\n\t\"name\": \"ManagerName\",\n\t\"surname\": \"ManagerSurname\",\n\t\"address\": \"C/Sol, Sevilla\",\n\t\"email\": \"manager@fakemail.com\",\n\t\"password\": \"mypass\",\n\t\"phone\": \"+34612345678\",\n\t\"role\": \"MANAGER\"\n}"
 				},
 				"url": {
-					"raw": "https://localhost:8080/v1/actors",
+					"raw": "https://localhost:8443/v1/actors",
+					"protocol": "https",
 					"host": [
-						"https://localhost"
+						"localhost"
 					],
-					"port": "8080",
+					"port": "8443",
 					"path": [
 						"v1",
 						"actors"
@@ -76,11 +78,12 @@
 					"raw": "{\n\t\"name\": \"Sponsor2Name\",\n\t\"surname\": \"Sponsor2Surname\",\n\t\"address\": \"Sponsor2Address\",\n\t\"email\": \"sponsor2@fakemail.com\",\n\t\"password\": \"mypass\",\n\t\"phone\": \"+34612345678\",\n\t\"role\": \"SPONSOR\"\n}"
 				},
 				"url": {
-					"raw": "https://localhost:8080/v1/actors",
+					"raw": "https://localhost:8443/v1/actors",
+					"protocol": "https",
 					"host": [
-						"https://localhost"
+						"localhost"
 					],
-					"port": "8080",
+					"port": "8443",
 					"path": [
 						"v1",
 						"actors"
@@ -104,11 +107,12 @@
 					"raw": "{\n\t\"_id\": \"5c531bd26c769b42ead5e774\",\n\t\"name\": \"SponsorName\",\n\t\"surname\": \"SponsorSurname\",\n\t\"address\": \"C/Sol, Sevilla\",\n\t\"email\": \"sponsor@fakemail.com\",\n\t\"password\": \"mypass\",\n\t\"phone\": \"+34612345678\",\n\t\"role\": \"SPONSOR\"\n}"
 				},
 				"url": {
-					"raw": "https://localhost:8080/v1/actors",
+					"raw": "https://localhost:8443/v1/actors",
+					"protocol": "https",
 					"host": [
-						"https://localhost"
+						"localhost"
 					],
-					"port": "8080",
+					"port": "8443",
 					"path": [
 						"v1",
 						"actors"
@@ -132,11 +136,12 @@
 					"raw": "{\n\t\"name\": \"AdminName\",\n\t\"surname\": \"AdminSurname\",\n\t\"email\": \"admin@fakemail.com\",\n\t\"address\": \"AdminAddress\",\n\t\"password\": \"mypass\",\n\t\"phone\": \"+34612345670\",\n\t\"role\": \"ADMINISTRATOR\"\n}"
 				},
 				"url": {
-					"raw": "https://localhost:8080/v1/actors",
+					"raw": "https://localhost:8443/v1/actors",
+					"protocol": "https",
 					"host": [
-						"https://localhost"
+						"localhost"
 					],
-					"port": "8080",
+					"port": "8443",
 					"path": [
 						"v1",
 						"actors"
@@ -160,11 +165,12 @@
 					"raw": "{\n\t\"name\": \"SponsorEDITEDName\",\n\t\"surname\": \"SponsorSurname\",\n\t\"address\": \"Sponsor2Address\",\n\t\"email\": \"sponsor2@fakemail.com\",\n\t\"password\": \"mypass\",\n\t\"phone\": \"+34612345678\",\n\t\"role\": \"SPONSOR\"\n}"
 				},
 				"url": {
-					"raw": "https://localhost:8080/v1/actors/5c531bd26c769b42ead5e774",
+					"raw": "https://localhost:8443/v1/actors/5c531bd26c769b42ead5e774",
+					"protocol": "https",
 					"host": [
-						"https://localhost"
+						"localhost"
 					],
-					"port": "8080",
+					"port": "8443",
 					"path": [
 						"v1",
 						"actors",
@@ -180,11 +186,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:8080/v1/actors/",
+					"raw": "https://localhost:8443/v1/actors/",
+					"protocol": "https",
 					"host": [
-						"https://localhost"
+						"localhost"
 					],
-					"port": "8080",
+					"port": "8443",
 					"path": [
 						"v1",
 						"actors",
@@ -204,11 +211,12 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "https://localhost:8080/v1/actors/5c531bd26c769b42ead5e774",
+					"raw": "https://localhost:8443/v1/actors/5c531bd26c769b42ead5e774",
+					"protocol": "https",
 					"host": [
-						"https://localhost"
+						"localhost"
 					],
-					"port": "8080",
+					"port": "8443",
 					"path": [
 						"v1",
 						"actors",
@@ -225,12 +233,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://https://localhost:8080/v1/trips",
-					"protocol": "http",
+					"raw": "https://localhost:8443/v1/trips",
+					"protocol": "https",
 					"host": [
-						"https://localhost"
+						"localhost"
 					],
-					"port": "8080",
+					"port": "8443",
 					"path": [
 						"v1",
 						"trips"
@@ -261,12 +269,12 @@
 					}
 				},
 				"url": {
-					"raw": "http://https://localhost:8080/v1/trips",
-					"protocol": "http",
+					"raw": "https://localhost:8443/v1/trips",
+					"protocol": "https",
 					"host": [
-						"https://localhost"
+						"localhost"
 					],
-					"port": "8080",
+					"port": "8443",
 					"path": [
 						"v1",
 						"trips"
@@ -281,12 +289,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://https://localhost:8080/v1/trips/200224-VJRF",
-					"protocol": "http",
+					"raw": "https://localhost:8443/v1/trips/200224-VJRF",
+					"protocol": "https",
 					"host": [
-						"https://localhost"
+						"localhost"
 					],
-					"port": "8080",
+					"port": "8443",
 					"path": [
 						"v1",
 						"trips",
@@ -318,12 +326,12 @@
 					}
 				},
 				"url": {
-					"raw": "http://https://localhost:8080/v1/trips/200224-VJRF",
-					"protocol": "http",
+					"raw": "https://localhost:8443/v1/trips/200224-VJRF",
+					"protocol": "https",
 					"host": [
-						"https://localhost"
+						"localhost"
 					],
-					"port": "8080",
+					"port": "8443",
 					"path": [
 						"v1",
 						"trips",
@@ -339,12 +347,12 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "http://https://localhost:8080/v1/trips/200224-VJRF",
-					"protocol": "http",
+					"raw": "https://localhost:8443/v1/trips/200224-VJRF",
+					"protocol": "https",
 					"host": [
-						"https://localhost"
+						"localhost"
 					],
-					"port": "8080",
+					"port": "8443",
 					"path": [
 						"v1",
 						"trips",
@@ -376,11 +384,12 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:8080/v1/applications",
+					"raw": "https://localhost:8443/v1/applications",
+					"protocol": "https",
 					"host": [
-						"https://localhost"
+						"localhost"
 					],
-					"port": "8080",
+					"port": "8443",
 					"path": [
 						"v1",
 						"applications"
@@ -395,11 +404,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:8080/v1/applications",
+					"raw": "https://localhost:8443/v1/applications",
+					"protocol": "https",
 					"host": [
-						"https://localhost"
+						"localhost"
 					],
-					"port": "8080",
+					"port": "8443",
 					"path": [
 						"v1",
 						"applications"
@@ -418,11 +428,12 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "https://localhost:8080/v1/applications/5e48291652b62d1061849edf",
+					"raw": "https://localhost:8443/v1/applications/5e48291652b62d1061849edf",
+					"protocol": "https",
 					"host": [
-						"https://localhost"
+						"localhost"
 					],
-					"port": "8080",
+					"port": "8443",
 					"path": [
 						"v1",
 						"applications",
@@ -448,11 +459,12 @@
 					"raw": "{\n\t\"status\": \"gfdhdfhhfh\"\n}"
 				},
 				"url": {
-					"raw": "https://localhost:8080/v1/applications/5e4829a1f4b45c106a88d991",
+					"raw": "https://localhost:8443/v1/applications/5e4829a1f4b45c106a88d991",
+					"protocol": "https",
 					"host": [
-						"https://localhost"
+						"localhost"
 					],
-					"port": "8080",
+					"port": "8443",
 					"path": [
 						"v1",
 						"applications",
@@ -484,11 +496,12 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:8080/v1/sponsorships",
+					"raw": "https://localhost:8443/v1/sponsorships",
+					"protocol": "https",
 					"host": [
-						"https://localhost"
+						"localhost"
 					],
-					"port": "8080",
+					"port": "8443",
 					"path": [
 						"v1",
 						"sponsorships"
@@ -519,11 +532,12 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:8080/v1/applications/5e482824eacf3e10470d937b/reject",
+					"raw": "https://localhost:8443/v1/applications/5e482824eacf3e10470d937b/reject",
+					"protocol": "https",
 					"host": [
-						"https://localhost"
+						"localhost"
 					],
-					"port": "8080",
+					"port": "8443",
 					"path": [
 						"v1",
 						"applications",
@@ -540,11 +554,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:8080/v1/actors/5e4824346e86460fd2827deb/applications",
+					"raw": "https://localhost:8443/v1/actors/5e4824346e86460fd2827deb/applications",
+					"protocol": "https",
 					"host": [
-						"https://localhost"
+						"localhost"
 					],
-					"port": "8080",
+					"port": "8443",
 					"path": [
 						"v1",
 						"actors",
@@ -561,13 +576,15 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://https://localhost:8080/v1/sponsorships",
+					"raw": "http://https://localhost:8443/v1/sponsorships",
 					"protocol": "http",
 					"host": [
-						"https://localhost"
+						"https"
 					],
-					"port": "8080",
+					"port": "",
 					"path": [
+						"",
+						"localhost:8443",
 						"v1",
 						"sponsorships"
 					]
@@ -597,12 +614,12 @@
 					}
 				},
 				"url": {
-					"raw": "http://https://localhost:8080/v1/sponsorships",
-					"protocol": "http",
+					"raw": "https://localhost:8443/v1/sponsorships",
+					"protocol": "https",
 					"host": [
-						"https://localhost"
+						"localhost"
 					],
-					"port": "8080",
+					"port": "8443",
 					"path": [
 						"v1",
 						"sponsorships"
@@ -636,12 +653,12 @@
 					}
 				},
 				"url": {
-					"raw": "http://https://localhost:8080/v1/sponsorships/5e4aa74e49222e8a3b6ee01c",
-					"protocol": "http",
+					"raw": "https://localhost:8443/v1/sponsorships/5e4aa74e49222e8a3b6ee01c",
+					"protocol": "https",
 					"host": [
-						"https://localhost"
+						"localhost"
 					],
-					"port": "8080",
+					"port": "8443",
 					"path": [
 						"v1",
 						"sponsorships",
@@ -673,12 +690,12 @@
 					}
 				},
 				"url": {
-					"raw": "http://https://localhost:8080/v1/sponsorships/5e4aa74e49222e8a3b6ee01c/",
-					"protocol": "http",
+					"raw": "https://localhost:8443/v1/sponsorships/5e4aa74e49222e8a3b6ee01c/",
+					"protocol": "https",
 					"host": [
-						"https://localhost"
+						"localhost"
 					],
-					"port": "8080",
+					"port": "8443",
 					"path": [
 						"v1",
 						"sponsorships",
@@ -711,17 +728,77 @@
 					}
 				},
 				"url": {
-					"raw": "http://https://localhost:8080/v1/sponsorships/5e57993d858954a9ea70a7cd/",
-					"protocol": "http",
+					"raw": "https://localhost:8443/v1/sponsorships/5e57993d858954a9ea70a7cd/",
+					"protocol": "https",
 					"host": [
-						"https://localhost"
+						"localhost"
 					],
-					"port": "8080",
+					"port": "8443",
 					"path": [
 						"v1",
 						"sponsorships",
 						"5e57993d858954a9ea70a7cd",
 						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT CANCEL A TRIP",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"cancellationReason\": \"Trip have been cancelled due to coronavirus quarantine\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:8443/v1/trips/200309-HDYD/cancel",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8443",
+					"path": [
+						"v1",
+						"trips",
+						"200309-HDYD",
+						"cancel"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET SEARCH TRIP",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:8443/v1/trips/search/200309-HDYD",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8443",
+					"path": [
+						"v1",
+						"trips",
+						"search",
+						"200309-HDYD"
 					]
 				}
 			},
