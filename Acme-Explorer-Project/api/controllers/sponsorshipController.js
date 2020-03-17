@@ -35,67 +35,42 @@ exports.create_an_sponsorship = function(req, res) {
     });
 };
 
-exports.create_an_sponsorship_v2 = function(req, res) {
-  //Check if the user is an administrator and if not: res.status(403); "an access token is valid, but requires more privileges"
-  auth.verifyUser(['Sponsor'])(req, res, (error, actor) => {
-    var new_sponsorship = new Sponsorship(req.body);
-    new_sponsorship.save(function(err, sponsorship) {
-      if (err){
-        if(err.name=='ValidationError') {
-            res.status(422).send(err);
-        }
-        else{
-          res.status(500).send(err);
-        }
-      }
-      else{
-        res.json(sponsorship);
-      }
-    });
-  });
-};
-
 exports.update_an_sponsorship_v2 = function(req, res) {
   //Check that the user is administrator if it is updating more things than comments and if not: res.status(403); "an access token is valid, but requires more privileges"
-  auth.verifyUser(['Sponsor'])(req, res, (error, actor) => {
   Sponsorship.findOneAndUpdate({_id: req.params.sponsorshipId}, req.body, {new: true}, function(err, sponsorship) {
-      if (err){
-        if(err.name=='ValidationError') {
-            res.status(422).send(err);
-        }
-        else{
-          if (sponsorship) {
-            if(sponsorship.sponsorId != actor._id) {
-                res.status(401).send({ err: dict.get('Unauthorized', lang) })
-                return;
-            }
-          }
-          res.status(500).send(err);
-        }
+    if (err){
+      if(err.name=='ValidationError') {
+          res.status(422).send(err);
       }
       else{
-        res.json(sponsorship);
+        if (sponsorship) {
+          if(sponsorship.sponsorId != actor._id) {
+              res.status(401).send({ err: dict.get('Unauthorized', lang) })
+              return;
+          }
+        }
+        res.status(500).send(err);
       }
-    });
+    }
+    else{
+      res.json(sponsorship);
+    }
   });
 };
 
 exports.change_flat_rate = function(req, res) {
-  var currSponsorship = req.body;
-	Sponsorship.findById(currSponsorship._id, function(err, sponsorship) {
-		sponsorship.update(
-		    { _id: currSponsorship._id },
-		    {
-		      $set: {
-		        cost: currSponsorship.cost,
-		      },
-		    }
-		);
-    
+ var currSponsorship = req.body;
+  Sponsorship.findById(currSponsorship._id, function(err, sponsorship) {
+    sponsorship.update(
+        { _id: currSponsorship._id },
+        {
+          $set: {
+            cost: currSponsorship.cost,
+          },
+        }
+    );
   });
 };
-
-
 
 exports.read_an_sponsorship = function(req, res) {
     Sponsorship.findById(req.params.sponsorshipId, function(err, sponsorship) {
@@ -109,7 +84,6 @@ exports.read_an_sponsorship = function(req, res) {
 };
 
 exports.pay_a_sponsorship = function(req, res) {
-  auth.verifyUser(['Sponsor'])(req, res, (error, actor) => {
     Sponsorship.findOneAndUpdate({_id: req.params.sponsorshipId},  { $set: {"payed": "true" }}, {new: true}, function(err, sponsorship) {
       if (err){
         res.status(500).send(err);
@@ -118,7 +92,6 @@ exports.pay_a_sponsorship = function(req, res) {
         res.json(sponsorship);
       }
     });
-  });
 };
 
 exports.update_an_sponsorship = function(req, res) {
@@ -140,7 +113,6 @@ exports.update_an_sponsorship = function(req, res) {
 
 exports.delete_an_sponsorship = function(req, res) {
   //Check if the user is an administrator and if not: res.status(403); "an access token is valid, but requires more privileges"
-  auth.verifyUser(['Sponsor'])(req, res, (error, actor) => {
     Sponsorship.deleteOne({_id: req.params.sponsorshipId}, function(err, sponsorship) {
         if (err){
             res.status(500).send(err);
@@ -149,8 +121,6 @@ exports.delete_an_sponsorship = function(req, res) {
             res.json({ message: 'Sponsorship successfully deleted' });
         }
     });
-  });
-
 };
 
 exports.delete_an_sponsorship_v2 = function(req, res) {
