@@ -48,7 +48,6 @@ exports.read_a_trip = function (req, res) {
 
 exports.delete_a_trip = function (req, res) {
     //check auth user is ['MANAGER'], otherwise return 403
-    //delete trip if it's not published
     Trip.findOne({
         ticker: req.params.tripTicker
     }, function (err, trip) {
@@ -57,51 +56,62 @@ exports.delete_a_trip = function (req, res) {
                 message: 'Trip does not exists'
             });
         } else {
-            Trip.deleteOne({
-                ticker: req.params.tripTicker
-            }, function (err, delRes) {
-                if (err) {
-                    res.send(err);
-                } else {
-                    res.json(delRes.deletedCount);
-                }
-            });
+            if (trip.published) {
+                res.status(403).json({
+                    message: 'A trip published can not be deleted'
+                });
+            } else {
+                Trip.deleteOne({
+                    ticker: req.params.tripTicker
+                }, function (err, delRes) {
+                    if (err) {
+                        res.send(err);
+                    } else {
+                        res.json(delRes.deletedCount);
+                    }
+                });
+            }
         }
     });
 };
 
 exports.update_a_trip = function update_a_trip(req, res) {
     //check auth user is ['MANAGER'], otherwise return 403
-    //update trip if it's not published
     Trip.findOne({
         ticker: req.params.tripTicker
     }, function (err, trip) {
-        var tripUpdated = req.body;
-        //calculating the total price as sum of the stages prices
-        if (tripUpdated.stages) {
-            tripUpdated.price = tripUpdated.stages.map((stage) => {
-                return stage.price
-            }).reduce((sum, price) => {
-                return sum + price;
+        if (trip.published) {
+            res.status(403).json({
+                message: 'A trip published can not be deleted'
+            });
+        } else {
+            var tripUpdated = req.body;
+            //calculating the total price as sum of the stages prices
+            if (tripUpdated.stages) {
+                tripUpdated.price = tripUpdated.stages.map((stage) => {
+                    return stage.price
+                }).reduce((sum, price) => {
+                    return sum + price;
+                });
+            }
+            Trip.findOneAndUpdate({
+                ticker: req.params.tripTicker
+            }, tripUpdated, {
+                new: true,
+                runValidators: true,
+                context: 'query'
+            }, function (err, trip) {
+                if (err) {
+                    if (err.name == 'ValidationError') {
+                        res.status(422).send(err);
+                    } else {
+                        res.status(500).send(err);
+                    }
+                } else {
+                    res.json(trip);
+                }
             });
         }
-        Trip.findOneAndUpdate({
-            ticker: req.params.tripTicker
-        }, tripUpdated, {
-            new: true,
-            runValidators: true,
-            context: 'query'
-        }, function (err, trip) {
-            if (err) {
-                if (err.name == 'ValidationError') {
-                    res.status(422).send(err);
-                } else {
-                    res.status(500).send(err);
-                }
-            } else {
-                res.json(trip);
-            }
-        });
     });
 };
 
