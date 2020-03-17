@@ -44,7 +44,7 @@ module.exports = function (app) {
    * @param {string} deleted (true|false)
    * @param {string} reverse (true|false) 
    */
-  app.route('/v1/trips/search')
+  app.route('/v1/trips/search/:keyword')
     .get(trips.search_trips)
 
 
