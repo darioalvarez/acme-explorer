@@ -16,13 +16,13 @@ exports.create_a_trip = function (req, res) {
     var new_trip = new Trip(req.body);
 
     // calculating the total price as sum of the stages prices
-    // if (new_trip.stages) {
-    //     new_trip.price = new_trip.stages.map((stage) => {
-    //         return stage.price
-    //     }).reduce((sum, price) => {
-    //         return sum + price;
-    //     });
-    // }
+    if (new_trip.stages) {
+        new_trip.price = new_trip.stages.map((stage) => {
+            return stage.price
+        }).reduce((sum, price) => {
+            return sum + price;
+        });
+    }
 
     new_trip.save(function (err, trip) {
         if (err) {
