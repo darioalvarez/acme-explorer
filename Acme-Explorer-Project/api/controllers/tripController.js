@@ -145,29 +145,37 @@ exports.cancel_a_trip = function cancel_a_trip(req, res) {
 };
 
 exports.search_trips = function (req, res) {
-    Trip.find({
-            $or: [{
-                    'ticker': {
-                        "$regex": req.params.keyword,
-                        "$options": "i"
+    if (req.params.keyword) {
+        Trip.find({
+                $or: [{
+                        'ticker': {
+                            "$regex": req.params.keyword,
+                            "$options": "i"
+                        }
+                    },
+                    {
+                        'title': {
+                            "$regex": req.params.keyword,
+                            "$options": "i"
+                        }
+                    },
+                    {
+                        'description': {
+                            "$regex": req.params.keyword,
+                            "$options": "i"
+                        }
                     }
-                },
-                {
-                    'title': {
-                        "$regex": req.params.keyword,
-                        "$options": "i"
-                    }
-                },
-                {
-                    'description': {
-                        "$regex": req.params.keyword,
-                        "$options": "i"
-                    }
-                }
-            ]
-        },
-        function (err, trips) {
-            if (err) res.send(err);
-            else res.json(trips)
-        });
+                ]
+            },
+            function (err, trips) {
+                if (err) res.send(err);
+                else res.json(trips)
+            });
+    } else {
+        Trip.find({},
+            function (err, trips) {
+                if (err) res.send(err);
+                else res.json(trips)
+            });
+    }
 }
