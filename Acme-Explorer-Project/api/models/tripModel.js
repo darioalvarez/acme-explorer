@@ -6,17 +6,17 @@ const moment = require('moment');
 
 const StageSchema = new Schema({
   title: {
-      type: String,
-      required: 'Kindly enter the stage title'
+    type: String,
+    required: 'Kindly enter the stage title'
   },
   description: {
-      type: String,
-      required: 'Kindly enter the stage description'
+    type: String,
+    required: 'Kindly enter the stage description'
   },
   price: {
-      type: Number,
-      min: 0,
-      required: 'Kindly enter the stage price'
+    type: Number,
+    min: 0,
+    required: 'Kindly enter the stage price'
   }
 });
 
@@ -25,7 +25,7 @@ var TripSchema = new Schema({
   ticker: {
     type: String,
     unique: true,
-    // required: 'Kindly enter the trip ticker'
+    required: 'Kindly enter the trip ticker'
   },
   title: {
     type: String,
@@ -58,7 +58,8 @@ var TripSchema = new Schema({
     ]
   },
   pictures: [{
-    data: Buffer, contentType: String
+    data: Buffer,
+    contentType: String
   }],
   stages: [StageSchema],
   cancelled: {
@@ -66,7 +67,8 @@ var TripSchema = new Schema({
     default: false
   },
   cancellationReason: {
-    type: String
+    type: String,
+    default: null
   },
   published: {
     type: Boolean,
@@ -77,61 +79,71 @@ var TripSchema = new Schema({
     required: 'Manager id required',
     ref: 'Actors'
   },
-}, { strict: false });
-
-TripSchema.pre('save', function(next){
-    let trip = this;
-    const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    let now = moment().format("YYMMDD");
-
-    var tickerCandidate = "";
-    var tickerValid = false;
-
-    while(!tickerValid){
-      console.log("Ticker not valid: " + tickerCandidate);
-      let randomletters = generate(alphabet,4);
-      tickerCandidate = `${now}-${randomletters}`;
-      console.log("New ticker created: " + tickerCandidate);
-
-      console.log("a");
-      // Trip = mongoose.model('Trips');
-
-      // console.log(Trip);
-
-      // Trip.count({ticker: tickerCandidate}, function (err, count){ 
-      //   if(count==0){
-          tickerValid = true;
-      //     console.log("Ticker unique generated!");
-      //   }
-      //   else{
-      //     console.log("c");
-      //   }
-      // });
-    }
-    console.log("b");
-    trip.ticker = tickerCandidate;
-    next();
+}, {
+  strict: false
 });
 
-TripSchema.index({ ticker: 1 }, { unique: true });
-TripSchema.index({ ticker: 'text', title: 'text', description: 'text' }, 
-                 { weights: { ticker: 10, title: 5, description: 1 } });
+TripSchema.pre('save', function (next) {
+  let trip = this;
+  const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  let now = moment().format("YYMMDD");
 
-function startDateValidator(startDate){
+  var Trip = mongoose.model('Trips');
+
+  Trip.find({}, ['ticker'], function (err, tickers) {
+    tickers = tickers.map(item => item.ticker);
+
+    var tickerCandidate = "",
+        tickerValid = false;
+
+    while (!tickerValid) {
+      let randomletters = generate(alphabet, 4);
+      tickerCandidate = `${now}-${randomletters}`;
+      if(tickers.includes(tickerCandidate)){
+        console.log("Ticker not valid: " + tickerCandidate);
+      }
+      else{
+        tickerValid = true;
+      }
+    }
+    trip.ticker = tickerCandidate;
+    next();
+
+  });
+});
+
+TripSchema.index({
+  ticker: 1
+}, {
+  unique: true
+});
+TripSchema.index({
+  ticker: 'text',
+  title: 'text',
+  description: 'text'
+}, {
+  weights: {
+    ticker: 10,
+    title: 5,
+    description: 1
+  }
+});
+
+function startDateValidator(startDate) {
   let now = moment();
   return now <= startDate;
 }
 
-function endDateValidator(endDate){
-    // var startDate = this.date_start;
-    // if(!startDate) //making an update
-    //     startDate = new Date(this.getUpdate().date_start);
-    // return startDate <= endDate;
+function endDateValidator(endDate) {
+  // var startDate = this.date_start;
+  // if(!startDate) //making an update
+  //     startDate = new Date(this.getUpdate().date_start);
+  // return startDate <= endDate;
 
-    let now = moment();
-    // return now <= endDate &&  this.ticker != "" ? (endDate > this.getUpdate().startDate) : (endDate > this.startDate);
+  let now = moment();
+  // return now <= endDate &&  this.ticker != "" ? (endDate > this.getUpdate().startDate) : (endDate > this.startDate);
 
-    return now <= endDate;
+  return now <= endDate;
 }
 
 module.exports = mongoose.model('Trips', TripSchema);
