@@ -289,7 +289,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:8443/v1/trips/200224-VJRF",
+					"raw": "https://localhost:8443/v1/trips/5e667f09c8112a27671dbd54",
 					"protocol": "https",
 					"host": [
 						"localhost"
@@ -298,7 +298,7 @@
 					"path": [
 						"v1",
 						"trips",
-						"200224-VJRF"
+						"5e667f09c8112a27671dbd54"
 					]
 				}
 			},
@@ -326,7 +326,7 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:8443/v1/trips/200224-VJRF",
+					"raw": "https://localhost:8443/v1/trips/5e667f09c8112a27671dbd54",
 					"protocol": "https",
 					"host": [
 						"localhost"
@@ -335,7 +335,7 @@
 					"path": [
 						"v1",
 						"trips",
-						"200224-VJRF"
+						"5e667f09c8112a27671dbd54"
 					]
 				}
 			},
@@ -347,7 +347,7 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:8443/v1/trips/200224-VJRF",
+					"raw": "https://localhost:8443/v1/trips/5e667f09c8112a27671dbd54",
 					"protocol": "https",
 					"host": [
 						"localhost"
@@ -356,7 +356,7 @@
 					"path": [
 						"v1",
 						"trips",
-						"200224-VJRF"
+						"5e667f09c8112a27671dbd54"
 					]
 				}
 			},

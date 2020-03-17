@@ -51,14 +51,14 @@ module.exports = function (app) {
     .get(trips.search_trips)
 
 
-  app.route('/v1/trips/:tripTicker')
+  app.route('/v1/trips/:tripId')
     /**
      * Get trip by id:
      *    RequiredRoles: any
      *
      * @section trips
      * @type get 
-     * @url /v1/trips/:tripTicker
+     * @url /v1/trips/:tripId
      */
     .get(trips.read_a_trip)
     /**
@@ -82,7 +82,7 @@ module.exports = function (app) {
 
 
 
-  app.route('/v1/trips/:tripTicker/cancel')
+  app.route('/v1/trips/:tripId/cancel')
     /**
      * Update trip if it's not published:
      *    RequiredRoles: Manager

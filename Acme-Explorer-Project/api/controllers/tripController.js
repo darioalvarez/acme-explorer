@@ -36,9 +36,7 @@ exports.create_a_trip = function (req, res) {
 };
 
 exports.read_a_trip = function (req, res) {
-    Trip.findOne({
-        ticker: req.params.tripTicker
-    }, function (err, trip) {
+    Trip.findById(req.params.tripId, function (err, trip) {
         if (err) res.send(err);
         else {
             res.json(trip);
@@ -48,9 +46,7 @@ exports.read_a_trip = function (req, res) {
 
 exports.delete_a_trip = function (req, res) {
     //check auth user is ['MANAGER'], otherwise return 403
-    Trip.findOne({
-        ticker: req.params.tripTicker
-    }, function (err, trip) {
+    Trip.findById(req.params.tripId, function (err, trip) {
         if (!trip) {
             res.status(404).json({
                 message: 'Trip does not exists'
@@ -62,7 +58,7 @@ exports.delete_a_trip = function (req, res) {
                 });
             } else {
                 Trip.deleteOne({
-                    ticker: req.params.tripTicker
+                    _id: req.params.tripId
                 }, function (err, delRes) {
                     if (err) {
                         res.send(err);
@@ -77,9 +73,7 @@ exports.delete_a_trip = function (req, res) {
 
 exports.update_a_trip = function update_a_trip(req, res) {
     //check auth user is ['MANAGER'], otherwise return 403
-    Trip.findOne({
-        ticker: req.params.tripTicker
-    }, function (err, trip) {
+    Trip.findById(req.params.tripId, function (err, trip) {
         if (trip.published) {
             res.status(403).json({
                 message: 'A trip published can not be deleted'
@@ -95,7 +89,7 @@ exports.update_a_trip = function update_a_trip(req, res) {
                 });
             }
             Trip.findOneAndUpdate({
-                ticker: req.params.tripTicker
+                _id: req.params.tripId
             }, tripUpdated, {
                 new: true,
                 runValidators: true,
@@ -118,14 +112,12 @@ exports.update_a_trip = function update_a_trip(req, res) {
 exports.cancel_a_trip = function cancel_a_trip(req, res) {
     //check auth user is ['MANAGER'], otherwise return 403
     //update trip if it's not published
-    Trip.findOne({
-        ticker: req.params.tripTicker
-    }, function (err, trip) {
+    Trip.findById(req.params.tripId, function (err, trip) {
         var cancellationReason = req.body.cancellationReason;
         trip.cancellationReason = cancellationReason;
         trip.cancelled = true;
         Trip.findOneAndUpdate({
-            ticker: req.params.tripTicker
+            _id: req.params.tripId
         }, trip, {
             new: true,
             runValidators: true,
