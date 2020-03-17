@@ -4,7 +4,7 @@ const express = require('express');
 module.exports = function (app) {
   var trips = require('../controllers/tripController');
   var applications = require('../controllers/applicationController');
-  var authController = require('../controllers/authController');
+  var auth = require('../controllers/authController');
 
   app.route('/v1/trips')
     /**
@@ -25,6 +25,26 @@ module.exports = function (app) {
      * @url /v1/trips
      */
     .post(trips.create_a_trip);
+
+  app.route('/v2/trips')
+    /**
+     * Get all trips:
+     *    RequiredRoles: any
+     *
+     * @section trips
+     * @type get 
+     * @url /v2/trips
+     */
+    .get(trips.list_all_trips_v2)
+    /**
+     * Create trip:
+     *    RequiredRoles: Manager
+     *
+     * @section trips
+     * @type post 
+     * @url /v2/trips
+     */
+    .post(auth.verifyUser(['MANAGER']), trips.create_a_trip_v2);
 
   /**
    * Get results from a search engine
@@ -50,6 +70,10 @@ module.exports = function (app) {
   app.route('/v1/trips/search/:keyword')
     .get(trips.search_trips)
 
+  app.route('/v2/trips/search/')
+    .get(trips.search_trips)
+  app.route('/v2/trips/search/:keyword')
+    .get(trips.search_trips)
 
   app.route('/v1/trips/:tripId')
     /**
@@ -81,6 +105,36 @@ module.exports = function (app) {
     .delete(trips.delete_a_trip);
 
 
+  app.route('/v2/trips/:tripId')
+    /**
+     * Get trip by id:
+     *    RequiredRoles: any
+     *
+     * @section trips
+     * @type get 
+     * @url /v2/trips/:tripId
+     */
+    .get(trips.read_a_trip)
+    /**
+     * Update trip if it's not published:
+     *    RequiredRoles: Manager
+     *
+     * @section trips
+     * @type put 
+     * @url /v2/trips/:tripId
+     */
+    .put(auth.verifyUser(['MANAGER']), trips.update_a_trip_v2)
+    /**
+     * Delete trip if it's not published:
+     *    RequiredRoles: Manager
+     *
+     * @section trips
+     * @type delete 
+     * @url /v2/trips/:tripId
+     */
+    .delete(auth.verifyUser(['MANAGER']), trips.delete_a_trip_v2);
+
+
 
   app.route('/v1/trips/:tripId/cancel')
     /**
@@ -93,10 +147,22 @@ module.exports = function (app) {
      */
     .put(trips.cancel_a_trip);
 
+  app.route('/v2/trips/:tripId/cancel')
+    /**
+     * Update trip if it's not published:
+     *    RequiredRoles: Manager
+     *
+     * @section trips
+     * @type put 
+     * @url /v2/trips/:tripId
+     */
+    .put(auth.verifyUser(['MANAGER']), trips.cancel_a_trip_v2);
+
+
   app.route('/v1/trips/:tripId/applications')
     .get(applications.list_applications_by_trip);
 
 
   app.route('/v2/trips/:tripId/applications')
-    .get(authController.verifyUser(['MANAGER']), applications.list_applications_by_trip);
+    .get(auth.verifyUser(['MANAGER']), applications.list_applications_by_trip);
 };
