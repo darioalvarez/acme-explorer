@@ -18,9 +18,8 @@ exports.list_all_sponsorships = function(req, res) {
 };
 
 exports.create_an_sponsorship = function(req, res) {
-  //Check if the user is an administrator and if not: res.status(403); "an access token is valid, but requires more privileges"
-    var new_sponsorship = new Sponsorship(req.body);
-    new_sponsorship.save(function(err, sponsorship) {
+  var new_sponsorship = new Sponsorship(req.body);
+  new_sponsorship.save(function(err, sponsorship) {
       if (err){
         if(err.name=='ValidationError') {
             res.status(422).send(err);
@@ -36,7 +35,6 @@ exports.create_an_sponsorship = function(req, res) {
 };
 
 exports.update_an_sponsorship_v2 = function(req, res) {
-  //Check that the user is administrator if it is updating more things than comments and if not: res.status(403); "an access token is valid, but requires more privileges"
   Sponsorship.findOneAndUpdate({_id: req.params.sponsorshipId}, req.body, {new: true}, function(err, sponsorship) {
     if (err){
       if(err.name=='ValidationError') {
@@ -59,16 +57,13 @@ exports.update_an_sponsorship_v2 = function(req, res) {
 };
 
 exports.change_flat_rate = function(req, res) {
- var currSponsorship = req.body;
-  Sponsorship.findById(currSponsorship._id, function(err, sponsorship) {
-    sponsorship.update(
-        { _id: currSponsorship._id },
-        {
-          $set: {
-            cost: currSponsorship.cost,
-          },
-        }
-    );
+  Sponsorship.findOneAndUpdate({_id: req.params.sponsorshipId}, { $set: {"cost": req.params.flatRate }}, {new: true}, function(err, sponsorship) {
+    if (err){
+        res.send(err);
+    }
+    else{
+        res.json(sponsorship);
+    }
   });
 };
 
@@ -78,7 +73,12 @@ exports.read_an_sponsorship = function(req, res) {
         res.status(500).send(err);
       }
       else{
-        res.json(sponsorship);
+        if(sponsorship) {
+          res.json(sponsorship);
+        } else {
+          res.status(404);
+          res.send([])
+        }
       }
     });
 };
