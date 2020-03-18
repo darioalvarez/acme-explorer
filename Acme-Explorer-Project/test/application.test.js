@@ -4,8 +4,6 @@ const chaiHttp = require("chai-http");
 var mongoose = require('mongoose'),
 Trip = mongoose.model('Trips');
 Actor = mongoose.model('Actors');
-//var test_actor_id = mongoose.Types.ObjectId();
-//var trip_id = mongoose.Types.ObjectId();
 
 const { expect } = chai;
 chai.use(chaiHttp);
