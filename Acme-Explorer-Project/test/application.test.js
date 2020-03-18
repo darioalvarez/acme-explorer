@@ -135,13 +135,8 @@ describe("Application Tests", () => {
   });
 
   after((done) => {
-    Actor.deleteOne({_id: explorer_id}, function (err) {
-      if (err) return handleError(err);
-    });
-    Actor.deleteOne({_id: manager_id}, function (err) {
-      if (err) return handleError(err);
-    });
-    //Trip.collection.deleteMany({});
+    Actor.deleteMany({_id: {$in:[explorer_id, manager_id]}}, function (err) {});
+    Trip.deleteMany({_id: {$in:[trip_id_ready_to_apply, trip_id_not_ready_to_apply]}}, function (err) {});
 
     done();
   });
@@ -178,7 +173,7 @@ describe("Application Tests", () => {
           expect(res).to.have.status(200);
           expect(res.body).to.have.property('status').contains('PENDING');
           expect(res.body).to.have.property('paid').to.equal(false);
-  
+          application_id = res.body._id;
           if (err) done(err);
           else done();
         });
@@ -206,100 +201,82 @@ describe("Application Tests", () => {
   })
 
   
-
-/*
-  it("UPDATE Actor recently created", done => {
-    chai
-      .request(app)
-      .put("/v1/actors/" + test_actor_id)
-      .send({
-        "name": "ExplorerTESTNameUPDATED",
-        "surname": "ExplorerTESTSurnameUPDATED"
-      })
-      .end((err, res) => {
-        expect(res).to.have.status(200);
-        expect(res.body).to.have.property('name').to.be.equal('ExplorerTESTNameUPDATED');
-        expect(res.body).to.have.property('surname').to.be.equal('ExplorerTESTSurnameUPDATED');
-
-        if (err) done(err);
-        else done();
-      });
-  });
-
-
-  it("BAN Actor recently created", done => {
-    chai
-      .request(app)
-      .put("/v1/actors/" + test_actor_id + "/ban")
-      .end((err, res) => {
-        expect(res).to.have.status(200);
-        expect(res.body).to.have.property('activated').to.be.equal(false);
-
-        if (err) done(err);
-        else done();
-      });
-  });
+  describe('PUT applications', () => {
+    it("should insert a comment with code 200", done => {
+      chai
+        .request(app)
+        .put("/v1/applications/" + application_id)
+        .send({
+          "comments": ['Este es un comentario de prueba']
+        })
+        .end((err, res) => {
+          expect(err).to.be.null;
+          expect(res).to.have.status(200);
+          expect(res.body).to.have.property('comments').not.to.be.null;
+          expect(res.body).to.have.property('comments').to.be.lengthOf(1);
+  
+          if (err) done(err);
+          else done();
+        });
+    });
 
 
-  it("GET Actor recently created", done => {
-    chai
-      .request(app)
-      .get("/v1/actors/" + test_actor_id)
-      .end((err, res) => {
-        expect(res).to.have.status(200);
-        expect(res.body).to.have.property('activated').to.be.equal(false);
-        expect(res.body).to.have.property('name').to.be.equal('ExplorerTESTNameUPDATED');
-        expect(res.body).to.have.property('email').to.be.equal("explorer@testmail.com");
+    it("shouldn't reject the application without reason (code 400)", done => {
+      chai
+        .request(app)
+        .put("/v1/applications/" + application_id + "/reject")
+        .end((err, res) => {
+          expect(res).to.have.status(400);
+  
+          if (err) done(err);
+          else done();
+        });
+    });
 
-        if (err) done(err);
-        else done();
-      });
-  });
-
-
-  it("POST Actors Duplicate email", done => {
-    chai
-      .request(app)
-      .post("/v1/actors/")
-      .send({
-        "name": "Explorer2TESTName",
-        "surname": "Explorer2TESTSurname",
-        "email": "explorer@testmail.com",
-        "password": "password2",
-        "phone": "+34612345679",
-        "role": "EXPLORER"
-      })
-      .end((err, res) => {
-        expect(res).to.have.status(409);
-        if (err) done(err);
-        else done();
-      });
-  });
+    it("should process the application with code 200", done => {
+      chai
+        .request(app)
+        .put("/v1/applications/" + application_id + "/process")
+        .end((err, res) => {
+          expect(res).to.have.status(200);
+          expect(res.body).to.have.property('status').contains('DUE');
+  
+          if (err) done(err);
+          else done();
+        });
+    });
 
 
+    it("should pay the application with code 200", done => {
+      chai
+        .request(app)
+        .put("/v1/applications/" + application_id + "/pay")
+        .end((err, res) => {
+          expect(res).to.have.status(200);
+          expect(res.body).to.have.property('status').contains('ACCEPTED');
+          //expect(res.body).to.have.property('paid').to.equal(false);
+  
+          if (err) done(err);
+          else done();
+        });
+    });
 
-  it("DELETE Actor Test", done => {
-    chai
-      .request(app)
-      .delete("/v1/actors/" + test_actor_id)
-      .end((err, res) => {
-        expect(res).to.have.status(200);
-        if (err) done(err);
-        else done();
-      });
-  });
+  })
 
-  it("GET Actor recently deleted", done => {
-    chai
-      .request(app)
-      .get("/v1/actors/" + test_actor_id)
-      .end((err, res) => {
-        expect(res).to.have.status(404);
-        expect(res.body).to.have.lengthOf(0);
 
-        if (err) done(err);
-        else done();
-      });
-  });*/
+  describe('DELETE applications', () => {
+    it("should delete an application", done => {
+      chai
+        .request(app)
+        .delete("/v1/applications/" + application_id)
+        .end((err, res) => {
+          expect(err).to.be.null;
+          expect(res).to.have.status(200);
+  
+          if (err) done(err);
+          else done();
+        });
+    });
+  })
 
 });
