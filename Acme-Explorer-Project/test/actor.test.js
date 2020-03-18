@@ -1,12 +1,12 @@
 const app = require("../index");
 const chai = require("chai");
 const chaiHttp = require("chai-http");
-var mongoose = require('mongoose');
-var test_actor_id = mongoose.Types.ObjectId();
 
 const { expect } = chai;
 chai.use(chaiHttp);
 describe("Actor Tests", () => {
+  let test_actor_id = '';
+  
   it("GET Actors Test", done => {
     chai
       .request(app)
@@ -24,7 +24,6 @@ describe("Actor Tests", () => {
       .request(app)
       .post("/v1/actors/")
       .send({
-        "_id": test_actor_id,
         "name": "ExplorerTESTName",
         "surname": "ExplorerTESTSurname",
         "email": "explorer@testmail.com",
@@ -33,9 +32,11 @@ describe("Actor Tests", () => {
         "role": "EXPLORER"
       })
       .end((err, res) => {
+        expect(err).to.be.be.null;
         expect(res).to.have.status(200);
         expect(res.body).to.have.property('finder');
         expect(res.body.activated).to.equal(true);
+        test_actor_id = res.body._id;
 
         if (err) done(err);
         else done();
@@ -52,6 +53,7 @@ describe("Actor Tests", () => {
         "surname": "ExplorerTESTSurnameUPDATED"
       })
       .end((err, res) => {
+        expect(err).to.be.be.null;
         expect(res).to.have.status(200);
         expect(res.body).to.have.property('name').to.be.equal('ExplorerTESTNameUPDATED');
         expect(res.body).to.have.property('surname').to.be.equal('ExplorerTESTSurnameUPDATED');
@@ -67,6 +69,7 @@ describe("Actor Tests", () => {
       .request(app)
       .put("/v1/actors/" + test_actor_id + "/ban")
       .end((err, res) => {
+        expect(err).to.be.be.null;
         expect(res).to.have.status(200);
         expect(res.body).to.have.property('activated').to.be.equal(false);
 
@@ -118,6 +121,7 @@ describe("Actor Tests", () => {
       .request(app)
       .delete("/v1/actors/" + test_actor_id)
       .end((err, res) => {
+        expect(err).to.be.be.null;
         expect(res).to.have.status(200);
         if (err) done(err);
         else done();

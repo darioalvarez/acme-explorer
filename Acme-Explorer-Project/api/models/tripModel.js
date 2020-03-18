@@ -24,8 +24,7 @@ const StageSchema = new Schema({
 var TripSchema = new Schema({
   ticker: {
     type: String,
-    unique: true,
-    required: 'Kindly enter the trip ticker'
+    unique: true
   },
   title: {
     type: String,
