@@ -27,7 +27,7 @@ module.exports = function(app) {
    * @type put 
    * @url /v1/sponsorships/:sponsorshipId/flatRate
   */
-  app.route('/v1/sponsorships/:sponsorshipId/flatRate')
+  app.route('/v1/sponsorships/:sponsorshipId/:flatRate')
   .put(sponsorships.change_flat_rate)
 
   /**
