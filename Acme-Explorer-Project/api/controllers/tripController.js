@@ -259,28 +259,33 @@ exports.update_a_trip_v2 = async function update_a_trip(req, res) {
 exports.cancel_a_trip = function cancel_a_trip(req, res) {
     //check auth user is ['MANAGER'], otherwise return 403
     //update trip if it's not published
-    Trip.findById(req.params.tripId, function (err, trip) {
-        var cancellationReason = req.body.cancellationReason;
-        trip.cancellationReason = cancellationReason;
-        trip.cancelled = true;
-        Trip.findOneAndUpdate({
-            _id: req.params.tripId
-        }, trip, {
-            new: true,
-            runValidators: true,
-            context: 'query'
-        }, function (err, trip) {
-            if (err) {
-                if (err.name == 'ValidationError') {
-                    res.status(422).send(err);
+    if (!req.body.cancellationReason) {
+        res.status(400).send({message: 'cancellationReason required!'});
+    } else {
+        Trip.findById(req.params.tripId, function (err, trip) {
+            var cancellationReason = req.body.cancellationReason;
+            trip.cancellationReason = cancellationReason;
+            trip.cancelled = true;
+            Trip.findOneAndUpdate({
+                _id: req.params.tripId
+            }, trip, {
+                new: true,
+                runValidators: true,
+                context: 'query'
+            }, function (err, trip) {
+                if (err) {
+                    if (err.name == 'ValidationError') {
+                        res.status(422).send(err);
+                    } else {
+                        res.status(500).send(err);
+                    }
                 } else {
-                    res.status(500).send(err);
+                    res.json(trip);
                 }
-            } else {
-                res.json(trip);
-            }
+            });
         });
-    });
+    }
+    
 };
 
 exports.cancel_a_trip_v2 = async function cancel_a_trip(req, res) {
@@ -320,6 +325,21 @@ exports.cancel_a_trip_v2 = async function cancel_a_trip(req, res) {
         }
     });
 };
+
+
+exports.unpublish_a_trip = function(req, res) {
+    Trip.findOneAndUpdate({_id: req.params.tripId, published:true},  { $set: {"published": false}}, {new: true}, function(err, trip) {
+      if (err){
+        res.status(500).send(err);
+      }
+      else if (trip === null || trip.length == 0){
+        res.status(422).send(err="El trip requerido no existe o no está publicado");
+      } else {
+        res.json(trip);
+      }
+    });
+  };
+
 
 exports.search_trips = function (req, res) {
     if (req.params.keyword) {

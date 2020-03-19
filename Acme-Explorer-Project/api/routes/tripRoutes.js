@@ -148,15 +148,14 @@ module.exports = function (app) {
     .put(trips.cancel_a_trip);
 
   app.route('/v2/trips/:tripId/cancel')
-    /**
-     * Update trip if it's not published:
-     *    RequiredRoles: Manager
-     *
-     * @section trips
-     * @type put 
-     * @url /v2/trips/:tripId
-     */
     .put(auth.verifyUser(['MANAGER']), trips.cancel_a_trip_v2);
+
+
+  app.route('/v1/trips/:tripId/unpublish')
+    .put(trips.unpublish_a_trip);
+
+  app.route('/v2/trips/:tripId/unpublish')
+    .put(auth.verifyUser(['MANAGER']), trips.unpublish_a_trip);
 
 
   app.route('/v1/trips/:tripId/applications')

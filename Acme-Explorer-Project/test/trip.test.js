@@ -103,40 +103,21 @@ describe("Trip Tests", () => {
     });
 
 
-    /*it("should return code 422", done => {
-      chai
-        .request(app)
-        .post("/v1/applications/")
-        .send({
-          "explorer": explorer_id,
-          "trip": trip_id_not_ready_to_apply
-        })
-        .end((err, res) => {
-          expect(res).to.have.status(422);
-          //expect(res.body).to.have.property('status').contains('PENDING');
-          //expect(res.body).to.have.property('paid').to.equal(false);
-  
-          if (err) done(err);
-          else done();
-        });
-    });*/
-
   })
 
   
-  /*describe('PUT applications', () => {
-    it("should insert a comment with code 200", done => {
+  describe('PUT trips', () => {
+    it("should publish a trip with code 200", done => {
       chai
         .request(app)
-        .put("/v1/applications/" + application_id)
+        .put("/v1/trips/" + trip_id)
         .send({
-          "comments": ['Este es un comentario de prueba']
+          "published": true
         })
         .end((err, res) => {
           expect(err).to.be.null;
           expect(res).to.have.status(200);
-          expect(res.body).to.have.property('comments').not.to.be.null;
-          expect(res.body).to.have.property('comments').to.be.lengthOf(1);
+          expect(res.body).to.have.property('published').to.be.equal(true);
   
           if (err) done(err);
           else done();
@@ -144,40 +125,31 @@ describe("Trip Tests", () => {
     });
 
 
-    it("shouldn't reject the application without reason (code 400)", done => {
+    it("shouldn't update the trip which is yet published (code 400)", done => {
       chai
         .request(app)
-        .put("/v1/applications/" + application_id + "/reject")
+        .put("/v1/trips/" + trip_id)
+        .send({
+          "description": "Modified description"
+        })
         .end((err, res) => {
-          expect(res).to.have.status(400);
+          expect(res).to.have.status(403);
   
           if (err) done(err);
           else done();
         });
     });
 
-    it("should process the application with code 200", done => {
+    it("should cancel the trip with code 200", done => {
       chai
         .request(app)
-        .put("/v1/applications/" + application_id + "/process")
-        .end((err, res) => {
-          expect(res).to.have.status(200);
-          expect(res.body).to.have.property('status').contains('DUE');
-  
-          if (err) done(err);
-          else done();
-        });
-    });
-
-
-    it("should pay the application with code 200", done => {
-      chai
-        .request(app)
-        .put("/v1/applications/" + application_id + "/pay")
+        .put("/v1/trips/" + trip_id + "/cancel")
+        .send({
+          "cancellationReason": "Malas condiciones meteorológicas"
+        })
         .end((err, res) => {
           expect(res).to.have.status(200);
-          expect(res.body).to.have.property('status').contains('ACCEPTED');
-          //expect(res.body).to.have.property('paid').to.equal(false);
+          expect(res.body).to.have.property('cancelled').to.be.equal(true);
   
           if (err) done(err);
           else done();
@@ -187,19 +159,46 @@ describe("Trip Tests", () => {
   })
 
 
-  describe('DELETE applications', () => {
-    it("should delete an application", done => {
+  describe('DELETE trips', done => {
+    chai
+      it("shouldn't delete a published trip", done => {
+        chai
+          .request(app)
+          .delete("/v1/trips/" + trip_id)
+          .end((err, res) => {
+            expect(res).to.have.status(403);
+    
+            if (err) done(err);
+            else done();
+          });
+      });
+
+    chai
+      it("should unpublish the trip with code 200", done => {
+        chai
+          .request(app)
+          .put("/v1/trips/" + trip_id + "/unpublish")
+          .end((err, res) => {
+            expect(res).to.have.status(200);
+            expect(res.body).to.have.property('published').to.be.equal(false);
+    
+            if (err) done(err);
+            else done();
+          });
+      });
+
       chai
-        .request(app)
-        .delete("/v1/applications/" + application_id)
-        .end((err, res) => {
-          expect(err).to.be.null;
-          expect(res).to.have.status(200);
-  
-          if (err) done(err);
-          else done();
-        });
-    });
-  })*/
+      it("should delete a unpublished trip", done => {
+        chai
+          .request(app)
+          .delete("/v1/trips/" + trip_id)
+          .end((err, res) => {
+            expect(res).to.have.status(200);
+    
+            if (err) done(err);
+            else done();
+          });
+      });
+  })
 
 });
