@@ -2,17 +2,12 @@ const app = require("../index");
 const chai = require("chai");
 const chaiHttp = require("chai-http");
 var mongoose = require('mongoose'),
-Trip = mongoose.model('Trips');
 Actor = mongoose.model('Actors');
 
 const { expect } = chai;
 chai.use(chaiHttp);
 describe("Trip Tests", () => {
   let manager_id = null;
-  //let explorer_id = null;
-  //let trip_id_ready_to_apply = null;
-  //let trip_id_not_ready_to_apply = null;
-  //let application_id = null;
 
   before((done) => {
 
@@ -41,7 +36,6 @@ describe("Trip Tests", () => {
 
   after((done) => {
     Actor.deleteOne({_id: manager_id}, function (err) {});
-    //Trip.deleteMany({_id: {$in:[trip_id_ready_to_apply, trip_id_not_ready_to_apply]}}, function (err) {});
 
     done();
   });
