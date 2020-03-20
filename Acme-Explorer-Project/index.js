@@ -30,11 +30,12 @@ https.createServer({
     })
 
 // MongoDB URI building
-var mongoDBHostname = process.env.mongoDBHostname || "localhost";
-var mongoDBPort = process.env.mongoDBPort || "27017";
+var mongoDBHostname = process.env.MONGODBHOSTNAME || "localhost";
+var mongoDBPort = process.env.DBPORT || "27017";
 var mongoDBName = process.env.mongoDBName || "ACME-Explorer";
 var mongoDBURI = "mongodb://" + mongoDBHostname + ":" + mongoDBPort + "/" + mongoDBName;
 
+console.log("Trying to connect DB to: " + mongoDBURI);
 mongoose.connect(mongoDBURI, {
     poolSize: 10, // Up to 10 sockets
     connectTimeoutMS: 10000, // Give up initial connection after 10 seconds
@@ -44,6 +45,9 @@ mongoose.connect(mongoDBURI, {
     useFindAndModify: false,
     useUnifiedTopology: true
 });
+console.log("DB connection successfully");
+
+
 mongoose.set('useCreateIndex', true);
 
 app.use(bodyParser.urlencoded({
