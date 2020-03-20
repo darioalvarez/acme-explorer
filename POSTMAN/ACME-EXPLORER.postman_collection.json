@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "bb20b872-4f12-46f2-982e-6c3eabb91d71",
+		"_postman_id": "937a0785-e480-43a0-946d-93ddce2bf6f3",
 		"name": "ACME-EXPLORER",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -576,14 +576,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://https://localhost:8443/v1/sponsorships",
+					"raw": "http://https:/localhost:8443/v1/sponsorships",
 					"protocol": "http",
 					"host": [
 						"https"
 					],
 					"port": "",
 					"path": [
-						"",
 						"localhost:8443",
 						"v1",
 						"sponsorships"
@@ -799,6 +798,50 @@
 						"trips",
 						"search",
 						"200309-HDYD"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT Publish a Trip",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:8443/v1/trips/5e755053f62790b75b4d7007/publish",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8443",
+					"path": [
+						"v1",
+						"trips",
+						"5e755053f62790b75b4d7007",
+						"publish"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT Unpublish a Trip",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:8443/v1/trips/5e755053f62790b75b4d7007/unpublish",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8443",
+					"path": [
+						"v1",
+						"trips",
+						"5e755053f62790b75b4d7007",
+						"unpublish"
 					]
 				}
 			},

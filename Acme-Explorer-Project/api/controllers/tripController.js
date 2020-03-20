@@ -260,7 +260,9 @@ exports.cancel_a_trip = function cancel_a_trip(req, res) {
     //check auth user is ['MANAGER'], otherwise return 403
     //update trip if it's not published
     if (!req.body.cancellationReason) {
-        res.status(400).send({message: 'cancellationReason required!'});
+        res.status(400).send({
+            message: 'cancellationReason required!'
+        });
     } else {
         Trip.findById(req.params.tripId, function (err, trip) {
             var cancellationReason = req.body.cancellationReason;
@@ -285,7 +287,7 @@ exports.cancel_a_trip = function cancel_a_trip(req, res) {
             });
         });
     }
-    
+
 };
 
 exports.cancel_a_trip_v2 = async function cancel_a_trip(req, res) {
@@ -327,18 +329,47 @@ exports.cancel_a_trip_v2 = async function cancel_a_trip(req, res) {
 };
 
 
-exports.unpublish_a_trip = function(req, res) {
-    Trip.findOneAndUpdate({_id: req.params.tripId, published:true},  { $set: {"published": false}}, {new: true}, function(err, trip) {
-      if (err){
-        res.status(500).send(err);
-      }
-      else if (trip === null || trip.length == 0){
-        res.status(422).send(err="El trip requerido no existe o no está publicado");
-      } else {
-        res.json(trip);
-      }
+exports.publish_a_trip = function (req, res) {
+    Trip.findOneAndUpdate({
+        _id: req.params.tripId,
+        published: false
+    }, {
+        $set: {
+            "published": true
+        }
+    }, {
+        new: true
+    }, function (err, trip) {
+        if (err) {
+            res.status(500).send(err);
+        } else if (trip === null || trip.length == 0) {
+            res.status(422).send(err = "El trip requerido no existe o ya está publicado");
+        } else {
+            res.json(trip);
+        }
     });
-  };
+};
+
+exports.unpublish_a_trip = function (req, res) {
+    Trip.findOneAndUpdate({
+        _id: req.params.tripId,
+        published: true
+    }, {
+        $set: {
+            "published": false
+        }
+    }, {
+        new: true
+    }, function (err, trip) {
+        if (err) {
+            res.status(500).send(err);
+        } else if (trip === null || trip.length == 0) {
+            res.status(422).send(err = "El trip requerido no existe o no está publicado");
+        } else {
+            res.json(trip);
+        }
+    });
+};
 
 
 exports.search_trips = function (req, res) {

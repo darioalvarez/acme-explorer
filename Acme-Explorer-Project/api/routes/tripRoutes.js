@@ -138,7 +138,7 @@ module.exports = function (app) {
 
   app.route('/v1/trips/:tripId/cancel')
     /**
-     * Update trip if it's not published:
+     * Cancel a trip if it's not published:
      *    RequiredRoles: Manager
      *
      * @section trips
@@ -149,6 +149,13 @@ module.exports = function (app) {
 
   app.route('/v2/trips/:tripId/cancel')
     .put(auth.verifyUser(['MANAGER']), trips.cancel_a_trip_v2);
+
+
+  app.route('/v1/trips/:tripId/publish')
+    .put(trips.publish_a_trip);
+
+  app.route('/v2/trips/:tripId/publish')
+    .put(auth.verifyUser(['MANAGER']), trips.publish_a_trip);
 
 
   app.route('/v1/trips/:tripId/unpublish')
