@@ -15,4 +15,3 @@ export PORT=8080
 export DBPORT=27017
 export VIRTUAL_HOST=${BASE_SITE}
 docker-compose -p ${VIRTUAL_HOST} up -d
-#docker-compose -p ${VIRTUAL_HOST} up -d
