@@ -782,29 +782,7 @@
 			"response": []
 		},
 		{
-			"name": "GET SEARCH TRIP",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "https://localhost:8443/v1/trips/search/200309-HDYD",
-					"protocol": "https",
-					"host": [
-						"localhost"
-					],
-					"port": "8443",
-					"path": [
-						"v1",
-						"trips",
-						"search",
-						"200309-HDYD"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "PUT Publish a Trip",
+			"name": "PUT PUBLISH A TRIP",
 			"request": {
 				"method": "PUT",
 				"header": [],
@@ -826,7 +804,7 @@
 			"response": []
 		},
 		{
-			"name": "PUT Unpublish a Trip",
+			"name": "PUT UNPUBLISH A TRIP",
 			"request": {
 				"method": "PUT",
 				"header": [],
@@ -842,6 +820,57 @@
 						"trips",
 						"5e755053f62790b75b4d7007",
 						"unpublish"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET SEARCH TRIPS",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:8443/v1/trips/search?keyword=home&minPrice=0&maxPrice=10&pageSize=5&startFrom=10&sortedBy=ticker&reverse=true",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8443",
+					"path": [
+						"v1",
+						"trips",
+						"search"
+					],
+					"query": [
+						{
+							"key": "keyword",
+							"value": "home"
+						},
+						{
+							"key": "minPrice",
+							"value": "0"
+						},
+						{
+							"key": "maxPrice",
+							"value": "10"
+						},
+						{
+							"key": "pageSize",
+							"value": "5"
+						},
+						{
+							"key": "startFrom",
+							"value": "10"
+						},
+						{
+							"key": "sortedBy",
+							"value": "ticker"
+						},
+						{
+							"key": "reverse",
+							"value": "true"
+						}
 					]
 				}
 			},

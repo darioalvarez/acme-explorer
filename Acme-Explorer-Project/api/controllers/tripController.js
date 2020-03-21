@@ -373,37 +373,97 @@ exports.unpublish_a_trip = function (req, res) {
 
 
 exports.search_trips = function (req, res) {
-    if (req.params.keyword) {
-        Trip.find({
-                $or: [{
-                        'ticker': {
-                            "$regex": req.params.keyword,
-                            "$options": "i"
-                        }
-                    },
-                    {
-                        'title': {
-                            "$regex": req.params.keyword,
-                            "$options": "i"
-                        }
-                    },
-                    {
-                        'description': {
-                            "$regex": req.params.keyword,
-                            "$options": "i"
-                        }
+    var query = {};
+    // keyword=searchString
+    if (req.query.keyword) {
+        console.log("Setting keyword");
+        query = {
+            $or: [{
+                    'ticker': {
+                        "$regex": req.query.keyword,
+                        "$options": "i"
                     }
-                ]
-            },
-            function (err, trips) {
-                if (err) res.send(err);
-                else res.json(trips)
-            });
-    } else {
-        Trip.find({},
-            function (err, trips) {
-                if (err) res.send(err);
-                else res.json(trips)
-            });
+                },
+                {
+                    'title': {
+                        "$regex": req.query.keyword,
+                        "$options": "i"
+                    }
+                },
+                {
+                    'description': {
+                        "$regex": req.query.keyword,
+                        "$options": "i"
+                    }
+                }
+            ]
+        };
     }
+    // minPrice=10
+    if (req.query.minPrice) {
+        query.price = {
+            $gte: req.query.minPrice
+        };
+    }
+    // maxPrice=50
+    if (req.query.maxPrice) {
+        query.price = {
+            $lte: req.query.maxPrice
+        };
+    }
+
+
+    // minDate=2020-03-01
+    if (req.query.minDate) {
+        query.startDate = {
+            $gte: req.query.minDate
+        };
+    }
+    // maxDate=2020-04-01
+    if (req.query.maxDate) {
+        query.endDate = {
+            $lte: req.query.maxDate
+        };
+    }
+
+    // limit=10
+    var limit = 10;
+    if (req.query.pageSize) {
+        limit = parseInt(req.query.pageSize);
+    }
+
+    // skip=20
+    var skip = 0;
+    if (req.query.startFrom) {
+        skip = parseInt(req.query.startFrom);
+    }
+
+    // reverse="false|true"
+    var sort = "";
+    if (req.query.reverse == "true" && req.query.sortedBy) {
+        sort = "-";
+    }
+
+    // sortedBy="ticker|title|description|price|startDate|endDate"
+    if (req.query.sortedBy) {
+        sort += req.query.sortedBy;
+    }
+
+    console.log("Query: " + query + " Skip:" + skip + " Limit:" + limit + " Sort:" + sort);
+    console.log(query);
+
+    Trip.find(query)
+        .sort(sort)
+        .skip(skip)
+        .limit(limit)
+        .lean()
+        .exec(function (err, trips) {
+            console.log('Start searching trips');
+            if (err) {
+                res.send(err);
+            } else {
+                res.json(trips);
+            }
+            console.log('End searching trips');
+        });
 }

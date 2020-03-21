@@ -61,18 +61,13 @@ module.exports = function (app) {
    * @param {string} pageSize (limit)
    * @param {string} startFrom (offset)
    * @param {string} sortedBy (ticker, title, description)
-   * @param {string} deleted (true|false)
    * @param {string} reverse (true|false) 
    */
 
   app.route('/v1/trips/search/')
     .get(trips.search_trips)
-  app.route('/v1/trips/search/:keyword')
-    .get(trips.search_trips)
 
   app.route('/v2/trips/search/')
-    .get(trips.search_trips)
-  app.route('/v2/trips/search/:keyword')
     .get(trips.search_trips)
 
   app.route('/v1/trips/:tripId')
