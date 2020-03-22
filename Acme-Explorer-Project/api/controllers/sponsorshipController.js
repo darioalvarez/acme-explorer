@@ -142,15 +142,18 @@ exports.delete_an_sponsorship_v2 = function(req, res) {
 };
 
 exports.get_random_sponsorship = function(req,res){
-  var tripId = req.params.tripId;
+  var tripId = req.params.tripId
+  tripId = mongoose.Types.ObjectId(tripId);
   console.log("Random para trip:" + tripId);
-  Sponsorship.aggregate([ {$match: {trip: tripId }}, { $sample: { size: 1 }}]), function(err, sponsorship){
+  Sponsorship.aggregate([{$match: {trip: tripId }},
+    { $sample: { size: 1 }}], 
+    function(err, sponsorship){
       if(err){
           res.status(500).send(err);
       }else{
           res.json(sponsorship);
       }
-  }
+  });
 };
 
 
