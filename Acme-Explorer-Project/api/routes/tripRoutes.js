@@ -5,6 +5,7 @@ module.exports = function (app) {
   var trips = require('../controllers/tripController');
   var applications = require('../controllers/applicationController');
   var auth = require('../controllers/authController');
+  var sponsorships = require('../controllers/sponsorshipController');
 
   app.route('/v1/trips')
     /**
@@ -166,4 +167,8 @@ module.exports = function (app) {
 
   app.route('/v2/trips/:tripId/applications')
     .get(auth.verifyUser(['MANAGER']), applications.list_applications_by_trip);
+           
+  app.route('/v1/trips/:tripId/randomSponsorship')
+    .get(sponsorships.get_random_sponsorship);
+    
 };

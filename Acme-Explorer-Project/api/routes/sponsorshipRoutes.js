@@ -113,5 +113,7 @@ module.exports = function(app) {
    * @url /v2/sponsorships/:sponsorshipId/pay
   */
   app.route('/v2/sponsorships/:sponsorshipId/pay')
-    .put(auth.verifyUser(['Sponsor']), sponsorships.pay_a_sponsorship);
-  };
+    .put(auth.verifyUser(['Sponsor']), sponsorships.pay_a_sponsorship);      
+};
+
+
