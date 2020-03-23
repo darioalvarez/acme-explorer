@@ -157,10 +157,10 @@ describe("Sponsorship Tests", () => {
     it("PAY Sponsorship recently created", done => {
       chai
         .request(app)
-        .put("/v1/sponsorships/" + test_sponsorship_id + "/45")
+        .put("/v1/sponsorships/" + test_sponsorship_id)
         .end((err, res) => {
           expect(res).to.have.status(200);
-          expect(res.body).to.have.property('cost').to.be.equal(45);
+          expect(res.body).to.have.property('paid').to.be.equal(true);
 
           if (err) done(err);
           else done();
@@ -176,7 +176,6 @@ describe("Sponsorship Tests", () => {
           expect(res).to.have.status(200);
           expect(res.body).to.have.property('paid').to.be.equal(true);
           expect(res.body).to.have.property('url').to.be.equal('http://www.urlupdated.com');
-          expect(res.body).to.have.property('cost').to.be.equal(45);
 
           if (err) done(err);
           else done();
