@@ -542,25 +542,25 @@ var construyeQuery = function(finder) {
         // minPrice
         if (finder.minPrice) {
             query.price = {
-                $gte: req.query.minPrice
+                $gte: finder.minPrice
             };
         }
         // maxPrice
         if (finder.maxPrice) {
             query.price = {
-                $lte: req.query.maxPrice
+                $lte: finder.maxPrice
             };
         }
         // minDate
         if (finder.minDate) {
             query.startDate = {
-                $gte: req.query.minDate
+                $gte: finder.minDate
             };
         }
         // maxDate
         if (finder.maxDate) {
             query.endDate = {
-                $lte: req.query.maxDate
+                $lte: finder.maxDate
             };
         }
     }
