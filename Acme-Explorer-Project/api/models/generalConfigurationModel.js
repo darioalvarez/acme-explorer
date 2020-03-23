@@ -22,6 +22,6 @@ var GeneralConfigurationSchema = new Schema({
         default: 10,
         required: 'Kindly enter the finder number of results'
     }
-  }, { strict: false });
+  }, { strict: false, timestamps: true });
 
   module.exports = mongoose.model('GeneralConfiguration', GeneralConfigurationSchema);

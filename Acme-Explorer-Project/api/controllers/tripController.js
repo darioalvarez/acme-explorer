@@ -1,6 +1,7 @@
 'use strict'
 const mongoose = require('mongoose'),
     Trip = mongoose.model('Trips'),
+    GeneralConfiguration = mongoose.model('GeneralConfiguration'),
     Actor = mongoose.model('Actors');
 
 exports.list_all_trips = function (req, res) {
@@ -372,8 +373,10 @@ exports.unpublish_a_trip = function (req, res) {
 };
 
 
-exports.search_trips = function (req, res) {
+exports.search_trips = async function (req, res) {
     var query = {};
+    var generalConfig = await getGeneralConfig(); 
+
     // keyword=searchString
     if (req.query.keyword) {
         console.log("Setting keyword");
@@ -427,7 +430,8 @@ exports.search_trips = function (req, res) {
     }
 
     // limit=10
-    var limit = 10;
+    var limit = generalConfig ? generalConfig.finderNumResults : 10;
+    
     if (req.query.pageSize) {
         limit = parseInt(req.query.pageSize);
     }
@@ -466,4 +470,9 @@ exports.search_trips = function (req, res) {
             }
             console.log('End searching trips');
         });
+}
+
+var getGeneralConfig = async function () {
+    var generalConfiguration = await GeneralConfiguration.findOne({}, {}, { sort: { 'createdAt' : -1 } });
+    return generalConfiguration;
 }
