@@ -34,6 +34,24 @@ exports.create_an_sponsorship = function(req, res) {
     });
 };
 
+exports.update_an_sponsorship = function(req, res) {
+  //Check that the user is administrator if it is updating more things than comments and if not: res.status(403); "an access token is valid, but requires more privileges"
+    Sponsorship.findOneAndUpdate({_id: req.params.sponsorshipId}, req.body, {new: true}, function(err, sponsorship) {
+      if (err){
+        if(err.name=='ValidationError') {
+            res.status(422).send(err);
+        }
+        else{
+          res.status(500).send(err);
+        }
+      }
+      else{
+        res.json(sponsorship);
+      }
+    });
+};
+
+
 exports.update_an_sponsorship_v2 = function(req, res) {
   Sponsorship.findOneAndUpdate({_id: req.params.sponsorshipId}, req.body, {new: true}, function(err, sponsorship) {
     if (err){
@@ -56,16 +74,6 @@ exports.update_an_sponsorship_v2 = function(req, res) {
   });
 };
 
-exports.change_flat_rate = function(req, res) {
-  Sponsorship.findOneAndUpdate({_id: req.params.sponsorshipId}, { $set: {"cost": req.params.flatRate }}, {new: true}, function(err, sponsorship) {
-    if (err){
-        res.send(err);
-    }
-    else{
-        res.json(sponsorship);
-    }
-  });
-};
 
 exports.read_an_sponsorship = function(req, res) {
     Sponsorship.findById(req.params.sponsorshipId, function(err, sponsorship) {
@@ -84,7 +92,7 @@ exports.read_an_sponsorship = function(req, res) {
 };
 
 exports.pay_a_sponsorship = function(req, res) {
-    Sponsorship.findOneAndUpdate({_id: req.params.sponsorshipId},  { $set: {"payed": "true" }}, {new: true}, function(err, sponsorship) {
+    Sponsorship.findOneAndUpdate({_id: req.params.sponsorshipId},  { $set: {"paid": true }}, {new: true}, function(err, sponsorship) {
       if (err){
         res.status(500).send(err);
       }
@@ -94,22 +102,6 @@ exports.pay_a_sponsorship = function(req, res) {
     });
 };
 
-exports.update_an_sponsorship = function(req, res) {
-  //Check that the user is administrator if it is updating more things than comments and if not: res.status(403); "an access token is valid, but requires more privileges"
-    Sponsorship.findOneAndUpdate({_id: req.params.sponsorshipId}, req.body, {new: true}, function(err, sponsorship) {
-      if (err){
-        if(err.name=='ValidationError') {
-            res.status(422).send(err);
-        }
-        else{
-          res.status(500).send(err);
-        }
-      }
-      else{
-        res.json(sponsorship);
-      }
-    });
-};
 
 exports.delete_an_sponsorship = function(req, res) {
   //Check if the user is an administrator and if not: res.status(403); "an access token is valid, but requires more privileges"

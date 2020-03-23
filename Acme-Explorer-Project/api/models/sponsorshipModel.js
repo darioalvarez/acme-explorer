@@ -17,11 +17,11 @@ var SponsorshipSchema = new Schema({
     type: Boolean,
     default: false
   },
-  cost: {
+  /*cost: {
     type: Number,
     min: 0,
     required: function() {return this.paid}
-  },
+  },*/
   sponsor: {
     type: Schema.Types.ObjectId,
     required: 'Sponsor id required',

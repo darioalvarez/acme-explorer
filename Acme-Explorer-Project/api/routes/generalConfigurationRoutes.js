@@ -24,6 +24,15 @@ module.exports = function(app) {
     .post(authController.verifyUser(['ADMINISTRATOR']), generalConfig.create_general_configuration);
 
     
+  /**
+   * Put general configuration
+   *    RequiredRoles: Administrator
+	 *
+	 * @section generalConfiguration
+	 * @type put
+	 * @url /v1/generalConfiguration/:idGeneralConfiguration
+   * @param {string} role (administrator) 
+  */
   app.route('/v1/generalConfiguration/:idGeneralConfiguration')
     .put(generalConfig.update_general_configuration);
 

@@ -28,7 +28,9 @@ module.exports = function(app) {
    *    RequiredRoles: to be the proper actor
    * Get an actor
    *    RequiredRoles: to be the proper actor or an Administrator
-	 *
+	 * Delete an actor
+   *    Not a requirement but for making testing easy
+   * 
 	 * @section actors
 	 * @type get put
 	 * @url /v1/actors/:actorId
@@ -40,22 +42,12 @@ module.exports = function(app) {
     .delete(actors.delete_an_actor);
   
 
-  /**
-   * Put an actor
-   *    RequiredRoles: to be the proper actor
-   * Get an actor
-   *    RequiredRoles: any
-	 *
-	 * @section actors
-	 * @type get put
-	 * @url /v1/actors/:actorId
-  */  
   app.route('/v2/actors/:actorId')
-  .get(actors.read_an_actor)
-  .put(authController.verifyUser(["ADMINISTRATOR",
-                                  "EXPLORER",
-                                  "MANAGER",
-                                  "SPONSOR"]),actors.update_a_verified_actor)
+    .get(actors.read_an_actor)
+    .put(authController.verifyUser(["ADMINISTRATOR",
+                                    "EXPLORER",
+                                    "MANAGER",
+                                    "SPONSOR"]),actors.update_a_verified_actor)
      
 
   /**
@@ -75,7 +67,7 @@ module.exports = function(app) {
     .get(authController.verifyUser(["EXPLORER"]), applications.list_all_applications_by_explorer_grouped_by_status);
   
   
-    /**
+  /**
 	 * Set activated to FALSE to an actor
    *    RequiredRole: Administrator
 	 *
@@ -90,6 +82,7 @@ module.exports = function(app) {
   app.route('/v2/actors/:actorId/ban')
       .put(authController.verifyUser(["ADMINISTRATOR"]), actors.ban_an_actor);
 
+      
   /**
 	 * Set activated to TRUE to an actor
    *    RequiredRole: Administrator

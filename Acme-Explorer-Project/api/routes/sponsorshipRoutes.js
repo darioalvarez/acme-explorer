@@ -6,35 +6,29 @@ module.exports = function(app) {
   /**
    * Manage catalogue of sponsorships: 
    * Post sponsorships
-   *    RequiredRoles: Administrator
+   *    RequiredRoles: Sponsor
    * Get sponsorships 
-   *    RequiredRoles: Administrator
+   *    RequiredRoles: any
    *
    * @section sponsorships
-   * @type put 
+   * @type get post 
    * @url /v1/sponsorships
   */
   app.route('/v1/sponsorships')
 		.get(sponsorships.list_all_sponsorships)
     .post(sponsorships.create_an_sponsorship);
 
-  /**
-   * Manage flat rate cost 
-   * Post number
-   *    RequiredRoles: Administrator
-   *
-   * @section sponsorships
-   * @type put 
-   * @url /v1/sponsorships/:sponsorshipId/flatRate
-  */
-  app.route('/v1/sponsorships/:sponsorshipId/:flatRate')
-  .put(sponsorships.change_flat_rate)
+  app.route('/v2/sponsorships')
+    .get(sponsorships.list_all_sponsorships)
+    .post(auth.verifyUser(['SPONSOR']), sponsorships.create_an_sponsorship);
+
+
 
   /**
-   * Put comments on an sponsorship or update it
-   *    RequiredRoles: any (comment); administrator if any other update
+   * Put a sponsorship
+   *    RequiredRoles: Sponsor
    * Delete an sponsorship
-   *    RequiredRoles: Administrator
+   *    RequiredRoles: Sponsor
    * Get an sponsorship
    *    RequiredRoles: any
    * 
@@ -47,9 +41,16 @@ module.exports = function(app) {
 	  .put(sponsorships.update_an_sponsorship)
     .delete(sponsorships.delete_an_sponsorship);
   
+  app.route('/v2/sponsorships/:sponsorshipId')
+    .get(sponsorships.read_an_sponsorship)
+    .put(auth.verifyUser(['SPONSOR']),sponsorships.update_an_sponsorship_v2)
+    .delete(auth.verifyUser(['SPONSOR']),sponsorships.delete_an_sponsorship);
+
+
+
   /**
    * Manage the pay status
-   * Post number
+   * Put
    *    RequiredRoles: Sponsor
    *
    * @section sponsorships
@@ -57,63 +58,11 @@ module.exports = function(app) {
    * @url /v1/sponsorships/:sponsorshipId/pay
   */
   app.route('/v1/sponsorships/:sponsorshipId/pay')
-  .put(sponsorships.pay_a_sponsorship);
+    .put(sponsorships.pay_a_sponsorship);
 
-  /**
-   * Manage flat rate cost 
-   * Post number
-   *    RequiredRoles: Administrator
-   *
-   * @section sponsorships
-   * @type put 
-   * @url /v2/sponsorships/:sponsorshipId/flatRate
-  */
-  app.route('/v2/sponsorships/:sponsorshipId/flatRate')
-      .put(auth.verifyUser(['Administrator']), sponsorships.change_flat_rate)
 
- /**
-   * Manage catalogue of sponsorships: 
-   * Post sponsorships
-   *    RequiredRoles: Sponsor
-   * Get sponsorships 
-   *    RequiredRoles: any
-   *
-   * @section sponsorships
-   * @type put 
-   * @url /v2/sponsorships
-  */
-  app.route('/v2/sponsorships')
-  .get(sponsorships.list_all_sponsorships)
-  .post(auth.verifyUser(['Sponsor']), sponsorships.create_an_sponsorship);
-
-  /**
-   * Put comments on an sponsorship or update it
-   *    RequiredRoles: Sponsor
-   * Delete an sponsorship
-   *    RequiredRoles: Sponsor
-   * Get an sponsorship
-   *    RequiredRoles: any
-   * 
-   * @section sponsorships
-   * @type get put delete 
-   * @url /v2/sponsorships/:sponsorshipId
-  */
-  app.route('/v2/sponsorships/:sponsorshipId')
-  .get(sponsorships.read_an_sponsorship)
-  .put(auth.verifyUser(['Sponsor']),sponsorships.update_an_sponsorship_v2)
-  .delete(auth.verifyUser(['Sponsor']),sponsorships.delete_an_sponsorship);
-
-   /**
-   * Manage the pay status
-   * Post number
-   *    RequiredRoles: Sponsor
-   *
-   * @section sponsorships
-   * @type put 
-   * @url /v2/sponsorships/:sponsorshipId/pay
-  */
   app.route('/v2/sponsorships/:sponsorshipId/pay')
-    .put(auth.verifyUser(['Sponsor']), sponsorships.pay_a_sponsorship);      
+    .put(auth.verifyUser(['SPONSOR']), sponsorships.pay_a_sponsorship);      
 };
 
 

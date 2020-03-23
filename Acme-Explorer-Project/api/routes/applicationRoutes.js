@@ -24,13 +24,15 @@ module.exports = function(app) {
 
 
   /**
-   * Put an application.
-   *    RequiredRoles: to be the application's creator explorer
-   *                   or the trip manager
    * Get an specific application.
    *    RequiredRoles: to be the application's creator explorer
    *                   or the trip manager or an Administrator.
    * 
+   * Put an application.
+   *    RequiredRoles: to be the application's creator explorer
+   *                   or the trip manager
+   * 
+   * Delete an application. (For making tests easy)
    * @section applications
    * @type get put delete
    * @url /v1/applications/:applicationId
