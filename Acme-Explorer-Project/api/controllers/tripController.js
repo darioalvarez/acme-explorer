@@ -2,7 +2,8 @@
 const mongoose = require('mongoose'),
     Trip = mongoose.model('Trips'),
     GeneralConfiguration = mongoose.model('GeneralConfiguration'),
-    Actor = mongoose.model('Actors');
+    Actor = mongoose.model('Actors'),
+    actorController = require('./actorController');
 
 exports.list_all_trips = function (req, res) {
     //if auth user is ['MANAGER', 'ADMINISTRATOR'], list all trips
@@ -175,7 +176,7 @@ exports.update_a_trip = function update_a_trip(req, res) {
     Trip.findById(req.params.tripId, function (err, trip) {
         if (trip.published) {
             res.status(403).json({
-                message: 'A trip published can not be deleted'
+                message: 'A trip published can not be updated'
             });
         } else {
             var tripUpdated = req.body;
@@ -373,7 +374,203 @@ exports.unpublish_a_trip = function (req, res) {
 };
 
 
-exports.search_trips = async function (req, res) {
+
+exports.search_trips_by_keyword = async function (req, res) {
+    var query = {};
+    var generalConfig = await getGeneralConfig(); 
+
+    // keyword=searchString
+    if (req.query.keyword) {
+        console.log("Setting keyword");
+        query = {
+            $or: [{
+                    'ticker': {
+                        "$regex": req.query.keyword,
+                        "$options": "i"
+                    }
+                },
+                {
+                    'title': {
+                        "$regex": req.query.keyword,
+                        "$options": "i"
+                    }
+                },
+                {
+                    'description': {
+                        "$regex": req.query.keyword,
+                        "$options": "i"
+                    }
+                }
+            ]
+        };
+    }
+    
+    // limit=10 default
+    var limit = generalConfig ? generalConfig.finderNumResults : 10;
+    
+    if (req.query.pageSize) {
+        limit = parseInt(req.query.pageSize);
+    }
+
+    // skip=20
+    var skip = 0;
+    if (req.query.startFrom) {
+        skip = parseInt(req.query.startFrom);
+    }
+
+    // reverse="false|true"
+    var sort = "";
+    if (req.query.reverse == "true" && req.query.sortedBy) {
+        sort = "-";
+    }
+
+    // sortedBy="ticker|title|description|price|startDate|endDate"
+    if (req.query.sortedBy) {
+        sort += req.query.sortedBy;
+    }
+
+    console.log("Query: " + query + " Skip:" + skip + " Limit:" + limit + " Sort:" + sort);
+    console.log(query);
+
+    Trip.find(query)
+        .sort(sort)
+        .skip(skip)
+        .limit(limit)
+        .lean()
+        .exec(function (err, trips) {
+            console.log('Start searching trips');
+            if (err) {
+                res.send(err);
+            } else {
+                res.json(trips);
+            }
+            console.log('End searching trips');
+        });
+}
+
+
+
+var getGeneralConfig = async function () {
+    var generalConfiguration = await GeneralConfiguration.findOne({}, {}, { sort: { 'createdAt' : -1 } });
+    return generalConfiguration;
+}
+
+
+
+exports.search_trips_by_finder = async function (req, res) {
+    var query = {};
+    var generalConfig = await getGeneralConfig(); 
+    var actor = await actorController.get_actor_by_id(req.params.actorId); 
+
+    if (actor && actor.role.includes('EXPLORER')) {
+        let finder = actor.finder;
+        let timeCacheGeneral = generalConfig.finderCachedTime;
+        let searchInBD = true;
+
+        //Comprobar si tenemos que buscar en BBDD o podemos tirar de caché
+        if(finder && finder.results && finder.resultsCachedDate) {
+            let tiempoCacheadoMs = Math.abs(new Date() - finder.resultsCachedDate); //está en milisegundos
+            if (tiempoCacheadoMs < timeCacheGeneral) {
+                searchInBD = false
+            }
+        }
+
+        if (searchInBD) {
+            //SE REALIZA LA BÚSQUEDA EN BBDD
+            query = construyeQuery(finder);
+            // limit
+            var limit = generalConfig ? generalConfig.finderNumResults : 10;
+            
+
+            Trip.find(query)
+                .limit(limit)
+                .lean()
+                .exec(function (err, trips) {
+                    console.log('Start searching trips');
+                    if (err) {
+                        res.send(err);
+                    } else {
+                        //ACTUALIZAR RESULTS Y RESULTSCACHEDDATE DEL FINDER DEL ACTOR
+                        actorController.update_finder_cache(req.params.actorId, finder, trips);
+                        res.json(trips);
+                    }
+                    console.log('End searching trips');
+            });
+
+
+        } else {
+            //SE DEVUELVEN LOS RESULTADOS CACHEADOS
+            res.json(finder.results);
+        }
+
+    } else {
+        res.status(403).json({message: 'Unauthorized'});
+    }
+
+}
+
+
+
+var construyeQuery = function(finder) {
+    let query = {};
+    // keyword
+    if(finder) {
+        if (finder.keyword) {
+            console.log("Setting keyword");
+            query = {
+                $or: [{
+                        'ticker': {
+                            "$regex": finder.keyword,
+                            "$options": "i"
+                        }
+                    },
+                    {
+                        'title': {
+                            "$regex": finder.keyword,
+                            "$options": "i"
+                        }
+                    },
+                    {
+                        'description': {
+                            "$regex": finder.keyword,
+                            "$options": "i"
+                        }
+                    }
+                ]
+            };
+        }
+        // minPrice
+        if (finder.minPrice) {
+            query.price = {
+                $gte: req.query.minPrice
+            };
+        }
+        // maxPrice
+        if (finder.maxPrice) {
+            query.price = {
+                $lte: req.query.maxPrice
+            };
+        }
+        // minDate
+        if (finder.minDate) {
+            query.startDate = {
+                $gte: req.query.minDate
+            };
+        }
+        // maxDate
+        if (finder.maxDate) {
+            query.endDate = {
+                $lte: req.query.maxDate
+            };
+        }
+    }
+    
+
+    console.log("Query: " + query);
+    return query;
+}
+
+/*exports.search_trips = async function (req, res) {
     var query = {};
     var generalConfig = await getGeneralConfig(); 
 
@@ -471,8 +668,4 @@ exports.search_trips = async function (req, res) {
             console.log('End searching trips');
         });
 }
-
-var getGeneralConfig = async function () {
-    var generalConfiguration = await GeneralConfiguration.findOne({}, {}, { sort: { 'createdAt' : -1 } });
-    return generalConfiguration;
-}
+*/

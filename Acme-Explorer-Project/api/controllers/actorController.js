@@ -104,6 +104,11 @@ exports.read_an_actor = function(req, res) {
   });
 };
 
+exports.get_actor_by_id = async function(idActor) {
+  var actor = await Actor.findById(idActor);
+    return actor;
+};
+
 exports.update_an_actor = function(req, res) {
     Actor.findOneAndUpdate({_id: req.params.actorId}, req.body, {new: true}, function(err, actor) {
         if (err){
@@ -113,6 +118,34 @@ exports.update_an_actor = function(req, res) {
             res.json(actor);
         }
     });
+};
+
+exports.update_finder_cache = async function(idActor, finder, tripResults) {
+  let current_date = new Date();
+  if(!finder) {
+    finder = {
+      "keyword": null,
+      "minPrice": 0,
+      "maxPrice": null,
+      "minDate": null,
+      "maxDate": null,
+    }
+  }
+
+  await Actor.findOneAndUpdate({_id: idActor}, 
+    {
+      "finder": {
+        "keyword": finder.keyword,
+        "minPrice": finder.minPrice,
+        "maxPrice": finder.maxPrice,
+        "minDate": finder.minDate,
+        "maxDate": finder.maxDate,
+        "results": tripResults,
+        "resultsCachedDate": current_date
+      }
+    }
+  );
+
 };
 
 exports.delete_an_actor = function(req, res) {

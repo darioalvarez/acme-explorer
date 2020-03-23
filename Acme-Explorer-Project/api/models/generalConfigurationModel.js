@@ -10,9 +10,9 @@ var GeneralConfigurationSchema = new Schema({
     },
     finderCachedTime: {
       type: Number,
-      min: 3600,
-      max: 86400,
-      default: 3600,
+      min: 3600000,
+      max: 86400000,
+      default: 3600000,
       required: 'Kindly enter the finder cached time in seconds'
     },
     finderNumResults: {

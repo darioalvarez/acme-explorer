@@ -2,9 +2,9 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var bcrypt = require('bcrypt');
-const ISO6391 = require('iso-639-1')
+const ISO6391 = require('iso-639-1');
 
-var CachedTripSchema = new Schema({
+/*var CachedTripSchema = new Schema({
   title: {
     type: String,
     required: true
@@ -24,7 +24,7 @@ var CachedTripSchema = new Schema({
   cancelled: {
     type: Boolean
   }
-}, { strict: false });
+}, { strict: false });*/
 
 var FinderSchema = new Schema({
   keyword: {
@@ -53,7 +53,11 @@ var FinderSchema = new Schema({
       'Max date must be greater than Min date'
     ]
   },
-  results: [CachedTripSchema]
+  results: [Object],
+  resultsCachedDate : {
+    type: Date,
+    default: null
+  }
 }, { strict: false });
 
 FinderSchema.methods.toJSON = function() {

@@ -29,28 +29,40 @@ module.exports = function (app) {
 
 
   /**
-   * Get results from a search engine
+   * Get results from a search engine by keyword
    *    RequiredRoles: None;
    * 
    * @section trips
    * @type get
    * @url /v1/trips/search
    * @param {string} keyword (in ticker, title, or description)
-   * @param {string} minPrice
-   * @param {string} maxPrice
-   * @param {string} minDate
-   * @param {string} maxDate
    * @param {string} pageSize (limit)
    * @param {string} startFrom (offset)
    * @param {string} sortedBy (ticker, title, description)
    * @param {string} reverse (true|false) 
    */
+  app.route('/v1/trips/search')
+    .get(trips.search_trips_by_keyword)
 
-  app.route('/v1/trips/search/')
-    .get(trips.search_trips)
+  app.route('/v2/trips/search')
+    .get(trips.search_trips_by_keyword)
 
-  app.route('/v2/trips/search/')
-    .get(trips.search_trips)
+
+
+
+  /**
+   * Search trips by finder criteria
+   *    RequiredRoles: Explorer;
+   * 
+   * @section trips
+   * @type get
+   * @url /v1/trips/search/finder/:actorId
+   */
+  app.route('/v1/trips/search/finder/:actorId')
+    .get(trips.search_trips_by_finder)
+
+  app.route('/v2/trips/search/finder/:actorId')
+    .get(auth.verifyUser(['EXPLORER']), trips.search_trips_by_finder)
 
 
 
@@ -123,7 +135,7 @@ module.exports = function (app) {
     .get(auth.verifyUser(['MANAGER']), applications.list_applications_by_trip);
            
 
-    
+
   app.route('/v1/trips/:tripId/randomSponsorship')
     .get(sponsorships.get_random_sponsorship);
     
