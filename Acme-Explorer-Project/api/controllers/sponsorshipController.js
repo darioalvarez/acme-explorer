@@ -145,7 +145,7 @@ exports.get_random_sponsorship = function(req,res){
   var tripId = req.params.tripId
   tripId = mongoose.Types.ObjectId(tripId);
   console.log("Random para trip:" + tripId);
-  Sponsorship.aggregate([{$match: {trip: tripId }},
+  Sponsorship.aggregate([{$match: {trip: tripId, paid: true}},
     { $sample: { size: 1 }}], 
     function(err, sponsorship){
       if(err){
