@@ -37,6 +37,7 @@ https.createServer({
 
 var mongoDBURI = "mongodb+srv://acme:acmepassword@adoptionplatform-ly3vq.mongodb.net/test?retryWrites=true&w=majority";
 
+console.log("Automated deployed");
 
 console.log("Trying to connect DB to: " + mongoDBURI);
 mongoose.connect(mongoDBURI, {
