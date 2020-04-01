@@ -21,7 +21,8 @@ module.exports = function(app) {
 
 
   app.route('/v2/actors')
-	  .post(actors.create_an_actor_auth_verified);
+    .get(actors.list_all_actors)
+    .post(actors.create_an_actor_auth_verified);
     
   /**
    * Put an actor

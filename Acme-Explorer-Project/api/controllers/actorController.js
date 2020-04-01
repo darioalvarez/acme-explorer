@@ -7,14 +7,32 @@ var authController = require('./authController');
 
 
 exports.list_all_actors = function(req, res) {
-    Actor.find({}, function(err, actors) {
-        if (err){
-          res.send(err);
+  if (req.query.email) {
+    Actor.findOne({email: req.query.email}, function(err, actor) {
+      if (err){
+        res.status(500);
+        res.send(err);
+      }
+      else{
+        if(actor) {
+          res.json(actor);
+        } else {
+          res.status(404);
+          res.send([])
         }
-        else{
-            res.json(actors);
-        }
+      }
     });
+  } else {
+    Actor.find({}, function(err, actors) {
+      if (err){
+        res.send(err);
+      }
+      else{
+          res.json(actors);
+      }
+  });
+  }
+   
 };
 
 exports.create_an_actor = function(req, res) {
