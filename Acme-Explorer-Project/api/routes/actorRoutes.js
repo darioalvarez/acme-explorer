@@ -45,6 +45,7 @@ module.exports = function(app) {
 
   app.route('/v2/actors/:actorId')
     .get(actors.read_an_actor)
+    .put(actors.update_an_actor)
     .put(authController.verifyUser(["ADMINISTRATOR",
                                     "EXPLORER",
                                     "MANAGER",

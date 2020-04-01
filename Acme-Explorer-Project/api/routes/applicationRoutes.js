@@ -19,6 +19,7 @@ module.exports = function(app) {
    
     
   app.route('/v2/applications')
+  .get(applications.list_all_applications) //endpoint para facilitar desarrollo y pruebas
       .post(authController.verifyUser(['EXPLORER']), applications.create_an_application);
 
 
@@ -38,6 +39,11 @@ module.exports = function(app) {
    * @url /v1/applications/:applicationId
   */
   app.route('/v1/applications/:applicationId')
+    .get(applications.read_an_application)
+    .put(applications.update_an_application)
+    .delete(applications.delete_an_application);
+
+  app.route('/v2/applications/:applicationId')
     .get(applications.read_an_application)
     .put(applications.update_an_application)
     .delete(applications.delete_an_application);

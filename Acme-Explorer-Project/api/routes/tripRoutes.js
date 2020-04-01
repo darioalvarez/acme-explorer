@@ -138,5 +138,8 @@ module.exports = function (app) {
 
   app.route('/v1/trips/:tripId/randomSponsorship')
     .get(sponsorships.get_random_sponsorship);
+
+  app.route('/v2/trips/:tripId/randomSponsorship')
+    .get(sponsorships.get_random_sponsorship);
     
 };
