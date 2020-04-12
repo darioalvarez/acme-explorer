@@ -1,6 +1,6 @@
 var express = require('express'),
     app = express(),
-    port = 8080,
+    port = process.env.PORT || 8080,
     httpsPort = process.env.HTTPS_PORT || 8443,
     mongoose = require('mongoose'),
     bodyParser = require('body-parser'),
