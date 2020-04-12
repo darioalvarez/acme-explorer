@@ -32,12 +32,12 @@ https.createServer({
     })
 
 // MongoDB URI building
-var mongoDBHostname = process.env.MONGODBHOSTNAME || "localhost";
-var mongoDBPort = process.env.DBPORT || "27017";
-var mongoDBName = process.env.mongoDBName || "ACME-Explorer";
-var mongoDBURI = "mongodb://" + mongoDBHostname + ":" + mongoDBPort + "/" + mongoDBName;
+//var mongoDBHostname = process.env.MONGODBHOSTNAME || "localhost";
+//var mongoDBPort = process.env.DBPORT || "27017";
+//var mongoDBName = process.env.mongoDBName || "ACME-Explorer";
+//var mongoDBURI = "mongodb://" + mongoDBHostname + ":" + mongoDBPort + "/" + mongoDBName;
 
-// var mongoDBURI = "mongodb+srv://acme:acmepassword@adoptionplatform-ly3vq.mongodb.net/test?retryWrites=true&w=majority";
+var mongoDBURI = "mongodb+srv://acme:acmepassword@adoptionplatform-ly3vq.mongodb.net/test?retryWrites=true&w=majority";
 
 console.log("Automated deployed v2");
 
