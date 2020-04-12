@@ -17,9 +17,8 @@ var express = require('express'),
     admin = require('firebase-admin'),
     https = require('https'),
     fs = require('fs'),
-    //serviceAccount = require('./keys/acmeexplorer-c9013-firebase-adminsdk-i1xsf-9f0357a163.json');
-    serviceAccount = require('./keys/acme-explorer-frontend-firebase-adminsdk-wy83p-2b071112cc.json');
-    
+    serviceAccount = require('./keys/acmeexplorer-c9013-firebase-adminsdk-i1xsf-9f0357a163.json');
+
 
 
 // HTTPS SSL certificate
@@ -32,10 +31,11 @@ https.createServer({
     })
 
 // MongoDB URI building
-//var mongoDBHostname = process.env.MONGODBHOSTNAME || "localhost";
-//var mongoDBPort = process.env.DBPORT || "27017";
-//var mongoDBName = process.env.mongoDBName || "ACME-Explorer";
-//var mongoDBURI = "mongodb://" + mongoDBHostname + ":" + mongoDBPort + "/" + mongoDBName;
+
+// var mongoDBHostname = process.env.MONGODBHOSTNAME || "localhost";
+// var mongoDBPort = process.env.DBPORT || "27017";
+// var mongoDBName = process.env.mongoDBName || "ACME-Explorer";
+// var mongoDBURI = "mongodb://" + mongoDBHostname + ":" + mongoDBPort + "/" + mongoDBName;
 
 var mongoDBURI = "mongodb+srv://acme:acmepassword@adoptionplatform-ly3vq.mongodb.net/test?retryWrites=true&w=majority";
 

@@ -8,7 +8,7 @@ var authController = require('./authController');
 
 exports.list_all_actors = function(req, res) {
   if (req.query.email) {
-    Actor.find({email: req.query.email}, function(err, actor) {
+    Actor.findOne({email: req.query.email}, function(err, actor) {
       if (err){
         res.status(500);
         res.send(err);

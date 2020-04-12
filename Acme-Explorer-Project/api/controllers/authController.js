@@ -40,15 +40,13 @@ exports.verifyUser = function(requiredRoles) {
         console.log('entra en el then de verifyIdToken: ');
 
         var uid = decodedToken.uid;
-        var email = decodedToken.email;
         var auth_time = decodedToken.auth_time;
         var exp =  decodedToken.exp;
         console.log('idToken verificado para el uid: '+uid);
-        console.log('idToken verificado para el email: '+email);
         console.log('auth_time: '+auth_time);
         console.log('exp: '+exp);
 
-        Actor.findOne({ email: email }, function (err, actor) {
+        Actor.findOne({ email: uid }, function (err, actor) {
           if (err) { res.send(err); }
 
           // No actor found with that email as username
