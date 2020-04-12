@@ -1,6 +1,6 @@
 var express = require('express'),
     app = express(),
-    port = process.env.PORT || 8080,
+    port = 8080,
     httpsPort = process.env.HTTPS_PORT || 8443,
     mongoose = require('mongoose'),
     bodyParser = require('body-parser'),
@@ -11,6 +11,7 @@ var express = require('express'),
     Sponsorship = require('./api/models/sponsorshipModel'),
     DataWareHouse = require('./api/models/dataWareHouseModel'),
     GeneralConfiguration = require('./api/models/generalConfigurationModel'),
+    Audit = require('./api/models/auditModel'),
     DataWareHouseTools = require('./api/controllers/dataWareHouseController'),
     bodyParser = require('body-parser'),
     admin = require('firebase-admin'),
@@ -83,6 +84,7 @@ var routesActors = require('./api/routes/actorRoutes');
 var routesApplications = require('./api/routes/applicationRoutes');
 var routesTrips = require('./api/routes/tripRoutes');
 var routesSponsorship = require('./api/routes/sponsorshipRoutes');
+var routesAudits = require('./api/routes/auditRoutes');
 var routesDataWareHouse = require('./api/routes/dataWareHouseRoutes');
 var routesGeneralConfiguration = require('./api/routes/generalConfigurationRoutes');
 var routesLogin = require('./api/routes/loginRoutes');
@@ -91,6 +93,7 @@ routesActors(app);
 routesApplications(app);
 routesTrips(app);
 routesSponsorship(app);
+routesAudits(app);
 routesDataWareHouse(app);
 routesGeneralConfiguration(app);
 routesLogin(app);
