@@ -17,7 +17,8 @@ var express = require('express'),
     admin = require('firebase-admin'),
     https = require('https'),
     fs = require('fs'),
-    serviceAccount = require('./keys/acmeexplorer-c9013-firebase-adminsdk-i1xsf-9f0357a163.json');
+    //serviceAccount = require('./keys/acmeexplorer-c9013-firebase-adminsdk-i1xsf-9f0357a163.json');
+    serviceAccount = require('./keys/acme-explorer-frontend-firebase-adminsdk-wy83p-2b071112cc.json');
 
 
 
