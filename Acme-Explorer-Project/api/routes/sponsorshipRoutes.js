@@ -63,6 +63,12 @@ module.exports = function(app) {
 
   app.route('/v2/sponsorships/:sponsorshipId/pay')
     .put(auth.verifyUser(['SPONSOR']), sponsorships.pay_a_sponsorship);      
+
+
+  app.route('/v2/actors/:sponsorId/sponsorships')
+    .get(sponsorships.sponsorships_by_sponsor);  
 };
+
+
 
 

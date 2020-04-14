@@ -148,6 +148,19 @@ exports.get_random_sponsorship = function(req,res){
   });
 };
 
+exports.sponsorships_by_sponsor = function(req, res){
+  Sponsorship.find({sponsor: req.params.sponsorId}, function(err, sponsorship) {
+    if(err){
+        res.status(500).send(err);
+    }
+    else{
+        res.status(200).json(sponsorship);
+    }
+});
+
+
+}
+
 
 
 
