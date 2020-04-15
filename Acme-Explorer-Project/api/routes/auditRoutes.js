@@ -5,7 +5,7 @@ module.exports = function(app) {
 
 
   app.route('/v1/audits')
-	.get(audits.list_all_audits) //endpoint para facilitar desarrollo y pruebas
+	  .get(audits.list_all_audits) //endpoint para facilitar desarrollo y pruebas
     .post(audits.create_an_audit);
    
   app.route('/v2/audits')
@@ -22,5 +22,8 @@ module.exports = function(app) {
     .get(audits.read_an_audit)
     .put(audits.update_an_audit)
     .delete(audits.delete_an_audit);
+
+  app.route('/v2/actors/:auditorId/audits')
+    .get(audits.audits_by_auditor);  
   
 };

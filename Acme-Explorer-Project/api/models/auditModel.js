@@ -17,7 +17,7 @@ var AuditSchema = new Schema({
     required: 'Kindly enter the description'
   },
   attachment: {
-    type: Buffer,
+    data: Buffer,
     contentType: String
   },
   auditor: {
