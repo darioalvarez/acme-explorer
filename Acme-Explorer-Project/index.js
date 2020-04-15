@@ -79,7 +79,7 @@ app.get("/", (req, res) => {
 
 admin.initializeApp({
     credential : admin.credential.cert(serviceAccount),
-    databaseURL: 'https://acme-explorerjdc.firebaseio.com'
+    databaseURL: "https://acme-explorer-frontend.firebaseio.com"
 });
 
 var routesActors = require('./api/routes/actorRoutes');
