@@ -56,11 +56,9 @@ exports.create_an_actor = function(req, res) {
 exports.create_an_actor_auth_verified = async function(req, res) {
   var new_actor = new Actor(req.body);
   if (new_actor.role.includes('MANAGER')) {
-    var idToken = req.headers['idtoken'];
-    if (idToken === null || idToken.length == 0) {
-      res.status(403);
-      res.send('Para crear un MANAGER hay que estar logado como ADMINISTRATOR');
-    } else {
+    var idToken = req.headers['idToken'];
+    console.log('create actor idToken: ', idToken);
+    if (idToken) {
       var authenticatedUserId = await authController.getUserId(idToken);
       Actor.findById(authenticatedUserId, function(err, actor) {
         if (err){
@@ -82,7 +80,11 @@ exports.create_an_actor_auth_verified = async function(req, res) {
           }
         }
       });
+    } else {
+      res.status(403);
+      res.send('Para crear un MANAGER hay que estar logado como ADMINISTRATOR');
     }
+
     
   } else {
     new_actor.save(function(err, actor) {
