@@ -19,7 +19,7 @@ module.exports = function(app) {
     .post(sponsorships.create_an_sponsorship);
 
   app.route('/v2/sponsorships')
-    .get(sponsorships.list_all_sponsorships)
+    .get(auth.verifyUser(['SPONSOR']), sponsorships.list_all_sponsorships)
     .post(auth.verifyUser(['SPONSOR']), sponsorships.create_an_sponsorship);
 
 
@@ -42,7 +42,7 @@ module.exports = function(app) {
     .delete(sponsorships.delete_an_sponsorship);
   
   app.route('/v2/sponsorships/:sponsorshipId')
-    .get(sponsorships.read_an_sponsorship)
+    .get(auth.verifyUser(['SPONSOR']), sponsorships.read_an_sponsorship)
     .put(auth.verifyUser(['SPONSOR']),sponsorships.update_an_sponsorship_v2)
     .delete(auth.verifyUser(['SPONSOR']),sponsorships.delete_an_sponsorship);
 
@@ -66,7 +66,7 @@ module.exports = function(app) {
 
 
   app.route('/v2/actors/:sponsorId/sponsorships')
-    .get(sponsorships.sponsorships_by_sponsor);  
+    .get(auth.verifyUser(['SPONSOR']), sponsorships.sponsorships_by_sponsor);  
 };
 
 
