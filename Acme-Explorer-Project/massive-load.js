@@ -109,7 +109,7 @@ module.exports.loadApplicationsFromApi =
             if (err) {
                 res.send(err);
             } else if (onlyIfEmptyCollection && documentCount > 0) {
-                console.log('DB already has ' + documentCount + ' trips.');
+                console.log('DB already has ' + documentCount + ' applications.');
                 next();
             } else {
                 console.log('Empty DB applications, loading initial data...');
