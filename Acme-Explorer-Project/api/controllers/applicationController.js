@@ -38,20 +38,22 @@ exports.list_all_applications_by_explorer_grouped_by_status = async function(req
 exports.create_an_application = function(req, res) {
   //Check that user is an Explorer and if not: res.status(403); "an access token is valid, but requires more privileges"
   var new_application = new Application(req.body);
+  const date = new Date();
 
   //Comprobar que el Trip está publicado Y no ha empezado Y no está cancelado
   Trip.find({_id:new_application.trip, published:true,
-    cancelled:false, startDate: {$gt:Date.now()}}, function (err, trip) {
+    cancelled:false}, function (err, trip) {
     
       if (err) {
         res.status(500).send(err);
       } else {
 
-        if (trip.length > 0) {
+        if (trip.length > 0 && date < trip[0].startDate) {
           //En este caso, el trip asociado sería correcto y procederíamos con el save
+          new_application.trip_name = trip[0].title;
           new_application.save(function(err, application) {
             if (err){
-              if(err.name=='ValidationError') {
+              if(err.name=='ValidationError') {                  
                   res.status(422).send(err);
               }
               else{
