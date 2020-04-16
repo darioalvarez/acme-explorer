@@ -8,12 +8,12 @@ var ApplicationSchema = new Schema({
     type: Date,
     default: Date.now
   },
-  status: [{
+  status: {
     type: String,
     required: true,
     enum: ['PENDING', 'REJECTED', 'DUE', 'ACCEPTED', 'CANCELLED'],
     default: 'PENDING'
-  }],
+  },
   rejectedReason: {
     type: String
   },
