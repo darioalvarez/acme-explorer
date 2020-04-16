@@ -1,7 +1,8 @@
 'use strict';
 module.exports = function(app) {
   var actors = require('../controllers/actorController');
-  var applications = require('../controllers/applicationController')
+  var applications = require('../controllers/applicationController');
+  var trips = require('../controllers/tripController');
   var authController = require('../controllers/authController');
 
   /**
@@ -67,6 +68,26 @@ module.exports = function(app) {
 
   app.route('/v2/actors/:actorId/applications')
     .get(authController.verifyUser(["EXPLORER"]), applications.list_all_applications_by_explorer_grouped_by_status);
+  
+
+
+  /**
+   * Get trips created by a manager
+   *    RequiredRoles: to be the proper Manager
+	 *
+	 * @section actors
+	 * @type get
+	 * @url /v1/actors/:actorId/trips
+   * @param {string} actorId
+  */ 
+ app.route('/v1/actors/:actorId/trips')
+ .get(trips.list_all_by_manager);
+
+
+  app.route('/v2/actors/:actorId/trips')
+  .get(authController.verifyUser(["MANAGER"]), trips.list_all_by_manager);
+
+
   
   
   /**

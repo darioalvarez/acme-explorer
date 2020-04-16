@@ -38,6 +38,21 @@ exports.list_all_trips_v2 = async function (req, res) {
     });
 };
 
+
+exports.list_all_by_manager = async function (req, res) {
+
+    Trip.find({manager:req.params.actorId}, function(err, trips) {
+        if (err){
+          res.status(500).send(err);
+        }
+        else{
+          res.json(trips);
+        }
+      });
+};
+
+
+
 exports.create_a_trip = function (req, res) {
     //check auth user is ['MANAGER'], otherwise return 403
     var new_trip = new Trip(req.body);
