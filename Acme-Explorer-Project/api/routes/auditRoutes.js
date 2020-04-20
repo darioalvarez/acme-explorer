@@ -27,6 +27,6 @@ module.exports = function(app) {
     .get(authController.verifyUser(['AUDITOR']), audits.audits_by_auditor);  
 
     app.route('/v2/trips/:tripId/audits')
-    .get(audits.ist_audits_by_trip);
+    .get(audits.list_audits_by_trip);
   
 };
