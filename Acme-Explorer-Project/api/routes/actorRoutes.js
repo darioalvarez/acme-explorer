@@ -1,5 +1,5 @@
 'use strict';
-module.exports = function(app) {
+module.exports = function (app) {
   var actors = require('../controllers/actorController');
   var applications = require('../controllers/applicationController');
   var trips = require('../controllers/tripController');
@@ -10,131 +10,162 @@ module.exports = function(app) {
    *    RequiredRoles: None
    * Post an actor: register to the system
    *    RequiredRoles: None
-	 *
-	 * @section actors
-	 * @type get post
-	 * @url /v1/actors
+   *
+   * @section actors
+   * @type get post
+   * @url /v1/actors
    * @param {string} role (administrator|explorer|manager|sponsor) 
-  */
+   */
   app.route('/v1/actors')
-	  .get(actors.list_all_actors)
-	  .post(actors.create_an_actor);
+    .get(actors.list_all_actors)
+    .post(actors.create_an_actor);
 
 
   app.route('/v2/actors')
     .get(actors.list_all_actors)
     .post(actors.create_an_actor_auth_verified);
-    
+
   /**
    * Put an actor
    *    RequiredRoles: to be the proper actor
    * Get an actor
    *    RequiredRoles: to be the proper actor or an Administrator
-	 * Delete an actor
+   * Delete an actor
    *    Not a requirement but for making testing easy
    * 
-	 * @section actors
-	 * @type get put
-	 * @url /v1/actors/:actorId
+   * @section actors
+   * @type get put
+   * @url /v1/actors/:actorId
    * @param {string} actorId
-  */ 
+   */
   app.route('/v1/actors/:actorId')
     .get(actors.read_an_actor)
-	  .put(actors.update_an_actor)
+    .put(actors.update_an_actor)
     .delete(actors.delete_an_actor);
-  
+
 
   app.route('/v2/actors/:actorId')
     .get(actors.read_an_actor)
-    .put(actors.update_an_actor)
-    .put(authController.verifyUser(["ADMINISTRATOR",
-                                    "EXPLORER",
-                                    "MANAGER",
-                                    "SPONSOR"]),actors.update_a_verified_actor)
-     
+    // .put(actors.update_an_actor)
+  .put(authController.verifyUser([
+    "ADMINISTRATOR",
+    "EXPLORER",
+    "MANAGER",
+    "SPONSOR",
+    "AUDITOR"
+  ]), actors.update_a_verified_actor)
+
+
+  /**
+   * Update user password
+   *
+   * @section actors
+   * @type put
+   * @url /v1/actors/:actorId/password
+   * @param {string} actorId
+   */
+  app.route('/v1/actors/:actorId/password')
+    .put(actors.update_actor_password);
+
+  app.route('/v2/actors/:actorId/password')
+    .put(actors.update_actor_password);
+
+  /**
+   * Update user photo
+   *
+   * @section actors
+   * @type put
+   * @url /v1/actors/:actorId/photo
+   * @param {string} actorId
+   */
+  app.route('/v1/actors/:actorId/photo')
+    .put(actors.update_actor_photo);
+
+  app.route('/v2/actors/:actorId/photo')
+    .put(actors.update_actor_photo);
+
+
 
   /**
    * Get applications made by an explorer
    *    RequiredRoles: to be the proper Explorer
-	 *
-	 * @section actors
-	 * @type get
-	 * @url /v1/actors/:actorId/applications
+   *
+   * @section actors
+   * @type get
+   * @url /v1/actors/:actorId/applications
    * @param {string} actorId
-  */ 
+   */
   app.route('/v1/actors/:actorId/applications')
     .get(applications.list_all_applications_by_explorer_grouped_by_status);
-  
+
 
   app.route('/v2/actors/:actorId/applications')
     .get(authController.verifyUser(["EXPLORER"]), applications.list_all_applications_by_explorer_grouped_by_status);
-  
+
 
 
   /**
    * Get trips created by a manager
    *    RequiredRoles: to be the proper Manager
-	 *
-	 * @section actors
-	 * @type get
-	 * @url /v1/actors/:actorId/trips
+   *
+   * @section actors
+   * @type get
+   * @url /v1/actors/:actorId/trips
    * @param {string} actorId
-  */ 
- app.route('/v1/actors/:actorId/trips')
- .get(trips.list_all_by_manager);
+   */
+  app.route('/v1/actors/:actorId/trips')
+    .get(trips.list_all_by_manager);
 
 
   app.route('/v2/actors/:actorId/trips')
-  .get(authController.verifyUser(["MANAGER"]), trips.list_all_by_manager);
+    .get(authController.verifyUser(["MANAGER"]), trips.list_all_by_manager);
 
 
-  
-  
   /**
-	 * Set activated to FALSE to an actor
+   * Set activated to FALSE to an actor
    *    RequiredRole: Administrator
-	 *
-	 * @section actors
-	 * @type put
-	 * @url /v1/actors/:actorId/ban
-	 * @param {string} actorId
-	*/
+   *
+   * @section actors
+   * @type put
+   * @url /v1/actors/:actorId/ban
+   * @param {string} actorId
+   */
   app.route('/v1/actors/:actorId/ban')
-      .put(actors.ban_an_actor);
+    .put(actors.ban_an_actor);
 
   app.route('/v2/actors/:actorId/ban')
-      .put(authController.verifyUser(["ADMINISTRATOR"]), actors.ban_an_actor);
+    .put(authController.verifyUser(["ADMINISTRATOR"]), actors.ban_an_actor);
 
-      
+
   /**
-	 * Set activated to TRUE to an actor
+   * Set activated to TRUE to an actor
    *    RequiredRole: Administrator
-	 *
-	 * @section actors
-	 * @type put
-	 * @url /v1/actors/:actorId/unban
-	 * @param {string} actorId
-	*/
+   *
+   * @section actors
+   * @type put
+   * @url /v1/actors/:actorId/unban
+   * @param {string} actorId
+   */
   app.route('/v1/actors/:actorId/unban')
-      .put(actors.unban_an_actor);
+    .put(actors.unban_an_actor);
 
   app.route('/v2/actors/:actorId/unban')
-      .put(authController.verifyUser(["ADMINISTRATOR"]), actors.unban_an_actor);
-  
-  
+    .put(authController.verifyUser(["ADMINISTRATOR"]), actors.unban_an_actor);
+
+
   /**
-	 * Modify search criteria of finder
+   * Modify search criteria of finder
    *    RequiredRole: to be the finder's explorer owner
-	 *
-	 * @section actors
-	 * @type put
-	 * @url /v1/actors/:actorId/myfinder
-	 * @param {string} actorId
-	*/
+   *
+   * @section actors
+   * @type put
+   * @url /v1/actors/:actorId/myfinder
+   * @param {string} actorId
+   */
   app.route('/v1/actors/:actorId/myfinder')
-      .put(actors.update_an_actor);
-      //update_actor_finder ??
+    .put(actors.update_an_actor);
+  //update_actor_finder ??
 
   app.route('/v2/actors/:actorId/myfinder')
-      .put(authController.verifyUser(["EXPLORER"]), actors.update_a_verified_actor);
+    .put(authController.verifyUser(["EXPLORER"]), actors.update_a_verified_actor);
 };
