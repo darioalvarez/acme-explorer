@@ -3,7 +3,8 @@ const mongoose = require('mongoose'),
     Trip = mongoose.model('Trips'),
     GeneralConfiguration = mongoose.model('GeneralConfiguration'),
     Actor = mongoose.model('Actors'),
-    actorController = require('./actorController');
+    actorController = require('./actorController'),
+    authController = require('./authController');
 
 exports.list_all_trips = function (req, res) {
     //if auth user is ['MANAGER', 'ADMINISTRATOR'], list all trips

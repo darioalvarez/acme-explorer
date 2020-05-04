@@ -11,13 +11,14 @@ exports.getUserId = async function(idToken) {
   var actorFromFB = await admin.auth().verifyIdToken(idToken);
    
       var uid = actorFromFB.uid;
+      var email = actorFromFB.email;
       var auth_time = actorFromFB.auth_time;
       var exp =  actorFromFB.exp;
       console.log('idToken verificado para el uid: '+uid);
       console.log('auth_time: '+auth_time);
       console.log('exp: '+exp);
 
-      var mongoActor = await Actor.findOne({ email: uid });
+      var mongoActor = await Actor.findOne({ email: email });
        if (!mongoActor) { return null; }
 
         else {
