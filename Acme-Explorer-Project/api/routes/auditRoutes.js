@@ -20,8 +20,8 @@ module.exports = function(app) {
 
   app.route('/v2/audits/:auditId')
     .get(authController.verifyUser(['AUDITOR']), audits.read_an_audit)
-    .put(authController.verifyUser(['AUDITOR']), audits.update_an_audit)
-    .delete(authController.verifyUser(['AUDITOR']), audits.delete_an_audit);
+    .put(authController.verifyUser(['AUDITOR']), audits.update_an_audit_v2)
+    .delete(authController.verifyUser(['AUDITOR']), audits.delete_an_audit_v2);
 
   app.route('/v2/actors/:auditorId/audits')
     .get(authController.verifyUser(['AUDITOR']), audits.audits_by_auditor);  
