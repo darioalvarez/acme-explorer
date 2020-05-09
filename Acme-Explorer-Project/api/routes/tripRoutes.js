@@ -105,7 +105,7 @@ module.exports = function (app) {
     .put(trips.cancel_a_trip);
 
   app.route('/v2/trips/:tripId/cancel')
-    .put(auth.verifyUser(['MANAGER']), trips.cancel_a_trip_v2);
+    .put(auth.verifyUser(['MANAGER', 'ADMINISTRATOR']), trips.cancel_a_trip_v2);
 
 
 
