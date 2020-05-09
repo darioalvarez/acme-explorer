@@ -1,9 +1,10 @@
 'use strict';
 
-var mongoose = require('mongoose'),
+const mongoose = require('mongoose'),
   Audit = mongoose.model('Audits'),
   Trip = mongoose.model('Trips'),
-  Actor = mongoose.model('Actors');
+  Actor = mongoose.model('Actors'),
+  authController = require('./authController');
 
 exports.list_all_audits = function(req, res) {
   Audit.find({}, function(err, audit) {

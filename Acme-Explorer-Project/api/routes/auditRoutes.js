@@ -19,7 +19,7 @@ module.exports = function(app) {
     .delete(audits.delete_an_audit);
 
   app.route('/v2/audits/:auditId')
-    .get(authController.verifyUser(['AUDITOR']), audits.read_an_audit)
+    .get(audits.read_an_audit)
     .put(authController.verifyUser(['AUDITOR']), audits.update_an_audit_v2)
     .delete(authController.verifyUser(['AUDITOR']), audits.delete_an_audit_v2);
 
