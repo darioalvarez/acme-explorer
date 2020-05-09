@@ -233,11 +233,11 @@ exports.update_a_trip_v2 = async function update_a_trip(req, res) {
     Actor.findById(authenticatedUserId, function (err, actor) {
         if (actor.role.includes("MANAGER") || actor.role.includes("ADMINISTRATOR")) {
             Trip.findById(req.params.tripId, function (err, trip) {
-                if (trip.published) {
+                /*if (trip.published) {
                     res.status(403).json({
                         message: 'A trip published can not be deleted'
                     });
-                } else {
+                } else {*/
                     var tripUpdated = req.body;
                     //calculating the total price as sum of the stages prices
                     if (tripUpdated.stages) {
@@ -264,7 +264,7 @@ exports.update_a_trip_v2 = async function update_a_trip(req, res) {
                             res.json(trip);
                         }
                     });
-                }
+                //}
             });
         } else {
             res.status(403).json({
