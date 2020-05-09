@@ -88,8 +88,8 @@ module.exports = function (app) {
 
   app.route('/v2/trips/:tripId')
     .get(trips.read_a_trip)
-    .put(auth.verifyUser(['MANAGER']), trips.update_a_trip_v2)
-    .delete(auth.verifyUser(['MANAGER']), trips.delete_a_trip_v2);
+    .put(auth.verifyUser(['MANAGER', 'ADMINISTRATOR']), trips.update_a_trip_v2)
+    .delete(auth.verifyUser(['MANAGER', 'ADMINISTRATOR']), trips.delete_a_trip_v2);
 
 
 

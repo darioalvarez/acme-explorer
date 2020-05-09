@@ -162,11 +162,11 @@ exports.delete_a_trip_v2 = async function (req, res) {
                         message: 'Trip does not exists'
                     });
                 } else {
-                    if (trip.published) {
+                    /*if (trip.published) {
                         res.status(403).json({
                             message: 'A trip published can not be deleted'
                         });
-                    } else {
+                    } else {*/
                         Trip.deleteOne({
                             _id: req.params.tripId
                         }, function (err, delRes) {
@@ -176,7 +176,7 @@ exports.delete_a_trip_v2 = async function (req, res) {
                                 res.json(delRes.deletedCount);
                             }
                         });
-                    }
+                    //}
                 }
             });
         } else {
