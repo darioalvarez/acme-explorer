@@ -16,10 +16,7 @@ var AuditSchema = new Schema({
     type: String,
     required: 'Kindly enter the description'
   },
-  attachment: {
-    data: Buffer,
-    contentType: String
-  },
+  attachment: [String],
   auditor: {
     type: Schema.Types.ObjectId,
     required: 'Auditor id required',
