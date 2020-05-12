@@ -76,7 +76,7 @@ module.exports = function(app) {
       .put(applications.process_an_application);
 
   app.route('/v2/applications/:applicationId/process')
-      .put(authController.verifyUser(['MANAGER']), applications.process_an_application);
+      .put(/*authController.verifyUser(['MANAGER']),*/ applications.process_an_application);
   
   
   /**

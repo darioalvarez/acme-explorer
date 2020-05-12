@@ -3,7 +3,8 @@
 
 var mongoose = require('mongoose'),
   Application = mongoose.model('Applications'),
-  Trip = mongoose.model('Trips');
+  Trip = mongoose.model('Trips'),
+  authController = require('./authController');
 
 exports.list_all_applications = function(req, res) {
   Application.find({}, function(err, application) {
@@ -22,7 +23,8 @@ exports.list_all_applications_by_explorer_grouped_by_status = async function(req
   try {
     results = await Application.aggregate([
       {$match:{explorer: mongoose.Types.ObjectId(req.params.actorId)}},
-      {$group:{_id:"$status", applications: { $push: "$$ROOT" }}}
+      {$group:{_id:"$status", applications: { $push: "$$ROOT" }}},
+      {$sort: {_id: 1}}
     ]);
 
     res.json(results);
@@ -51,6 +53,7 @@ exports.create_an_application = function(req, res) {
         if (trip.length > 0 && date < trip[0].startDate) {
           //En este caso, el trip asociado sería correcto y procederíamos con el save
           new_application.trip_name = trip[0].title;
+          new_application.trip_startDate = trip[0].startDate;
           new_application.save(function(err, application) {
             if (err){
               if(err.name=='ValidationError') {                  
@@ -166,16 +169,28 @@ exports.pay_an_application_by_owner = async function(req, res) {
 
   var idToken = req.headers['idtoken'];
   var authenticatedUserId = await authController.getUserId(idToken);
-  
-  Application.findOneAndUpdate({_id: req.params.applicationId, paid:false, status:"DUE"},  { $set: {"status": "ACCEPTED", "paid":true}}, {new: true}, function(err, application) {
-    if (err){
+
+  Application.findById(req.params.applicationId, function (err, application) {
+    if (err) {
       res.status(500).send(err);
     }
-    else if (application === null || application.length == 0){
-      res.status(422).send(err="La Application requerida ya está pagada o su estado no es DUE");
+    else if (application === null || application.length == 0 || application.status !== 'DUE' || application.paid) {
+      res.status(422).send(err = "La Application requerida no está en proceso o ya está pagada");
     } else {
-      if (application.actorId == authenticatedUserId) {
-        res.json(application);
+
+      if (new String(application.explorer).valueOf() == new String(authenticatedUserId).valueOf()) {
+        Application.findOneAndUpdate({ _id: req.params.applicationId }, { $set: { "status": "ACCEPTED", "paid":true} }, { new: true }, function (err, applicationUpdated) {
+          if (err) {
+            if (err.name == 'ValidationError') {
+              res.status(422).send(err);
+            } else {
+              res.status(500).send(err);
+            }
+          } else {
+            res.json(applicationUpdated);
+            console.log('Application paid: ', application);
+          }
+        })
       } else {
         res.status(403); //Auth error
         res.send('The Actor is trying to pay an Application created by another actor!');
@@ -199,24 +214,36 @@ exports.cancel_an_application = function(req, res) {
   });
 };
 
-exports.cancel_an_application_by_owner = async function(req, res) {
+exports.cancel_an_application_by_owner = async function (req, res) {
   var idToken = req.headers['idtoken'];
   var authenticatedUserId = await authController.getUserId(idToken);
 
-  Application.findOneAndUpdate({_id: req.params.applicationId, status:"ACCEPTED"},  { $set: {"status": "CANCELLED"}}, {new: true}, function(err, application) {
-    if (err){
+
+  Application.findById(req.params.applicationId, function (err, application) {
+    if (err) {
       res.status(500).send(err);
     }
-    else if (application === null || application.length == 0){
-      res.status(422).send(err="La Application requerida no está aceptada");
+    else if (application === null || application.length == 0 || application.status !== 'ACCEPTED') {
+      res.status(422).send(err = "La Application requerida no está aceptada");
     } else {
-      if (application.actorId == authenticatedUserId) {
-        res.json(application);
+
+      if (new String(application.explorer).valueOf() == new String(authenticatedUserId).valueOf()) {
+        Application.findOneAndUpdate({ _id: req.params.applicationId }, { $set: { "status": "CANCELLED" } }, { new: true }, function (err, applicationUpdated) {
+          if (err) {
+            if (err.name == 'ValidationError') {
+              res.status(422).send(err);
+            } else {
+              res.status(500).send(err);
+            }
+          } else {
+            res.json(applicationUpdated);
+            console.log('Application cancelled: ', application);
+          }
+        })
       } else {
         res.status(403); //Auth error
         res.send('The Actor is trying to cancel an Application created by another actor!');
       }
-      
     }
   });
 };

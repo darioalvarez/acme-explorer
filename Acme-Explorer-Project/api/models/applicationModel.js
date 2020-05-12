@@ -27,6 +27,9 @@ var ApplicationSchema = new Schema({
     required: 'Explorer id required',
     ref: 'Actors'
   },
+  explorer_email: {
+    type: String
+  },
   trip: {
     type: Schema.Types.ObjectId,
     required: 'Trip id required',
@@ -34,6 +37,9 @@ var ApplicationSchema = new Schema({
   },
   trip_name: {
     type: String
+  },
+  trip_startDate: {
+    type: Date,
   }
 }, { strict: false });
 
