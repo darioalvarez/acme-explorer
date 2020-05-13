@@ -91,7 +91,7 @@ module.exports = function(app) {
       .put(applications.pay_an_application);
 
   app.route('/v2/applications/:applicationId/pay')
-      .put(authController.verifyUser(['EXPLORER']), applications.pay_an_application_by_owner);
+      .put(/* authController.verifyUser(['EXPLORER']),*/ applications.pay_an_application_by_owner);
 
   /**
    * Cancel an application which is accepted.

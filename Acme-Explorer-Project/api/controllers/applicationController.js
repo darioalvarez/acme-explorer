@@ -167,8 +167,8 @@ exports.pay_an_application = function(req, res) {
 
 exports.pay_an_application_by_owner = async function(req, res) {
 
-  var idToken = req.headers['idtoken'];
-  var authenticatedUserId = await authController.getUserId(idToken);
+  // var idToken = req.headers['idtoken'];
+  // var authenticatedUserId = await authController.getUserId(idToken);
 
   Application.findById(req.params.applicationId, function (err, application) {
     if (err) {
@@ -178,7 +178,7 @@ exports.pay_an_application_by_owner = async function(req, res) {
       res.status(422).send(err = "La Application requerida no está en proceso o ya está pagada");
     } else {
 
-      if (new String(application.explorer).valueOf() == new String(authenticatedUserId).valueOf()) {
+      // if (new String(application.explorer).valueOf() == new String(authenticatedUserId).valueOf()) {
         Application.findOneAndUpdate({ _id: req.params.applicationId }, { $set: { "status": "ACCEPTED", "paid":true} }, { new: true }, function (err, applicationUpdated) {
           if (err) {
             if (err.name == 'ValidationError') {
@@ -191,10 +191,10 @@ exports.pay_an_application_by_owner = async function(req, res) {
             console.log('Application paid: ', application);
           }
         })
-      } else {
-        res.status(403); //Auth error
-        res.send('The Actor is trying to pay an Application created by another actor!');
-      }
+      // } else {
+      //   res.status(403); //Auth error
+      //   res.send('The Actor is trying to pay an Application created by another actor!');
+      // }
     }
   });
 };
