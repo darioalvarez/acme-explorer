@@ -68,6 +68,7 @@ var TripSchema = new Schema({
     data: Buffer,
     contentType: String
   }],
+  picture: String,
   stages: [StageSchema],
   cancelled: {
     type: Boolean,
