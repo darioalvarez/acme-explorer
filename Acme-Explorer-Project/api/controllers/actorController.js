@@ -133,7 +133,8 @@ exports.update_an_actor = function (req, res) {
       "preferredLanguage": req.body.preferredLanguage,
       "phone": req.body.phone,
       "address": req.body.address,
-      "role": req.body.role
+      "role": req.body.role,
+      "photo": req.body.photo,
     }
   }, {
     new: true
@@ -367,7 +368,8 @@ exports.update_a_verified_actor = function (req, res) {
               "preferredLanguage": req.body.preferredLanguage,
               "phone": req.body.phone,
               "address": req.body.address,
-              "role": req.body.role
+              "role": req.body.role,
+              "photo": req.body.photo,
             }
           }, {
             new: true
