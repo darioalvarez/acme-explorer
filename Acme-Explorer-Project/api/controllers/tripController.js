@@ -476,8 +476,6 @@ var getGeneralConfig = async function () {
     return generalConfiguration;
 }
 
-
-
 exports.search_trips_by_finder = async function (req, res) {
     var query = {};
     var generalConfig = await getGeneralConfig();
@@ -568,7 +566,6 @@ var construyeQuery = function (finder) {
             };
         }
 
-        // "price":{"$gte":1,"$lte":400}
         if (finder.minPrice && finder.maxPrice) { // minPrice and maxPrice
             query.price = {
                 $gte: finder.minPrice,
