@@ -42,14 +42,15 @@ exports.list_all_trips_v2 = async function (req, res) {
 
 exports.list_all_by_manager = async function (req, res) {
 
-    Trip.find({manager:req.params.actorId}, function(err, trips) {
-        if (err){
-          res.status(500).send(err);
+    Trip.find({
+        manager: req.params.actorId
+    }, function (err, trips) {
+        if (err) {
+            res.status(500).send(err);
+        } else {
+            res.json(trips);
         }
-        else{
-          res.json(trips);
-        }
-      });
+    });
 };
 
 
@@ -167,15 +168,15 @@ exports.delete_a_trip_v2 = async function (req, res) {
                             message: 'A trip published can not be deleted'
                         });
                     } else {*/
-                        Trip.deleteOne({
-                            _id: req.params.tripId
-                        }, function (err, delRes) {
-                            if (err) {
-                                res.send(err);
-                            } else {
-                                res.json(delRes.deletedCount);
-                            }
-                        });
+                    Trip.deleteOne({
+                        _id: req.params.tripId
+                    }, function (err, delRes) {
+                        if (err) {
+                            res.send(err);
+                        } else {
+                            res.json(delRes.deletedCount);
+                        }
+                    });
                     //}
                 }
             });
@@ -238,32 +239,32 @@ exports.update_a_trip_v2 = async function update_a_trip(req, res) {
                         message: 'A trip published can not be deleted'
                     });
                 } else {*/
-                    var tripUpdated = req.body;
-                    //calculating the total price as sum of the stages prices
-                    if (tripUpdated.stages) {
-                        tripUpdated.price = tripUpdated.stages.map((stage) => {
-                            return stage.price
-                        }).reduce((sum, price) => {
-                            return sum + price;
-                        });
-                    }
-                    Trip.findOneAndUpdate({
-                        _id: req.params.tripId
-                    }, tripUpdated, {
-                        new: true,
-                        runValidators: true,
-                        context: 'query'
-                    }, function (err, trip) {
-                        if (err) {
-                            if (err.name == 'ValidationError') {
-                                res.status(422).send(err);
-                            } else {
-                                res.status(500).send(err);
-                            }
-                        } else {
-                            res.json(trip);
-                        }
+                var tripUpdated = req.body;
+                //calculating the total price as sum of the stages prices
+                if (tripUpdated.stages) {
+                    tripUpdated.price = tripUpdated.stages.map((stage) => {
+                        return stage.price
+                    }).reduce((sum, price) => {
+                        return sum + price;
                     });
+                }
+                Trip.findOneAndUpdate({
+                    _id: req.params.tripId
+                }, tripUpdated, {
+                    new: true,
+                    runValidators: true,
+                    context: 'query'
+                }, function (err, trip) {
+                    if (err) {
+                        if (err.name == 'ValidationError') {
+                            res.status(422).send(err);
+                        } else {
+                            res.status(500).send(err);
+                        }
+                    } else {
+                        res.json(trip);
+                    }
+                });
                 //}
             });
         } else {
@@ -393,7 +394,7 @@ exports.unpublish_a_trip = function (req, res) {
 
 exports.search_trips_by_keyword = async function (req, res) {
     var query = {};
-    var generalConfig = await getGeneralConfig(); 
+    var generalConfig = await getGeneralConfig();
 
     // keyword=searchString
     if (req.query.keyword) {
@@ -420,10 +421,10 @@ exports.search_trips_by_keyword = async function (req, res) {
             ]
         };
     }
-    
+
     // limit=10 default
     var limit = generalConfig ? generalConfig.finderNumResults : 10;
-    
+
     if (req.query.pageSize) {
         limit = parseInt(req.query.pageSize);
     }
@@ -467,7 +468,11 @@ exports.search_trips_by_keyword = async function (req, res) {
 
 
 var getGeneralConfig = async function () {
-    var generalConfiguration = await GeneralConfiguration.findOne({}, {}, { sort: { 'createdAt' : -1 } });
+    var generalConfiguration = await GeneralConfiguration.findOne({}, {}, {
+        sort: {
+            'createdAt': -1
+        }
+    });
     return generalConfiguration;
 }
 
@@ -475,28 +480,33 @@ var getGeneralConfig = async function () {
 
 exports.search_trips_by_finder = async function (req, res) {
     var query = {};
-    var generalConfig = await getGeneralConfig(); 
-    var actor = await actorController.get_actor_by_id(req.params.actorId); 
+    var generalConfig = await getGeneralConfig();
+    var actor = await actorController.get_actor_by_id(req.params.actorId);
 
     if (actor && actor.role.includes('EXPLORER')) {
         let finder = actor.finder;
-        let timeCacheGeneral = generalConfig.finderCachedTime;
+        // console.log('finder: ' + finder);
+        let timeCacheGeneral = 600000; //generalConfig.finderCachedTime;
         let searchInBD = true;
 
-        //Comprobar si tenemos que buscar en BBDD o podemos tirar de caché
-        if(finder && finder.results && finder.resultsCachedDate) {
-            let tiempoCacheadoMs = Math.abs(new Date() - finder.resultsCachedDate); //está en milisegundos
-            if (tiempoCacheadoMs < timeCacheGeneral) {
-                searchInBD = false
-            }
-        }
+        console.log('req: ' + JSON.stringify(req.query));
+        // //Comprobar si tenemos que buscar en BBDD o podemos tirar de caché
+        // if(finder && finder.results && finder.resultsCachedDate) {
+        //     let tiempoCacheadoMs = Math.abs(new Date() - finder.resultsCachedDate); //está en milisegundos
+        //     if (tiempoCacheadoMs < timeCacheGeneral) {
+        //         // chequear antes si los términos de búsqueda son los mismos
+        //         // no está hecho
+        //         searchInBD = false
+        //     }
+        // }
 
         if (searchInBD) {
+            console.log('search in db');
             //SE REALIZA LA BÚSQUEDA EN BBDD
-            query = construyeQuery(finder);
+            query = construyeQuery(req.query);
             // limit
             var limit = generalConfig ? generalConfig.finderNumResults : 10;
-            
+
 
             Trip.find(query)
                 .limit(limit)
@@ -511,26 +521,28 @@ exports.search_trips_by_finder = async function (req, res) {
                         res.json(trips);
                     }
                     console.log('End searching trips');
-            });
+                });
 
 
         } else {
             //SE DEVUELVEN LOS RESULTADOS CACHEADOS
+            console.log('search in cache');
             res.json(finder.results);
         }
 
     } else {
-        res.status(403).json({message: 'Unauthorized'});
+        res.status(403).json({
+            message: 'Unauthorized'
+        });
     }
-
 }
 
 
 
-var construyeQuery = function(finder) {
+var construyeQuery = function (finder) {
     let query = {};
     // keyword
-    if(finder) {
+    if (finder) {
         if (finder.keyword) {
             console.log("Setting keyword");
             query = {
@@ -555,34 +567,39 @@ var construyeQuery = function(finder) {
                 ]
             };
         }
-        // minPrice
-        if (finder.minPrice) {
+
+        // "price":{"$gte":1,"$lte":400}
+        if (finder.minPrice && finder.maxPrice) { // minPrice and maxPrice
+            query.price = {
+                $gte: finder.minPrice,
+                $lte: finder.maxPrice
+            };
+        } else if (finder.minPrice) { // minPrice
             query.price = {
                 $gte: finder.minPrice
             };
-        }
-        // maxPrice
-        if (finder.maxPrice) {
+        } else if (finder.maxPrice) { // maxPrice
             query.price = {
                 $lte: finder.maxPrice
             };
         }
+
         // minDate
         if (finder.minDate) {
             query.startDate = {
-                $gte: finder.minDate
+                $gte: '' + finder.minDate
             };
         }
         // maxDate
         if (finder.maxDate) {
             query.endDate = {
-                $lte: finder.maxDate
+                $lte: '' + finder.maxDate
             };
         }
     }
-    
 
-    console.log("Query: " + query);
+
+    console.log("Query: " + JSON.stringify(query));
     return query;
 }
 

@@ -62,7 +62,7 @@ module.exports = function (app) {
     .get(trips.search_trips_by_finder)
 
   app.route('/v2/trips/search/finder/:actorId')
-    .get(auth.verifyUser(['EXPLORER']), trips.search_trips_by_finder)
+    .get(/*auth.verifyUser(['EXPLORER']), */ trips.search_trips_by_finder)
 
 
 

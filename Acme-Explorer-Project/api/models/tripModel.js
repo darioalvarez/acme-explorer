@@ -40,22 +40,30 @@ var TripSchema = new Schema({
   },
   requirements: [String],
   startDate: {
-    type: Date,
-    default: Date.now,
-    required: true,
-    validate: [
-      startDateValidator,
-      'Start date must be greater than Today date'
-    ]
+    type: String,
+    required: true
   },
   endDate: {
-    type: Date,
-    required: true,
-    validate: [
-      endDateValidator,
-      'End date must be greater than Start date'
-    ]
+    type: String,
+    required: true
   },
+  // startDate: {
+  //   type: Date,
+  //   default: Date.now,
+  //   required: true,
+  //   validate: [
+  //     startDateValidator,
+  //     'Start date must be greater than Today date'
+  //   ]
+  // },
+  // endDate: {
+  //   type: Date,
+  //   required: true,
+  //   validate: [
+  //     endDateValidator,
+  //     'End date must be greater than Start date'
+  //   ]
+  // },
   pictures: [{
     data: Buffer,
     contentType: String
@@ -128,21 +136,21 @@ TripSchema.index({
   }
 });
 
-function startDateValidator(startDate) {
-  let now = moment();
-  return now <= startDate;
-}
+// function startDateValidator(startDate) {
+//   let now = moment();
+//   return now <= startDate;
+// }
 
-function endDateValidator(endDate) {
-  // var startDate = this.date_start;
-  // if(!startDate) //making an update
-  //     startDate = new Date(this.getUpdate().date_start);
-  // return startDate <= endDate;
+// function endDateValidator(endDate) {
+//   // var startDate = this.date_start;
+//   // if(!startDate) //making an update
+//   //     startDate = new Date(this.getUpdate().date_start);
+//   // return startDate <= endDate;
 
-  let now = moment();
-  // return now <= endDate &&  this.ticker != "" ? (endDate > this.getUpdate().startDate) : (endDate > this.startDate);
+//   let now = moment();
+//   // return now <= endDate &&  this.ticker != "" ? (endDate > this.getUpdate().startDate) : (endDate > this.startDate);
 
-  return now <= endDate;
-}
+//   return now <= endDate;
+// }
 
 module.exports = mongoose.model('Trips', TripSchema);
