@@ -50,13 +50,13 @@ exports.create_an_application = function(req, res) {
         res.status(500).send(err);
       } else {
 
-        if (trip.length > 0 && date < trip[0].startDate) {
+        if (trip.length > 0 && date.toISOString().substring(0,10) < trip[0].startDate) {
           //En este caso, el trip asociado sería correcto y procederíamos con el save
           new_application.trip_name = trip[0].title;
           new_application.trip_startDate = trip[0].startDate;
           new_application.save(function(err, application) {
             if (err){
-              if(err.name=='ValidationError') {                  
+              if(err.name=='ValidationError') {
                   res.status(422).send(err);
               }
               else{
